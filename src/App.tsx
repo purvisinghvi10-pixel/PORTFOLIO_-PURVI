@@ -19,10 +19,12 @@ import {
   ChevronRight,
   Play,
   Maximize2,
-  Eye
+  Eye,
+  ArrowLeft
 } from 'lucide-react';
 import { PHOTOGRAPHY, MOTION } from './constants';
 import { PhotographyItem, MotionItem } from './types';
+import InMotion from './components/InMotion';
 
 // --- Data ---
 
@@ -63,7 +65,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  const isHome = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -72,15 +73,15 @@ const Navbar = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Projects', href: isHome ? '#projects' : '/#projects' },
-    { name: 'Still Stories', href: isHome ? '#still-stories' : '/#still-stories' },
-    { name: 'Motion', href: isHome ? '#motion' : '/#motion' },
-    { name: 'About', href: isHome ? '#about' : '/#about' },
-    { name: 'Contact', href: isHome ? '#contact' : '/#contact' },
+    { name: 'Projects', to: '/' },
+    { name: 'Still Stories', to: '/still-stories' },
+    { name: 'In Motion', to: '/in-motion' },
+    { name: 'About', to: '/#about' },
+    { name: 'Contact', to: '/#contact' },
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-bg/80 backdrop-blur-md py-4 border-b border-white/5' : 'bg-transparent py-8'}`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-bg/80 backdrop-blur-md py-4 border-b border-line' : 'bg-transparent py-8'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <Link to="/" className="font-display text-xl font-bold tracking-tighter">
           P.S<span className="text-accent">.</span>
@@ -89,36 +90,29 @@ const Navbar = () => {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            link.href.startsWith('#') || link.href.includes('#') ? (
-              <a 
-                key={link.name} 
-                href={link.href} 
-                className="text-sm font-medium text-muted hover:text-ink transition-colors"
-              >
-                {link.name}
-              </a>
-            ) : (
-              <Link 
-                key={link.name} 
-                to={link.href} 
-                className="text-sm font-medium text-muted hover:text-ink transition-colors"
-              >
-                {link.name}
-              </Link>
-            )
+            <Link 
+              key={link.name} 
+              to={link.to} 
+              className="text-sm font-medium text-muted hover:text-ink transition-colors"
+            >
+              {link.name}
+            </Link>
           ))}
-          <a 
-            href={isHome ? "#contact" : "/#contact"} 
-            className="px-5 py-2 bg-white text-bg rounded-full text-sm font-semibold hover:bg-accent hover:text-white transition-all"
+          
+          <Link 
+            to="/#contact" 
+            className="px-5 py-2 border border-line text-ink rounded-full text-sm font-semibold hover:bg-accent hover:text-white transition-all"
           >
             Let's Talk
-          </a>
+          </Link>
         </div>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-ink" onClick={() => setIsOpen(!isOpen)}>
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        <div className="flex items-center gap-4 md:hidden">
+          <button className="text-ink" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -128,28 +122,17 @@ const Navbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 w-full bg-bg border-b border-white/5 py-8 px-6 flex flex-col gap-6 md:hidden"
+            className="absolute top-full left-0 w-full bg-bg border-b border-line py-8 px-6 flex flex-col gap-6 md:hidden"
           >
             {navLinks.map((link) => (
-              link.href.startsWith('#') || link.href.includes('#') ? (
-                <a 
-                  key={link.name} 
-                  href={link.href} 
-                  onClick={() => setIsOpen(false)}
-                  className="text-2xl font-display font-medium"
-                >
-                  {link.name}
-                </a>
-              ) : (
-                <Link 
-                  key={link.name} 
-                  to={link.href} 
-                  onClick={() => setIsOpen(false)}
-                  className="text-2xl font-display font-medium"
-                >
-                  {link.name}
-                </Link>
-              )
+              <Link 
+                key={link.name} 
+                to={link.to} 
+                onClick={() => setIsOpen(false)}
+                className="text-2xl font-display font-medium"
+              >
+                {link.name}
+              </Link>
             ))}
           </motion.div>
         )}
@@ -205,14 +188,12 @@ const Hero = () => {
 
   return (
     <div ref={containerRef} className="relative h-[400vh]">
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-bg">
         
-        {/* Background Video */}
-        <div className="absolute inset-0 z-[-1] overflow-hidden">
-          <video autoPlay muted loop playsInline className="bg-video">
-            <source src="https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4" type="video/mp4" />
-          </video>
-          <div className="hero-overlay" />
+        {/* Subtle Background Elements */}
+        <div className="absolute inset-0 z-[-1] overflow-hidden opacity-30">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/5 blur-[120px] rounded-full" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/5 blur-[120px] rounded-full" />
         </div>
 
         {/* Text Container */}
@@ -238,7 +219,7 @@ const Hero = () => {
           <div className="flex flex-wrap justify-center gap-6">
             <a 
               href="#projects" 
-              className="group relative px-8 py-4 bg-white text-bg rounded-full font-bold overflow-hidden transition-all"
+              className="group relative px-8 py-4 border border-line text-ink rounded-full font-bold overflow-hidden transition-all"
             >
               <span className="relative z-10 flex items-center gap-2">
                 View Work <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
@@ -247,7 +228,7 @@ const Hero = () => {
             </a>
             <a 
               href="#contact" 
-              className="px-8 py-4 border border-white/20 rounded-full font-bold hover:border-white transition-all"
+              className="px-8 py-4 border border-line rounded-full font-bold hover:border-accent hover:text-white transition-all"
             >
               Contact Me
             </a>
@@ -276,10 +257,10 @@ const Hero = () => {
           />
           {/* Subtle glow/glass effect */}
           <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 border border-white/10 rounded-[inherit] pointer-events-none" />
+          <div className="absolute inset-0 border border-line rounded-[inherit] pointer-events-none" />
           
           {/* Inner glass reflection */}
-          <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/5 to-transparent pointer-events-none" />
+          <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-ink/5 to-transparent pointer-events-none" />
         </motion.div>
 
       </div>
@@ -405,6 +386,98 @@ const PROJECTS: Project[] = [
       "Improved accessibility scores across the application.",
       "Developed a scalable design system for future updates."
     ]
+  },
+  {
+    id: 5,
+    title: "Eco-Friendly Packaging",
+    category: "Sustainable Design",
+    shortDescription: "Biodegradable packaging solutions",
+    image: "https://picsum.photos/seed/eco/1200/800",
+    media: [
+      { type: 'image', src: "https://picsum.photos/seed/eco/1920/1080" },
+      { type: 'image', src: "https://picsum.photos/seed/eco-1/1920/1080" }
+    ],
+    overview: {
+      objective: "Create a sustainable packaging system for a new organic skincare line.",
+      challenges: "Finding materials that are both eco-friendly and durable enough for shipping.",
+      description: "This project explored various biodegradable materials and minimalist design principles to create a packaging system that reflects the brand's commitment to nature."
+    },
+    process: ["Material Research", "Prototyping", "Stress Testing", "Visual Design"],
+    outcome: "A 100% plastic-free packaging solution that reduced environmental impact while maintaining a premium feel.",
+    achievements: [
+      "Eliminated all single-use plastics from the packaging.",
+      "Reduced shipping weight by 15% through optimized design.",
+      "Received positive feedback from eco-conscious consumers."
+    ]
+  },
+  {
+    id: 6,
+    title: "Smart Home Dashboard",
+    category: "Interface Design",
+    shortDescription: "Centralized control for IoT devices",
+    image: "https://picsum.photos/seed/smarthome/1200/800",
+    media: [
+      { type: 'image', src: "https://picsum.photos/seed/smarthome/1920/1080" },
+      { type: 'image', src: "https://picsum.photos/seed/smarthome-1/1920/1080" }
+    ],
+    overview: {
+      objective: "Design a unified dashboard for managing various smart home devices.",
+      challenges: "Creating a consistent interface for devices with vastly different functions.",
+      description: "The Smart Home Dashboard provides a seamless way to control lighting, temperature, and security from a single, intuitive interface."
+    },
+    process: ["User Interviews", "Task Analysis", "UI Design", "Prototyping"],
+    outcome: "A highly customizable dashboard that simplifies the management of complex smart home ecosystems.",
+    achievements: [
+      "Achieved a 95% user satisfaction rate in beta testing.",
+      "Integrated support for over 50 different IoT device types.",
+      "Designed a dark mode that reduces eye strain during night use."
+    ]
+  },
+  {
+    id: 7,
+    title: "Urban Mobility App",
+    category: "Mobile App Design",
+    shortDescription: "Simplifying city travel",
+    image: "https://picsum.photos/seed/mobility/1200/800",
+    media: [
+      { type: 'image', src: "https://picsum.photos/seed/mobility/1920/1080" },
+      { type: 'image', src: "https://picsum.photos/seed/mobility-1/1920/1080" }
+    ],
+    overview: {
+      objective: "Develop a mobile application that integrates various public and private transport options.",
+      challenges: "Real-time data integration and providing accurate travel time estimates.",
+      description: "The Urban Mobility App helps users find the fastest and most cost-effective way to get around the city, combining buses, trains, and bike-sharing."
+    },
+    process: ["Market Analysis", "User Personas", "Wireframing", "API Integration Planning"],
+    outcome: "A comprehensive travel companion that has become the go-to app for thousands of daily commuters.",
+    achievements: [
+      "Reached 100,000 downloads within the first month of launch.",
+      "Partnered with major city transport authorities for real-time data.",
+      "Implemented an offline mode for basic navigation without data."
+    ]
+  },
+  {
+    id: 8,
+    title: "Coffee Brand Reimagined",
+    category: "Brand Strategy",
+    shortDescription: "Modernizing a heritage coffee roaster",
+    image: "https://picsum.photos/seed/coffee/1200/800",
+    media: [
+      { type: 'image', src: "https://picsum.photos/seed/coffee/1920/1080" },
+      { type: 'image', src: "https://picsum.photos/seed/coffee-1/1920/1080" }
+    ],
+    overview: {
+      objective: "Refresh the visual identity of a 50-year-old coffee roasting company.",
+      challenges: "Honoring the brand's heritage while appealing to a younger, modern audience.",
+      description: "We updated the logo, packaging, and digital presence of Heritage Roasters, focusing on storytelling and the craft of coffee making."
+    },
+    process: ["Brand Audit", "Visual Identity Design", "Packaging Design", "Digital Strategy"],
+    outcome: "A revitalized brand that successfully bridged the gap between traditional quality and modern aesthetics.",
+    achievements: [
+      "Increased online sales by 40% post-rebrand.",
+      "Won a regional design award for the new packaging.",
+      "Successfully launched a new line of specialty single-origin beans."
+    ]
   }
 ];
 
@@ -424,7 +497,7 @@ const DynamicMediaShowcase: React.FC<{ media: MediaItem[] }> = ({ media }) => {
     <div className="space-y-8">
       {/* Main Media Display */}
       <div 
-        className="relative aspect-[16/9] rounded-[40px] overflow-hidden shadow-2xl bg-black/20 group"
+        className="relative aspect-[16/9] rounded-[40px] overflow-hidden shadow-2xl bg-ink/10 group"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
@@ -457,8 +530,8 @@ const DynamicMediaShowcase: React.FC<{ media: MediaItem[] }> = ({ media }) => {
           </motion.div>
         </AnimatePresence>
 
-        {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+        {/* Overlay Gradient - Removed for pure light theme */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent pointer-events-none" />
       </div>
 
       {/* Thumbnails / Controls */}
@@ -478,8 +551,8 @@ const DynamicMediaShowcase: React.FC<{ media: MediaItem[] }> = ({ media }) => {
             {item.type === 'image' ? (
               <img src={item.src} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
             ) : (
-              <div className="w-full h-full bg-white/10 flex items-center justify-center">
-                <Video size={16} className="text-white" />
+              <div className="w-full h-full bg-ink/10 flex items-center justify-center">
+                <Video size={16} className="text-ink" />
               </div>
             )}
           </button>
@@ -499,7 +572,7 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-bg text-white pt-32 pb-24"
+      className="min-h-screen bg-bg text-ink pt-32 pb-24"
     >
       <div className="max-w-7xl mx-auto px-6">
         {/* Navigation */}
@@ -576,7 +649,7 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
-                  className="px-10 py-5 bg-white/5 border border-white/10 rounded-full text-xl font-medium"
+                  className="px-10 py-5 bg-ink/5 border border-line rounded-full text-xl font-medium"
                 >
                   {step}
                 </motion.div>
@@ -623,6 +696,17 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
 };
 
 const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = ({ onProjectClick }) => {
+  const [visibleCount, setVisibleCount] = useState(4);
+  const totalProjects = PROJECTS.length;
+
+  const handleToggle = () => {
+    if (visibleCount < totalProjects) {
+      setVisibleCount(prev => Math.min(prev + 4, totalProjects));
+    } else {
+      setVisibleCount(4);
+    }
+  };
+
   return (
     <section id="projects" className="py-32 bg-bg">
       <div className="max-w-7xl mx-auto px-6">
@@ -632,45 +716,62 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {PROJECTS.map((project) => (
-            <motion.div
-              key={project.id}
-              onClick={() => onProjectClick(project)}
-              className="group cursor-pointer"
-              whileHover="hover"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <div className="relative aspect-[4/3] rounded-[32px] overflow-hidden mb-6">
-                <motion.img 
-                  src={project.image} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover"
-                  variants={{
-                    hover: { scale: 1.05 }
-                  }}
-                  transition={{ duration: 0.7 }}
-                  referrerPolicy="no-referrer"
-                />
-                <motion.div 
-                  className="absolute inset-0 bg-black/40 flex items-center justify-center"
-                  initial={{ opacity: 0 }}
-                  variants={{
-                    hover: { opacity: 1 }
-                  }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-bg transform scale-0 group-hover:scale-100 transition-transform duration-500 delay-100">
-                    <ArrowUpRight size={32} />
-                  </div>
-                </motion.div>
-              </div>
-              <h4 className="text-2xl font-bold mb-2">{project.title}</h4>
-              <p className="text-muted uppercase tracking-widest text-sm">{project.category}</p>
-            </motion.div>
-          ))}
+          <AnimatePresence mode="popLayout">
+            {PROJECTS.slice(0, visibleCount).map((project) => (
+              <motion.div
+                key={project.id}
+                layout
+                onClick={() => onProjectClick(project)}
+                className="group cursor-pointer"
+                whileHover="hover"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="relative aspect-[4/3] rounded-[32px] overflow-hidden mb-6 border border-line shadow-xl shadow-black/5">
+                  <motion.img 
+                    src={project.image} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover"
+                    variants={{
+                      hover: { scale: 1.05 }
+                    }}
+                    transition={{ duration: 0.7 }}
+                    referrerPolicy="no-referrer"
+                  />
+                  <motion.div 
+                    className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center"
+                    initial={{ opacity: 0 }}
+                    variants={{
+                      hover: { opacity: 1 }
+                    }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div className="w-16 h-16 bg-white border border-line rounded-full flex items-center justify-center text-ink transform scale-0 group-hover:scale-100 transition-transform duration-500 delay-100 shadow-lg">
+                      <ArrowUpRight size={32} />
+                    </div>
+                  </motion.div>
+                </div>
+                <h4 className="text-2xl font-bold mb-2">{project.title}</h4>
+                <p className="text-muted uppercase tracking-widest text-sm">{project.category}</p>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
+
+        {totalProjects > 4 && (
+          <div className="mt-20 flex justify-center">
+            <motion.button
+              onClick={handleToggle}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="px-10 py-4 rounded-full border border-line text-sm font-semibold tracking-widest uppercase hover:border-accent hover:text-accent transition-all duration-300"
+            >
+              {visibleCount < totalProjects ? 'View More' : 'Show Less'}
+            </motion.button>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -680,7 +781,7 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
 
 const About = () => {
   return (
-    <section id="about" className="py-24 lg:py-48 bg-white/5">
+    <section id="about" className="py-24 lg:py-48 bg-ink/5">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4">
@@ -711,7 +812,7 @@ const About = () => {
               <p className="text-xl text-muted leading-relaxed">
                 I create visually strong and intuitive digital experiences, combining aesthetics with functionality to solve real user problems. My approach is rooted in clarity, simplicity, and thoughtful decision-making—ensuring every design is purposeful, usable, and engaging.
               </p>
-              <div className="py-8 border-y border-white/10">
+              <div className="py-8 border-y border-line">
                 <p className="text-3xl font-display italic text-accent">
                   "Good design gets attention. Great design keeps people."
                 </p>
@@ -742,15 +843,24 @@ const About = () => {
   );
 };
 
-const StillStories = () => {
+const StillStoriesPage = () => {
   const [selectedImage, setSelectedImage] = useState<PhotographyItem | null>(null);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
-    <section id="still-stories" className="py-24 lg:py-48 bg-bg">
+    <section className="min-h-screen py-24 lg:py-32 bg-bg">
       <div className="max-w-7xl mx-auto px-6">
+        <Link to="/" className="inline-flex items-center gap-2 text-accent hover:text-ink transition-colors mb-12 group">
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Portfolio
+        </Link>
+        
         <div className="mb-24">
           <h2 className="text-accent font-mono text-sm uppercase tracking-widest mb-4">Visuals</h2>
-          <h3 className="text-6xl md:text-8xl font-bold tracking-tighter">PHOTOGRAPHY.</h3>
+          <h3 className="text-6xl md:text-8xl font-bold tracking-tighter uppercase">Still Stories</h3>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -758,8 +868,7 @@ const StillStories = () => {
             <motion.div
               key={photo.id}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               className="group relative cursor-pointer overflow-hidden rounded-3xl aspect-[3/4]"
               onClick={() => setSelectedImage(photo)}
@@ -770,10 +879,10 @@ const StillStories = () => {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+              <div className="absolute inset-0 bg-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
                 <p className="text-accent font-mono text-xs uppercase tracking-widest mb-2">{photo.category}</p>
-                <h4 className="text-2xl font-bold">{photo.title}</h4>
-                <div className="mt-4 w-12 h-12 bg-white rounded-full flex items-center justify-center text-bg transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                <h4 className="text-2xl font-bold text-ink">{photo.title}</h4>
+                <div className="mt-4 w-12 h-12 bg-white border border-line rounded-full flex items-center justify-center text-ink transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 shadow-md">
                   <Eye size={24} />
                 </div>
               </div>
@@ -789,11 +898,11 @@ const StillStories = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 md:p-12"
+            className="fixed inset-0 z-[100] bg-white/95 backdrop-blur-md flex items-center justify-center p-6 md:p-12"
             onClick={() => setSelectedImage(null)}
           >
             <motion.button
-              className="absolute top-8 right-8 text-white/60 hover:text-white transition-colors"
+              className="absolute top-8 right-8 text-ink/60 hover:text-ink transition-colors"
               onClick={() => setSelectedImage(null)}
             >
               <X size={32} />
@@ -823,103 +932,21 @@ const StillStories = () => {
   );
 };
 
-const Motion = () => {
-  const [selectedVideo, setSelectedVideo] = useState<MotionItem | null>(null);
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
+const InMotionPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
-    <section id="motion" className="py-24 lg:py-48 bg-white/5">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="mb-24">
-          <h2 className="text-accent font-mono text-sm uppercase tracking-widest mb-4">Motion</h2>
-          <h3 className="text-6xl md:text-8xl font-bold tracking-tighter">MOTION.</h3>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          {MOTION.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative cursor-pointer overflow-hidden rounded-[40px] aspect-video bg-black/20"
-              onMouseEnter={() => setHoveredId(item.id)}
-              onMouseLeave={() => setHoveredId(null)}
-              onClick={() => setSelectedVideo(item)}
-            >
-              {/* Thumbnail */}
-              <img
-                src={item.thumbnail}
-                alt={item.title}
-                className={`w-full h-full object-cover transition-opacity duration-700 ${hoveredId === item.id ? 'opacity-0' : 'opacity-100'}`}
-                referrerPolicy="no-referrer"
-              />
-              
-              {/* Video Preview on Hover */}
-              {hoveredId === item.id && (
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  src={item.videoUrl}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-              )}
-
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-10">
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-accent font-mono text-xs uppercase tracking-widest mb-2">{item.category}</p>
-                    <h4 className="text-3xl font-bold">{item.title}</h4>
-                  </div>
-                  <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center text-bg transform scale-90 group-hover:scale-100 transition-transform duration-500">
-                    <Play size={28} fill="currentColor" />
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+    <div className="min-h-screen bg-bg">
+      <div className="max-w-7xl mx-auto px-6 pt-32">
+        <Link to="/" className="inline-flex items-center gap-2 text-accent hover:text-ink transition-colors group">
+          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+          Back to Portfolio
+        </Link>
       </div>
-
-      {/* Video Modal */}
-      <AnimatePresence>
-        {selectedVideo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4 md:p-12"
-            onClick={() => setSelectedVideo(null)}
-          >
-            <motion.button
-              className="absolute top-8 right-8 text-white/60 hover:text-white transition-colors"
-              onClick={() => setSelectedVideo(null)}
-            >
-              <X size={32} />
-            </motion.button>
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="relative max-w-6xl w-full aspect-video rounded-3xl overflow-hidden shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <video
-                autoPlay
-                controls
-                playsInline
-                src={selectedVideo.videoUrl}
-                className="w-full h-full object-cover"
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </section>
+      <InMotion items={MOTION} />
+    </div>
   );
 };
 
@@ -964,7 +991,7 @@ const Contact = () => {
       
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         {/* Thin Divider Line Above Section */}
-        <div className="w-full h-px bg-white/5 mb-32" />
+        <div className="w-full h-px bg-line mb-32" />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
           {/* Left Side: Emotional Hook */}
@@ -1027,13 +1054,13 @@ const Contact = () => {
             transition={{ duration: 1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="relative"
           >
-            <div className="bg-white/[0.02] p-8 md:p-14 rounded-[40px] border border-white/10 backdrop-blur-2xl shadow-2xl">
+            <div className="bg-ink/[0.02] p-8 md:p-14 rounded-[40px] border border-line backdrop-blur-2xl shadow-2xl">
               <form className="space-y-10">
                 <div className="space-y-3">
                   <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted">Your Name</label>
                   <input 
                     type="text" 
-                    className="w-full bg-transparent border-b border-white/10 py-5 focus:border-accent focus:shadow-[0_4px_20px_-10px_rgba(99,102,241,0.3)] outline-none transition-all duration-500 placeholder:text-white/10 text-lg" 
+                    className="w-full bg-transparent border-b border-line py-5 focus:border-accent focus:shadow-[0_4px_20px_-10px_rgba(99,102,241,0.3)] outline-none transition-all duration-500 placeholder:text-ink/10 text-lg" 
                     placeholder="Your Name" 
                   />
                 </div>
@@ -1041,7 +1068,7 @@ const Contact = () => {
                   <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted">Your Email</label>
                   <input 
                     type="email" 
-                    className="w-full bg-transparent border-b border-white/10 py-5 focus:border-accent focus:shadow-[0_4px_20px_-10px_rgba(99,102,241,0.3)] outline-none transition-all duration-500 placeholder:text-white/10 text-lg" 
+                    className="w-full bg-transparent border-b border-line py-5 focus:border-accent focus:shadow-[0_4px_20px_-10px_rgba(99,102,241,0.3)] outline-none transition-all duration-500 placeholder:text-ink/10 text-lg" 
                     placeholder="Your Email" 
                   />
                 </div>
@@ -1049,7 +1076,7 @@ const Contact = () => {
                   <label className="text-[10px] uppercase tracking-[0.2em] font-bold text-muted">Message</label>
                   <textarea 
                     rows={4} 
-                    className="w-full bg-transparent border-b border-white/10 py-5 focus:border-accent focus:shadow-[0_4px_20px_-10px_rgba(99,102,241,0.3)] outline-none transition-all duration-500 resize-none placeholder:text-white/10 text-lg" 
+                    className="w-full bg-transparent border-b border-line py-5 focus:border-accent focus:shadow-[0_4px_20px_-10px_rgba(99,102,241,0.3)] outline-none transition-all duration-500 resize-none placeholder:text-ink/10 text-lg" 
                     placeholder="Tell me about your project..." 
                   />
                 </div>
@@ -1057,7 +1084,7 @@ const Contact = () => {
                   <motion.button 
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full py-7 bg-white text-bg rounded-full font-bold text-xl hover:bg-accent hover:text-white transition-all duration-500 flex items-center justify-center gap-3 group shadow-xl shadow-black/20"
+                    className="w-full py-7 bg-transparent border border-line text-ink rounded-full font-bold text-xl hover:bg-accent hover:text-white transition-all duration-500 flex items-center justify-center gap-3 group shadow-xl shadow-black/5"
                   >
                     <span className="group-hover:translate-x-1 transition-transform duration-300">→</span> Send Message
                   </motion.button>
@@ -1076,7 +1103,7 @@ const Contact = () => {
 
 const Footer = () => {
   return (
-    <footer className="py-12 border-t border-white/5">
+    <footer className="py-12 border-t border-line">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
         <p className="text-muted text-sm">
           © {new Date().getFullYear()} Purvi Singhvi
@@ -1097,12 +1124,25 @@ const Footer = () => {
 // --- Main App ---
 
 const HomePage = ({ onProjectClick }: { onProjectClick: (project: Project) => void }) => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.slice(1));
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
+
   return (
     <>
       <Hero />
       <WorkShowcase onProjectClick={onProjectClick} />
-      <StillStories />
-      <Motion />
       <About />
       <Contact />
     </>
@@ -1125,7 +1165,7 @@ export default function App() {
   };
 
   return (
-    <div className="bg-bg min-h-screen selection:bg-accent/30 selection:text-white relative">
+    <div className="min-h-screen selection:bg-accent/30 selection:text-ink relative">
       <div className="noise-overlay" />
       <Navbar />
       <AnimatePresence mode="wait">
@@ -1159,6 +1199,30 @@ export default function App() {
                   <p className="text-muted">Project not found. <Link to="/" className="text-accent underline">Go back</Link></p>
                 </div>
               )}
+              <Footer />
+            </motion.div>
+          } />
+
+          <Route path="/still-stories" element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <StillStoriesPage />
+              <Footer />
+            </motion.div>
+          } />
+
+          <Route path="/in-motion" element={
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <InMotionPage />
               <Footer />
             </motion.div>
           } />

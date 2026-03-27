@@ -35,4 +35,5 @@ export interface MotionItem {
   videoUrl: string;
   title: string;
   category: string;
+  aspectRatio?: '9/16' | '16/9';
 }

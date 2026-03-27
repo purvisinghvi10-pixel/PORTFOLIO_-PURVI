@@ -96,8 +96,8 @@ export const PROJECTS: Project[] = [
     number: '04',
     title: 'UI/UX Case Study',
     category: 'App Design',
-    thumbnail: 'https://picsum.photos/seed/uiux/1200/1600',
-    heroImage: 'https://picsum.photos/seed/uiux-hero/1920/1080',
+    thumbnail: 'https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png',
+    heroImage: 'https://ibb.co/B2LWLLR3',
     overview: {
       description: 'A comprehensive UI/UX redesign for a fitness tracking app aimed at making wellness more accessible and less intimidating.',
       objective: 'Simplify the user journey and create a more motivating and inclusive interface.',
@@ -168,20 +168,47 @@ export const MOTION: MotionItem[] = [
     thumbnail: 'https://picsum.photos/seed/motion1/1200/800',
     videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
     title: 'Brand Story Reel',
-    category: 'Motion Graphics'
+    category: 'Motion Graphics',
+    aspectRatio: '16/9'
   },
   {
     id: 'motion-2',
     thumbnail: 'https://picsum.photos/seed/motion2/1200/800',
     videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
     title: 'Product Launch Teaser',
-    category: 'Commercial'
+    category: 'Commercial',
+    aspectRatio: '9/16'
   },
   {
     id: 'motion-3',
     thumbnail: 'https://picsum.photos/seed/motion3/1200/800',
     videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
     title: 'Abstract Motion Study',
-    category: 'Experimental'
+    category: 'Experimental',
+    aspectRatio: '16/9'
+  },
+  {
+    id: 'motion-4',
+    thumbnail: 'https://picsum.photos/seed/motion4/1200/800',
+    videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
+    title: 'Cinematic Sequence',
+    category: 'Film',
+    aspectRatio: '9/16'
+  },
+  {
+    id: 'motion-5',
+    thumbnail: 'https://picsum.photos/seed/motion5/1200/800',
+    videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
+    title: 'Dynamic Typography',
+    category: 'Motion Design',
+    aspectRatio: '16/9'
+  },
+  {
+    id: 'motion-6',
+    thumbnail: 'https://picsum.photos/seed/motion6/1200/800',
+    videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
+    title: 'Visual Effects Test',
+    category: 'VFX',
+    aspectRatio: '9/16'
   }
 ];
