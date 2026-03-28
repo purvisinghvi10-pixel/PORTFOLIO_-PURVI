@@ -108,55 +108,51 @@ export const PROJECTS: Project[] = [
   {
     id: '05',
     number: '05',
-    title: "Eco-Friendly Packaging",
-    category: "Sustainable Design",
-    shortDescription: "Biodegradable packaging solutions",
+    title: "CareHub",
+    category: "UI/UX Design",
+    shortDescription: "Animal Care & Lost Pet Assistance Platform",
     image: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png",
-    thumbnail: "https://picsum.photos/seed/packaging-eco/1200/800",
+    thumbnail: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png",
     media: [
-      { type: 'image', src: "https://picsum.photos/seed/packaging-eco/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/eco-1/1920/1080" }
+      { type: 'image', src: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png" },
+      { type: 'image', src: "https://picsum.photos/seed/pet-1/1920/1080" },
+      { type: 'image', src: "https://picsum.photos/seed/pet-2/1920/1080" }
     ],
     overview: {
-      objective: "Create a sustainable packaging system for a new organic skincare line.",
-      challenges: "Finding materials that are both eco-friendly and durable enough for shipping.",
-      description: "This project explored various biodegradable materials and minimalist design principles to create a packaging system that reflects the brand's commitment to nature."
+      objective: "To design an intuitive platform that helps users manage pet care while also enabling quick reporting and tracking of lost and found pets.",
+      challenges: "Simplifying complex interactions like reporting, searching, and contacting while ensuring emotional sensitivity for users dealing with lost pets.",
+      description: "CareHub is designed as a unified solution for pet owners to manage care, find nearby services, and respond quickly in situations like lost pets. The focus was on creating a seamless, user-friendly experience that balances functionality with empathy."
     },
-    process: ["Material Research", "Prototyping", "Stress Testing", "Visual Design"],
-    outcome: "A 100% plastic-free packaging solution that reduced environmental impact while maintaining a premium feel.",
+    process: ["User Research", "User Flow Mapping", "Wireframing", "UI Design", "Prototyping"],
+    outcome: "A clean and accessible interface that enables users to quickly report, search, and connect—making pet care and recovery faster and more efficient.",
     achievements: [
-      "Eliminated all single-use plastics from the packaging.",
-      "Reduced shipping weight by 15% through optimized design.",
-      "Received positive feedback from eco-conscious consumers."
+      "Simplified reporting and discovery flow for lost & found pets",
+      "Improved accessibility and clarity across user journeys",
+      "Designed a scalable system for future feature expansion"
     ]
   },
   {
     id: '06',
     number: '06',
-    title: "Smart Home Dashboard",
-    category: "Interface Design",
-    shortDescription: "Centralized control for IoT devices",
+    title: "My LEGO Journey",
+    category: "3D Pop-Up Storytelling Experience for Kids",
+    shortDescription: "Immersive brand storytelling for children",
     image: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
     thumbnail: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
-    slideshowImages: [
-      "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
-      "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png"
-    ],
     media: [
-      { type: 'image', src: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png" },
       { type: 'image', src: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png" }
     ],
     overview: {
-      objective: "Design a unified dashboard for managing various smart home devices.",
-      challenges: "Creating a consistent interface for devices with vastly different functions.",
-      description: "The Smart Home Dashboard provides a seamless way to control lighting, temperature, and security from a single, intuitive interface."
+      objective: "To reimagine LEGO’s brand journey through an immersive storytelling experience designed for children, where the narrative is told from the perspective of becoming a LEGO character.",
+      challenges: "Translating a brand story into a playful, engaging format that resonates with kids while maintaining clarity, imagination, and visual storytelling consistency.",
+      description: "This project explores LEGO’s brand journey through a unique narrative approach. The concept imagines myself as a LEGO character, guiding children through a playful and imaginative world. Designed as a 3D pop-up style experience, the visuals bring the story to life through depth, movement, and vibrant compositions. The goal was to create an engaging and memorable storytelling experience that aligns with LEGO’s core values of creativity and play."
     },
-    process: ["User Interviews", "Task Analysis", "UI Design", "Prototyping"],
-    outcome: "A highly customizable dashboard that simplifies the management of complex smart home ecosystems.",
+    process: ["Brand Research", "Concept Development", "Storyboarding", "3D Visual Exploration", "Final Composition & Rendering"],
+    outcome: "A fun and immersive 3D storytelling experience that transforms LEGO’s brand journey into an engaging narrative for children.",
     achievements: [
-      "Achieved a 95% user satisfaction rate in beta testing.",
-      "Integrated support for over 50 different IoT device types.",
-      "Designed a dark mode that reduces eye strain during night use."
+      "Created a character-driven storytelling concept",
+      "Translated brand journey into a kid-friendly narrative",
+      "Designed a visually engaging 3D pop-up experience"
     ]
   }
 ];
