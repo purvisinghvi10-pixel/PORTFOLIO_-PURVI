@@ -2,123 +2,161 @@ import { Project, PhotographyItem, MotionItem } from './types';
 
 export const PROJECTS: Project[] = [
   {
-    id: 'silver-leaf-identity',
+    id: '01',
     number: '01',
-    title: 'Silver Leaf Identity',
-    category: 'Branding',
-    thumbnail: 'https://picsum.photos/seed/silverleaf/1200/1600',
-    heroImage: 'https://picsum.photos/seed/silverleaf-hero/1920/1080',
-    overview: {
-      description: 'Silver Leaf is a premium lifestyle brand focused on sustainable luxury. The identity was designed to reflect elegance and environmental consciousness.',
-      objective: 'Create a visual identity that appeals to high-end consumers while maintaining a minimal and organic feel.',
-      challenges: 'Balancing the "luxury" aspect with "sustainability" without falling into clichés like green leaves or overly ornate gold foils.'
-    },
-    gridImages: [
-      'https://picsum.photos/seed/silver-grid-1/800/800',
-      'https://picsum.photos/seed/silver-grid-2/800/800'
+    title: "Silver Leaf Identity",
+    category: "Branding",
+    shortDescription: "Luxury silver jewelry branding",
+    image: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png",
+    thumbnail: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png",
+    media: [
+      { type: 'image', src: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png" },
+      { type: 'image', src: "https://picsum.photos/seed/silverleaf-2/1920/1080" },
+      { type: 'image', src: "https://picsum.photos/seed/silverleaf-3/1920/1080" }
     ],
-    process: {
-      research: 'Studied luxury sustainable brands and consumer psychology regarding "quiet luxury".',
-      concept: 'Developed a concept around the "Silver Leaf" – a symbol of resilience and timeless value.',
-      wireframing: 'Explored various logo marks and typography pairings.',
-      visualDesign: 'Selected a palette of muted silvers, deep charcoals, and off-whites.',
-      development: 'Created a comprehensive brand guideline and digital assets.'
+    overview: {
+      objective: "To create a premium and minimal brand identity that resonates with luxury jewelry enthusiasts.",
+      challenges: "Balancing traditional elegance with modern minimalism while maintaining brand recognition.",
+      description: "Silver Leaf required a visual language that felt both timeless and contemporary. We focused on clean lines, a sophisticated color palette, and high-end typography to elevate the brand's presence in the market."
     },
-    outcome: 'A cohesive brand identity that increased perceived value by 40% and successfully launched in three major cities.',
+    process: ["Research", "Concept Development", "Wireframing", "Visual Design", "Brand Application"],
+    outcome: "A refined and cohesive brand identity that elevated Silver Leaf’s visual presence and established it as a minimal, premium jewelry brand across all touchpoints.",
     achievements: [
-      'Improved visual consistency across all touchpoints',
-      'Successful launch in premium retail spaces',
-      'Positive feedback from target demographic'
+      "Developed a distinctive and elegant visual system aligned with a minimal luxury aesthetic.",
+      "Created consistent branding across logo, packaging, visiting cards, and digital assets.",
+      "Designed a smooth logo animation to enhance brand storytelling and digital presence."
     ]
   },
   {
-    id: 'wedding-invitation-design',
+    id: '02',
     number: '02',
-    title: 'Wedding Invitation Design',
-    category: 'Print + Branding',
-    thumbnail: 'https://picsum.photos/seed/wedding/1200/1600',
-    heroImage: 'https://picsum.photos/seed/wedding-hero/1920/1080',
-    overview: {
-      description: 'A bespoke wedding invitation suite for a high-profile destination wedding in Tuscany. The design focused on tactile experiences and storytelling.',
-      objective: 'Design a multi-piece invitation set that conveys the romantic and exclusive nature of the event.',
-      challenges: 'Coordinating complex print techniques including letterpress, foil stamping, and custom wax seals.'
-    },
-    gridImages: [
-      'https://picsum.photos/seed/wedding-grid-1/800/800',
-      'https://picsum.photos/seed/wedding-grid-2/800/800'
+    title: "Wedding Experience Interface",
+    category: "UI/UX Design",
+    shortDescription: "UI/UX Design for Weddings by Event Crafters",
+    image: "https://i.ibb.co/pBRMp7yY/MOCK-UP.png",
+    thumbnail: "https://i.ibb.co/pBRMp7yY/MOCK-UP.png",
+    media: [
+      { type: 'image', src: "https://i.ibb.co/pBRMp7yY/MOCK-UP.png" },
+      { type: 'image', src: "https://picsum.photos/seed/wedding-2/1920/1080" },
+      { type: 'image', src: "https://picsum.photos/seed/wedding-3/1920/1080" }
     ],
-    process: {
-      research: 'Explored traditional Italian calligraphy and botanical illustrations of the Tuscany region.',
-      concept: 'The "Enchanted Garden" – using layered vellum and floral motifs.',
-      wireframing: 'Mapped out the information hierarchy for the main invite, RSVP, and details card.',
-      visualDesign: 'Used handmade paper, sage green ink, and champagne gold foil.',
-      development: 'Managed the production process with specialized print houses.'
+    overview: {
+      objective: "Design a clean and structured web experience for Weddings by Event Crafters that showcases services while maintaining an elegant and premium feel.",
+      challenges: "Organizing diverse wedding services into a clear, intuitive layout while balancing visual richness with usability.",
+      description: "This project involved creating low-fidelity wireframes and layout structures for the Weddings by Event Crafters website. The focus was on simplifying content, improving navigation, and delivering a seamless user experience."
     },
-    outcome: 'A stunning invitation suite that set the tone for the wedding and became a keepsake for the guests.',
+    process: ["User Research", "Wireframing", "Layout Structuring", "Visual Design", "Final Interface"],
+    outcome: "A minimal and intuitive interface that enhances content clarity and delivers a smooth browsing experience aligned with the brand’s premium positioning.",
     achievements: [
-      'High guest engagement and early RSVP returns',
-      'Featured in a leading wedding design blog',
-      'Seamless integration of print and digital RSVP systems'
+      "Developed structured low-fidelity wireframes to define user flow and layout.",
+      "Improved content organization for better readability and navigation.",
+      "Created a consistent and refined interface for the wedding platform."
     ]
   },
   {
-    id: 'fhrai-event-visuals',
+    id: '03',
     number: '03',
-    title: 'FHRAI Event Visuals',
-    category: 'Graphic Design',
-    thumbnail: 'https://picsum.photos/seed/fhrai/1200/1600',
-    heroImage: 'https://picsum.photos/seed/fhrai-hero/1920/1080',
-    overview: {
-      description: 'Comprehensive visual design for the FHRAI Annual Convention, one of the largest hospitality events in the country.',
-      objective: 'Create a dynamic and professional visual language that works across large-scale environmental graphics and digital screens.',
-      challenges: 'Maintaining brand consistency across a vast array of physical and digital formats under tight deadlines.'
-    },
-    gridImages: [
-      'https://picsum.photos/seed/fhrai-grid-1/800/800',
-      'https://picsum.photos/seed/fhrai-grid-2/800/800'
+    title: "FHRAI Brochure Design",
+    category: "Print & Graphic Design",
+    shortDescription: "Print & Graphic Design",
+    image: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png",
+    thumbnail: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png",
+    media: [
+      { type: 'image', src: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png" },
+      { type: 'image', src: "https://picsum.photos/seed/fhrai-2/1920/1080" },
+      { type: 'video', src: "https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4" }
     ],
-    process: {
-      research: 'Analyzed previous convention visuals and current trends in hospitality branding.',
-      concept: 'The "Future of Hospitality" – using geometric patterns and bold typography.',
-      wireframing: 'Designed layouts for stage backdrops, directional signage, and social media templates.',
-      visualDesign: 'A vibrant palette of deep blues and energetic oranges to signify innovation.',
-      development: 'Produced over 200 individual assets for the 3-day event.'
+    overview: {
+      objective: "Design a professional and visually engaging brochure for FHRAI that clearly communicates event information while maintaining a clean and structured layout.",
+      challenges: "Presenting detailed content in a readable and visually appealing format while balancing design aesthetics with clarity.",
+      description: "This project involved designing a brochure for FHRAI, focusing on layout structure, typography, and visual hierarchy. The goal was to ensure clear communication of information while maintaining a polished and professional look."
     },
-    outcome: 'A highly successful event with a unified visual identity that enhanced the attendee experience and sponsor visibility.',
+    process: ["Content Understanding", "Layout Planning", "Typography Exploration", "Visual Design", "Final Output"],
+    outcome: "A clean and well-structured brochure design that improved information clarity and delivered a professional visual presentation.",
     achievements: [
-      'Zero production errors across all 200+ assets',
-      'Enhanced sponsor recognition through strategic placement',
-      'Modernized the convention\'s visual legacy'
+      "Designed a clear and organized layout for effective information flow.",
+      "Applied strong typography to enhance readability and hierarchy.",
+      "Delivered a polished and professional brochure aligned with the event’s requirements."
     ]
   },
   {
-    id: 'ui-ux-case-study',
+    id: '04',
     number: '04',
-    title: 'UI/UX Case Study',
-    category: 'App Design',
-    thumbnail: 'https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png',
-    heroImage: 'https://ibb.co/B2LWLLR3',
-    overview: {
-      description: 'A comprehensive UI/UX redesign for a fitness tracking app aimed at making wellness more accessible and less intimidating.',
-      objective: 'Simplify the user journey and create a more motivating and inclusive interface.',
-      challenges: 'Reducing cognitive load while displaying complex health data and workout metrics.'
-    },
-    gridImages: [
-      'https://picsum.photos/seed/uiux-grid-1/800/800',
-      'https://picsum.photos/seed/uiux-grid-2/800/800'
+    title: "Aalas Ka Pedh",
+    category: "Lyric Book Design",
+    shortDescription: "Lyric Book Design for The Local Train",
+    image: "https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png",
+    thumbnail: "https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png",
+    media: [
+      { type: 'image', src: "https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png" },
+      { type: 'image', src: "https://picsum.photos/seed/lyricbook-1/1920/1080" },
+      { type: 'image', src: "https://picsum.photos/seed/lyricbook-2/1920/1080" }
     ],
-    process: {
-      research: 'Conducted user interviews and competitive analysis of existing fitness apps.',
-      concept: 'The "Gentle Guide" – using soft gradients and encouraging micro-copy.',
-      wireframing: 'Iterated through low-fidelity sketches to high-fidelity interactive prototypes.',
-      visualDesign: 'Focused on accessibility with high-contrast text and a calming color palette.',
-      development: 'Created a detailed design system for handoff to the engineering team.'
+    overview: {
+      objective: "To design a visually immersive lyric book inspired by the mood, themes, and storytelling style of Aalas Ka Pedh.",
+      challenges: "Balancing artistic expression with readability while maintaining a strong visual identity that reflects the band’s indie aesthetic.",
+      description: "This project focuses on translating music into a visual experience. The design explores textures, typography, and composition to reflect the emotional depth and raw storytelling of The Local Train. The goal was to create a cohesive visual narrative that enhances the lyrical journey."
     },
-    outcome: 'A 25% increase in daily active users and a significant improvement in user satisfaction scores during beta testing.',
+    process: ["Concept Development", "Visual Exploration", "Typography Design", "Layout & Composition", "Final Production"],
+    outcome: "A visually rich lyric book that captures the essence of the album while providing an engaging and immersive reading experience.",
     achievements: [
-      'Improved user engagement through gamification',
-      'Better visual consistency across 50+ screens',
-      'Fully responsive design across mobile and tablet'
+      "Strong visual storytelling aligned with music",
+      "Balanced typography and readability",
+      "Cohesive and consistent design language"
+    ]
+  },
+  {
+    id: '05',
+    number: '05',
+    title: "Eco-Friendly Packaging",
+    category: "Sustainable Design",
+    shortDescription: "Biodegradable packaging solutions",
+    image: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png",
+    thumbnail: "https://picsum.photos/seed/packaging-eco/1200/800",
+    media: [
+      { type: 'image', src: "https://picsum.photos/seed/packaging-eco/1920/1080" },
+      { type: 'image', src: "https://picsum.photos/seed/eco-1/1920/1080" }
+    ],
+    overview: {
+      objective: "Create a sustainable packaging system for a new organic skincare line.",
+      challenges: "Finding materials that are both eco-friendly and durable enough for shipping.",
+      description: "This project explored various biodegradable materials and minimalist design principles to create a packaging system that reflects the brand's commitment to nature."
+    },
+    process: ["Material Research", "Prototyping", "Stress Testing", "Visual Design"],
+    outcome: "A 100% plastic-free packaging solution that reduced environmental impact while maintaining a premium feel.",
+    achievements: [
+      "Eliminated all single-use plastics from the packaging.",
+      "Reduced shipping weight by 15% through optimized design.",
+      "Received positive feedback from eco-conscious consumers."
+    ]
+  },
+  {
+    id: '06',
+    number: '06',
+    title: "Smart Home Dashboard",
+    category: "Interface Design",
+    shortDescription: "Centralized control for IoT devices",
+    image: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
+    thumbnail: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
+    slideshowImages: [
+      "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
+      "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png"
+    ],
+    media: [
+      { type: 'image', src: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png" },
+      { type: 'image', src: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png" }
+    ],
+    overview: {
+      objective: "Design a unified dashboard for managing various smart home devices.",
+      challenges: "Creating a consistent interface for devices with vastly different functions.",
+      description: "The Smart Home Dashboard provides a seamless way to control lighting, temperature, and security from a single, intuitive interface."
+    },
+    process: ["User Interviews", "Task Analysis", "UI Design", "Prototyping"],
+    outcome: "A highly customizable dashboard that simplifies the management of complex smart home ecosystems.",
+    achievements: [
+      "Achieved a 95% user satisfaction rate in beta testing.",
+      "Integrated support for over 50 different IoT device types.",
+      "Designed a dark mode that reduces eye strain during night use."
     ]
   }
 ];
@@ -126,39 +164,52 @@ export const PROJECTS: Project[] = [
 export const PHOTOGRAPHY: PhotographyItem[] = [
   {
     id: 'photo-1',
-    url: 'https://picsum.photos/seed/photo1/1200/1600',
-    title: 'Urban Solitude',
-    category: 'Street'
+    url: 'https://i.ibb.co/Hf3ZHTYs/IMG-3203.jpg',
+    title: 'Hands of Craft',
+    category: 'Photography',
+    caption: 'Hands that shape stories in silence.'
   },
   {
     id: 'photo-2',
-    url: 'https://picsum.photos/seed/photo2/1600/1200',
-    title: 'Golden Hour',
-    category: 'Nature'
+    url: 'https://i.ibb.co/bg2MqpBC/IMG-3313.jpg',
+    title: 'Quiet Strength',
+    category: 'Photography',
+    caption: 'Stillness carries its own strength.'
   },
   {
     id: 'photo-3',
-    url: 'https://picsum.photos/seed/photo3/1200/1600',
-    title: 'Minimalist Architecture',
-    category: 'Architecture'
+    url: 'https://i.ibb.co/Swx96vqW/IMG-2959.jpg',
+    title: 'Unspoken Bonds',
+    category: 'Photography',
+    caption: 'In chaos, we still find comfort in each other.'
   },
   {
     id: 'photo-4',
-    url: 'https://picsum.photos/seed/photo4/1600/1200',
-    title: 'The Silent Forest',
-    category: 'Landscape'
+    url: 'https://i.ibb.co/Gf2TkcGF/IMG-3058.jpg',
+    title: 'Veiled Moments',
+    category: 'Photography',
+    caption: 'Moments seen, yet softly hidden.'
   },
   {
     id: 'photo-5',
-    url: 'https://picsum.photos/seed/photo5/1200/1600',
-    title: 'Abstract Reflections',
-    category: 'Abstract'
+    url: 'https://i.ibb.co/1tc5nMdR/purviiiiiiiiiiii.jpg',
+    title: 'Effortless Grace',
+    category: 'Photography',
+    caption: 'Grace lives in the simplest expressions.'
   },
   {
     id: 'photo-6',
-    url: 'https://picsum.photos/seed/photo6/1600/1200',
-    title: 'Portrait of a Stranger',
-    category: 'Portrait'
+    url: 'https://i.ibb.co/RkFDgDsb/iiiii.jpg',
+    title: 'Fragments of Life',
+    category: 'Photography',
+    caption: 'Life, in motion and in fragments.'
+  },
+  {
+    id: 'photo-7',
+    url: 'https://i.ibb.co/7JgnTh8M/IMG-3560.jpg',
+    title: 'Silent Rituals',
+    category: 'Photography',
+    caption: 'Even the quiet burns beautifully.'
   }
 ];
 

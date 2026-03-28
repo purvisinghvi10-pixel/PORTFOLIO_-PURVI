@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { PROJECTS } from '../constants';
 import { Project } from '../types';
 
-const ProjectItem = ({ project, index }: { project: Project; index: number; key?: string }) => {
+const ProjectItem = ({ project, index }: { project: Project; index: number }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.3 });
 

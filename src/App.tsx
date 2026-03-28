@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from 'motion/react';
-import { Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useNavigate, useLocation, useParams } from 'react-router-dom';
 import { 
   ArrowUpRight, 
   Mail, 
@@ -22,8 +22,8 @@ import {
   Eye,
   ArrowLeft
 } from 'lucide-react';
-import { PHOTOGRAPHY, MOTION } from './constants';
-import { PhotographyItem, MotionItem } from './types';
+import { PROJECTS, PHOTOGRAPHY, MOTION } from './constants';
+import { Project, PhotographyItem, MotionItem } from './types';
 import InMotion from './components/InMotion';
 
 // --- Data ---
@@ -82,7 +82,7 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-bg/80 backdrop-blur-md py-4 border-b border-line' : 'bg-transparent py-8'}`}>
-      <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <div className="max-w-7xl mx-auto px-10 flex justify-between items-center">
         <Link to="/" className="font-display text-xl font-bold tracking-tighter">
           P.S<span className="text-accent">.</span>
         </Link>
@@ -142,81 +142,52 @@ const Navbar = () => {
 };
 
 const Hero = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  // Image Transforms
-  // Start: Centered, Dominant, Large (~90% width)
-  // End: Left side, Smaller (~45-50% width)
-  const imageScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.5]);
-  const imageX = useTransform(scrollYProgress, [0, 0.5], ["0%", "-45%"]);
-  const imageY = useTransform(scrollYProgress, [0, 0.5], ["0vh", "0vh"]);
-  const imageBorderRadius = useTransform(scrollYProgress, [0, 0.5], ["16px", "40px"]);
-  
-  // Text Transforms
-  // Start: Positioned below, large, secondary
-  // End: Right side, structured, aligned
-  const textX = useTransform(scrollYProgress, [0, 0.5], ["0%", "35%"]);
-  const textY = useTransform(scrollYProgress, [0, 0.5], ["40vh", "0vh"]);
-  const textScale = useTransform(scrollYProgress, [0, 0.5], [1.2, 1]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.2, 0.5], [0, 0.5, 1]);
-
-  // Parallax effect for the video card (interactive tilt)
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const springConfig = { damping: 25, stiffness: 150 };
-  const dx = useSpring(mouseX, springConfig);
-  const dy = useSpring(mouseY, springConfig);
-  const rotateX = useTransform(dy, [-0.5, 0.5], [5, -5]);
-  const rotateY = useTransform(dx, [-0.5, 0.5], [-5, 5]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    mouseX.set(x);
-    mouseY.set(y);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
   return (
-    <div ref={containerRef} className="relative h-[400vh]">
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-bg">
-        
-        {/* Subtle Background Elements */}
-        <div className="absolute inset-0 z-[-1] overflow-hidden opacity-30">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-accent/5 blur-[120px] rounded-full" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-accent/5 blur-[120px] rounded-full" />
-        </div>
-
-        {/* Text Container */}
+    <section className="min-h-screen pt-32 pb-20 flex items-center bg-bg overflow-visible">
+      <div className="max-w-7xl mx-auto px-10 w-full grid grid-cols-1 lg:grid-cols-[1.1fr,1fr] items-center gap-10 lg:gap-20 overflow-visible">
+        {/* Left: Video */}
         <motion.div 
-          style={{ 
-            x: textX,
-            y: textY,
-            scale: textScale,
-            opacity: textOpacity,
-          }}
-          className="absolute z-10 text-center px-6 w-full max-w-5xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative aspect-[16/10] rounded-[20px] overflow-hidden shadow-2xl glass group"
         >
-          <h2 className="text-accent font-semibold tracking-widest uppercase text-sm mb-4">
-            Purvi Singhvi
-          </h2>
-          <h1 className="text-6xl md:text-8xl font-bold leading-[0.85] tracking-tighter mb-8">
-            Multidisciplinary <br />
-            <span className="text-gradient">Designer</span>
-          </h1>
-          <p className="text-xl text-muted max-w-xl mx-auto mb-10 leading-relaxed">
+          <video
+            src="https://video.wixstatic.com/video/bc81e6_d5aa37e6da2f47c1807957fca600cbe3/1080p/mp4/file.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          />
+          {/* Subtle glow/glass effect */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 border border-line rounded-[inherit] pointer-events-none" />
+          
+          {/* Inner glass reflection */}
+          <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-ink/5 to-transparent pointer-events-none" />
+        </motion.div>
+
+        {/* Right: Text */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+          className="space-y-8 overflow-visible"
+        >
+          <div className="overflow-visible">
+            <h2 className="text-accent font-semibold tracking-widest uppercase text-sm mb-4">
+              Purvi Singhvi
+            </h2>
+            <h1 className="text-5xl md:text-7xl xl:text-8xl font-bold leading-[1.15] tracking-tighter overflow-visible pb-2">
+              Multidisciplinary <br />
+              <span className="inline-block transform translate-y-[2px] text-gradient">Designer</span>
+            </h1>
+          </div>
+          <p className="text-xl text-muted max-w-xl leading-relaxed">
             I design intuitive and visually engaging digital experiences that combine strong aesthetics with purposeful interaction.
           </p>
-          <div className="flex flex-wrap justify-center gap-6">
+          <div className="flex flex-wrap gap-6">
             <a 
               href="#projects" 
               className="group relative px-8 py-4 border border-line text-ink rounded-full font-bold overflow-hidden transition-all"
@@ -234,37 +205,8 @@ const Hero = () => {
             </a>
           </div>
         </motion.div>
-
-        {/* Image Container (Main Visual) */}
-        <motion.div 
-          style={{ 
-            scale: imageScale, 
-            x: imageX,
-            y: imageY,
-            borderRadius: imageBorderRadius,
-            rotateX,
-            rotateY
-          }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          className="absolute z-20 w-[90vw] max-w-6xl aspect-[16/10] overflow-hidden perspective-1000 shadow-[0_0_100px_rgba(0,0,0,0.3)] glass"
-        >
-          <img 
-            src="https://i.ibb.co/pBRMp7yY/MOCK-UP.png"
-            alt="Hero Visual"
-            referrerPolicy="no-referrer"
-            className="w-full h-full object-cover"
-          />
-          {/* Subtle glow/glass effect */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 border border-line rounded-[inherit] pointer-events-none" />
-          
-          {/* Inner glass reflection */}
-          <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-ink/5 to-transparent pointer-events-none" />
-        </motion.div>
-
       </div>
-    </div>
+    </section>
   );
 };
 
@@ -273,213 +215,7 @@ interface MediaItem {
   src: string;
 }
 
-interface Project {
-  id: number;
-  title: string;
-  category: string;
-  shortDescription: string;
-  image: string;
-  media: MediaItem[];
-  overview: {
-    objective: string;
-    challenges: string;
-    description: string;
-  };
-  process: string[];
-  outcome: string;
-  achievements: string[];
-}
-
-const PROJECTS: Project[] = [
-  {
-    id: 1,
-    title: "Silver Leaf Identity",
-    category: "Branding",
-    shortDescription: "Luxury silver jewelry branding",
-    image: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png",
-    media: [
-      { type: 'image', src: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png" },
-      { type: 'image', src: "https://picsum.photos/seed/silverleaf-2/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/silverleaf-3/1920/1080" }
-    ],
-    overview: {
-      objective: "To create a premium and minimal brand identity that resonates with luxury jewelry enthusiasts.",
-      challenges: "Balancing traditional elegance with modern minimalism while maintaining brand recognition.",
-      description: "Silver Leaf required a visual language that felt both timeless and contemporary. We focused on clean lines, a sophisticated color palette, and high-end typography to elevate the brand's presence in the market."
-    },
-    process: ["Research", "Concept Development", "Wireframing", "Visual Design", "Brand Application"],
-    outcome: "A refined and cohesive brand identity that elevated Silver Leaf’s visual presence and established it as a minimal, premium jewelry brand across all touchpoints.",
-    achievements: [
-      "Developed a distinctive and elegant visual system aligned with a minimal luxury aesthetic.",
-      "Created consistent branding across logo, packaging, visiting cards, and digital assets.",
-      "Designed a smooth logo animation to enhance brand storytelling and digital presence."
-    ]
-  },
-  {
-    id: 2,
-    title: "Wedding Experience Interface",
-    category: "UI/UX Design",
-    shortDescription: "UI/UX Design for Weddings by Event Crafters",
-    image: "https://i.ibb.co/pBRMp7yY/MOCK-UP.png",
-    media: [
-      { type: 'image', src: "https://i.ibb.co/pBRMp7yY/MOCK-UP.png" },
-      { type: 'image', src: "https://picsum.photos/seed/wedding-2/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/wedding-3/1920/1080" }
-    ],
-    overview: {
-      objective: "Design a clean and structured web experience for Weddings by Event Crafters that showcases services while maintaining an elegant and premium feel.",
-      challenges: "Organizing diverse wedding services into a clear, intuitive layout while balancing visual richness with usability.",
-      description: "This project involved creating low-fidelity wireframes and layout structures for the Weddings by Event Crafters website. The focus was on simplifying content, improving navigation, and delivering a seamless user experience."
-    },
-    process: ["User Research", "Wireframing", "Layout Structuring", "Visual Design", "Final Interface"],
-    outcome: "A minimal and intuitive interface that enhances content clarity and delivers a smooth browsing experience aligned with the brand’s premium positioning.",
-    achievements: [
-      "Developed structured low-fidelity wireframes to define user flow and layout.",
-      "Improved content organization for better readability and navigation.",
-      "Created a consistent and refined interface for the wedding platform."
-    ]
-  },
-  {
-    id: 3,
-    title: "FHRAI Brochure Design",
-    category: "Print & Graphic Design",
-    shortDescription: "Print & Graphic Design",
-    image: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png",
-    media: [
-      { type: 'image', src: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png" },
-      { type: 'image', src: "https://picsum.photos/seed/fhrai-2/1920/1080" },
-      { type: 'video', src: "https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4" }
-    ],
-    overview: {
-      objective: "Design a professional and visually engaging brochure for FHRAI that clearly communicates event information while maintaining a clean and structured layout.",
-      challenges: "Presenting detailed content in a readable and visually appealing format while balancing design aesthetics with clarity.",
-      description: "This project involved designing a brochure for FHRAI, focusing on layout structure, typography, and visual hierarchy. The goal was to ensure clear communication of information while maintaining a polished and professional look."
-    },
-    process: ["Content Understanding", "Layout Planning", "Typography Exploration", "Visual Design", "Final Output"],
-    outcome: "A clean and well-structured brochure design that improved information clarity and delivered a professional visual presentation.",
-    achievements: [
-      "Designed a clear and organized layout for effective information flow.",
-      "Applied strong typography to enhance readability and hierarchy.",
-      "Delivered a polished and professional brochure aligned with the event’s requirements."
-    ]
-  },
-  {
-    id: 4,
-    title: "UI/UX Case Study",
-    category: "Product Design",
-    shortDescription: "App design & user experience",
-    image: "https://picsum.photos/seed/uiux/1200/800",
-    media: [
-      { type: 'image', src: "https://picsum.photos/seed/uiux/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/uiux-1/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/uiux-2/1920/1080" }
-    ],
-    overview: {
-      objective: "Improve the user experience of a complex financial management application.",
-      challenges: "Simplifying complex data while maintaining high functionality.",
-      description: "This case study focuses on redesigning the core user flows of a fintech app to reduce cognitive load and improve user retention."
-    },
-    process: ["User Research", "Information Architecture", "Wireframing", "Prototyping", "Usability Testing"],
-    outcome: "A streamlined user interface that significantly improved user task completion rates and overall satisfaction.",
-    achievements: [
-      "Reduced task completion time by 30%.",
-      "Improved accessibility scores across the application.",
-      "Developed a scalable design system for future updates."
-    ]
-  },
-  {
-    id: 5,
-    title: "Eco-Friendly Packaging",
-    category: "Sustainable Design",
-    shortDescription: "Biodegradable packaging solutions",
-    image: "https://picsum.photos/seed/eco/1200/800",
-    media: [
-      { type: 'image', src: "https://picsum.photos/seed/eco/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/eco-1/1920/1080" }
-    ],
-    overview: {
-      objective: "Create a sustainable packaging system for a new organic skincare line.",
-      challenges: "Finding materials that are both eco-friendly and durable enough for shipping.",
-      description: "This project explored various biodegradable materials and minimalist design principles to create a packaging system that reflects the brand's commitment to nature."
-    },
-    process: ["Material Research", "Prototyping", "Stress Testing", "Visual Design"],
-    outcome: "A 100% plastic-free packaging solution that reduced environmental impact while maintaining a premium feel.",
-    achievements: [
-      "Eliminated all single-use plastics from the packaging.",
-      "Reduced shipping weight by 15% through optimized design.",
-      "Received positive feedback from eco-conscious consumers."
-    ]
-  },
-  {
-    id: 6,
-    title: "Smart Home Dashboard",
-    category: "Interface Design",
-    shortDescription: "Centralized control for IoT devices",
-    image: "https://picsum.photos/seed/smarthome/1200/800",
-    media: [
-      { type: 'image', src: "https://picsum.photos/seed/smarthome/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/smarthome-1/1920/1080" }
-    ],
-    overview: {
-      objective: "Design a unified dashboard for managing various smart home devices.",
-      challenges: "Creating a consistent interface for devices with vastly different functions.",
-      description: "The Smart Home Dashboard provides a seamless way to control lighting, temperature, and security from a single, intuitive interface."
-    },
-    process: ["User Interviews", "Task Analysis", "UI Design", "Prototyping"],
-    outcome: "A highly customizable dashboard that simplifies the management of complex smart home ecosystems.",
-    achievements: [
-      "Achieved a 95% user satisfaction rate in beta testing.",
-      "Integrated support for over 50 different IoT device types.",
-      "Designed a dark mode that reduces eye strain during night use."
-    ]
-  },
-  {
-    id: 7,
-    title: "Urban Mobility App",
-    category: "Mobile App Design",
-    shortDescription: "Simplifying city travel",
-    image: "https://picsum.photos/seed/mobility/1200/800",
-    media: [
-      { type: 'image', src: "https://picsum.photos/seed/mobility/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/mobility-1/1920/1080" }
-    ],
-    overview: {
-      objective: "Develop a mobile application that integrates various public and private transport options.",
-      challenges: "Real-time data integration and providing accurate travel time estimates.",
-      description: "The Urban Mobility App helps users find the fastest and most cost-effective way to get around the city, combining buses, trains, and bike-sharing."
-    },
-    process: ["Market Analysis", "User Personas", "Wireframing", "API Integration Planning"],
-    outcome: "A comprehensive travel companion that has become the go-to app for thousands of daily commuters.",
-    achievements: [
-      "Reached 100,000 downloads within the first month of launch.",
-      "Partnered with major city transport authorities for real-time data.",
-      "Implemented an offline mode for basic navigation without data."
-    ]
-  },
-  {
-    id: 8,
-    title: "Coffee Brand Reimagined",
-    category: "Brand Strategy",
-    shortDescription: "Modernizing a heritage coffee roaster",
-    image: "https://picsum.photos/seed/coffee/1200/800",
-    media: [
-      { type: 'image', src: "https://picsum.photos/seed/coffee/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/coffee-1/1920/1080" }
-    ],
-    overview: {
-      objective: "Refresh the visual identity of a 50-year-old coffee roasting company.",
-      challenges: "Honoring the brand's heritage while appealing to a younger, modern audience.",
-      description: "We updated the logo, packaging, and digital presence of Heritage Roasters, focusing on storytelling and the craft of coffee making."
-    },
-    process: ["Brand Audit", "Visual Identity Design", "Packaging Design", "Digital Strategy"],
-    outcome: "A revitalized brand that successfully bridged the gap between traditional quality and modern aesthetics.",
-    achievements: [
-      "Increased online sales by 40% post-rebrand.",
-      "Won a regional design award for the new packaging.",
-      "Successfully launched a new line of specialty single-origin beans."
-    ]
-  }
-];
+// PROJECTS is now imported from constants.ts
 
 const DynamicMediaShowcase: React.FC<{ media: MediaItem[] }> = ({ media }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -574,7 +310,7 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
       exit={{ opacity: 0 }}
       className="min-h-screen bg-bg text-ink pt-32 pb-24"
     >
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-10">
         {/* Navigation */}
         <button 
           onClick={onBack}
@@ -695,6 +431,77 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
   );
 };
 
+const ProjectSlideshow: React.FC<{ images: string[]; title: string }> = ({ images, title }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (isHovered) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length);
+    }, 2500);
+    return () => clearInterval(timer);
+  }, [images.length, isHovered]);
+
+  const nextSlide = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const prevSlide = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  return (
+    <div 
+      className="relative w-full h-full group/slideshow"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentIndex}
+          src={images[currentIndex]}
+          alt={`${title} - slide ${currentIndex + 1}`}
+          className="w-full h-full object-cover rounded-[20px]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          referrerPolicy="no-referrer"
+        />
+      </AnimatePresence>
+
+      {/* Navigation Arrows */}
+      <div className="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover/slideshow:opacity-100 transition-opacity duration-300">
+        <button 
+          onClick={prevSlide}
+          className="p-2 rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-white/40 transition-colors"
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <button 
+          onClick={nextSlide}
+          className="p-2 rounded-full bg-white/20 backdrop-blur-md text-white hover:bg-white/40 transition-colors"
+        >
+          <ChevronRight size={20} />
+        </button>
+      </div>
+
+      {/* Indicators */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        {images.map((_, idx) => (
+          <div 
+            key={idx}
+            className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'bg-white w-4' : 'bg-white/40'}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = ({ onProjectClick }) => {
   const [visibleCount, setVisibleCount] = useState(4);
   const totalProjects = PROJECTS.length;
@@ -709,7 +516,7 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
 
   return (
     <section id="projects" className="py-32 bg-bg">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-10">
         <div className="mb-24">
           <h2 className="text-accent font-mono text-sm uppercase tracking-widest mb-4">Portfolio</h2>
           <h3 className="text-5xl md:text-7xl font-bold tracking-tighter">ALL WORKS.</h3>
@@ -730,18 +537,22 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
                 transition={{ duration: 0.5 }}
               >
                 <div className="relative aspect-[4/3] rounded-[32px] overflow-hidden mb-6 border border-line shadow-xl shadow-black/5">
-                  <motion.img 
-                    src={project.image} 
-                    alt={project.title} 
-                    className="w-full h-full object-cover"
-                    variants={{
-                      hover: { scale: 1.05 }
-                    }}
-                    transition={{ duration: 0.7 }}
-                    referrerPolicy="no-referrer"
-                  />
+                  {project.slideshowImages ? (
+                    <ProjectSlideshow images={project.slideshowImages} title={project.title} />
+                  ) : (
+                    <motion.img 
+                      src={project.image} 
+                      alt={project.title} 
+                      className="w-full h-full object-cover"
+                      variants={{
+                        hover: { scale: 1.05 }
+                      }}
+                      transition={{ duration: 0.7 }}
+                      referrerPolicy="no-referrer"
+                    />
+                  )}
                   <motion.div 
-                    className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center"
+                    className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center pointer-events-none"
                     initial={{ opacity: 0 }}
                     variants={{
                       hover: { opacity: 1 }
@@ -782,7 +593,7 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
 const About = () => {
   return (
     <section id="about" className="py-24 lg:py-48 bg-ink/5">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
           <div className="lg:col-span-4">
             <h2 className="text-accent font-mono text-sm uppercase tracking-widest mb-4">Who I Am</h2>
@@ -852,7 +663,7 @@ const StillStoriesPage = () => {
 
   return (
     <section className="min-h-screen py-24 lg:py-32 bg-bg">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-10">
         <Link to="/" className="inline-flex items-center gap-2 text-accent hover:text-ink transition-colors mb-12 group">
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           Back to Portfolio
@@ -870,20 +681,35 @@ const StillStoriesPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="group relative cursor-pointer overflow-hidden rounded-3xl aspect-[3/4]"
+              className="group relative cursor-pointer overflow-hidden rounded-2xl aspect-[3/4]"
               onClick={() => setSelectedImage(photo)}
             >
               <motion.img
                 src={photo.url}
                 alt={photo.title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                 referrerPolicy="no-referrer"
               />
-              <div className="absolute inset-0 bg-white/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
-                <p className="text-accent font-mono text-xs uppercase tracking-widest mb-2">{photo.category}</p>
-                <h4 className="text-2xl font-bold text-ink">{photo.title}</h4>
-                <div className="mt-4 w-12 h-12 bg-white border border-line rounded-full flex items-center justify-center text-ink transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 shadow-md">
-                  <Eye size={24} />
+              
+              {/* Title */}
+              <div className="absolute top-3 left-3 text-white text-[13px] font-medium opacity-0 group-hover:opacity-85 transition-opacity duration-500 z-10">
+                {photo.title}
+              </div>
+
+              {/* Gradient Overlay */}
+              <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
+              
+              {/* Caption */}
+              {photo.caption && (
+                <p className="absolute bottom-3 left-3 text-white text-[14px] font-normal opacity-60 group-hover:opacity-100 transition-opacity duration-300 z-10 pr-6 leading-tight">
+                  {photo.caption}
+                </p>
+              )}
+
+              {/* Minimal Eye Icon on Hover */}
+              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="w-10 h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white">
+                  <Eye size={18} />
                 </div>
               </div>
             </motion.div>
@@ -920,9 +746,12 @@ const StillStoriesPage = () => {
                 className="max-w-full max-h-[80vh] object-contain rounded-xl shadow-2xl"
                 referrerPolicy="no-referrer"
               />
-              <div className="mt-8 text-center">
+              <div className="mt-8 text-center max-w-2xl">
                 <p className="text-accent font-mono text-sm uppercase tracking-widest mb-2">{selectedImage.category}</p>
-                <h4 className="text-3xl font-bold">{selectedImage.title}</h4>
+                <h4 className="text-3xl font-bold mb-4">{selectedImage.title}</h4>
+                {selectedImage.caption && (
+                  <p className="text-muted text-lg italic">"{selectedImage.caption}"</p>
+                )}
               </div>
             </motion.div>
           </motion.div>
@@ -939,7 +768,7 @@ const InMotionPage = () => {
 
   return (
     <div className="min-h-screen bg-bg">
-      <div className="max-w-7xl mx-auto px-6 pt-32">
+      <div className="max-w-7xl mx-auto px-10 pt-32">
         <Link to="/" className="inline-flex items-center gap-2 text-accent hover:text-ink transition-colors group">
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           Back to Portfolio
@@ -989,7 +818,7 @@ const Contact = () => {
       {/* Subtle Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[160px] pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-10 relative z-10">
         {/* Thin Divider Line Above Section */}
         <div className="w-full h-px bg-line mb-32" />
 
@@ -1104,7 +933,7 @@ const Contact = () => {
 const Footer = () => {
   return (
     <footer className="py-12 border-t border-line">
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+      <div className="max-w-7xl mx-auto px-10 flex flex-col md:flex-row justify-between items-center gap-8">
         <p className="text-muted text-sm">
           © {new Date().getFullYear()} Purvi Singhvi
         </p>
@@ -1149,6 +978,32 @@ const HomePage = ({ onProjectClick }: { onProjectClick: (project: Project) => vo
   );
 };
 
+const ProjectDetailWrapper = ({ onBack, selectedProject }: { onBack: () => void; selectedProject: Project | null }) => {
+  const { id } = useParams<{ id: string }>();
+  const project = selectedProject || PROJECTS.find(p => p.id.toString() === id);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {project ? (
+        <ProjectDetail 
+          project={project} 
+          onBack={onBack} 
+        />
+      ) : (
+        <div className="min-h-screen flex items-center justify-center">
+          <p className="text-muted">Project not found. <Link to="/" className="text-accent underline">Go back</Link></p>
+        </div>
+      )}
+      <Footer />
+    </motion.div>
+  );
+};
+
 export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -1182,26 +1037,7 @@ export default function App() {
             </motion.div>
           } />
           
-          <Route path="/project/:id" element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              {selectedProject ? (
-                <ProjectDetail 
-                  project={selectedProject} 
-                  onBack={handleBackToWorks} 
-                />
-              ) : (
-                <div className="min-h-screen flex items-center justify-center">
-                  <p className="text-muted">Project not found. <Link to="/" className="text-accent underline">Go back</Link></p>
-                </div>
-              )}
-              <Footer />
-            </motion.div>
-          } />
+          <Route path="/project/:id" element={<ProjectDetailWrapper onBack={handleBackToWorks} selectedProject={selectedProject} />} />
 
           <Route path="/still-stories" element={
             <motion.div
