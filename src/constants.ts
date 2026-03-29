@@ -10,10 +10,14 @@ export const PROJECTS: Project[] = [
     image: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png",
     thumbnail: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png",
     media: [
-      { type: 'image', src: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png" },
-      { type: 'video', src: "https://video.wixstatic.com/video/bc81e6_788e222cc62e4a85936d4da9b1c1f714/1080p/mp4/file.mp4" },
-      { type: 'image', src: "https://picsum.photos/seed/silverleaf-3/1920/1080" }
-    ],
+      { type: 'image', src: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png", label: "Brand Identity" },
+      { type: 'video', src: "https://video.wixstatic.com/video/bc81e6_788e222cc62e4a85936d4da9b1c1f714/1080p/mp4/file.mp4", label: "Logo Animation" },
+      { type: 'image', src: "https://i.ibb.co/wrLZ0BG8/logo.png", label: "Logo Design ideation" },
+      { type: 'image', src: "https://i.ibb.co/v44x0J4t/10pcs-Portable-Frosted-Zipper-Closure-Jewel.png", label: "Packaging" },
+      { type: 'image', src: "https://i.ibb.co/0p3XbKHD/Burlap-Bag-Mockup.png", label: "Packaging" },
+      { type: 'image', src: "https://i.ibb.co/4Bjb116/0dcc96221124143-67cf465dd1bc5.png", label: "Packaging" }, 
+      { type: 'image', src: "https://i.ibb.co/wN0QJ4wv/c23cfd221124143-67cf465dd2226.jpg", label: "Thank You Card" },
+      { type: 'image', src: "https://i.ibb.co/ynX1WGXK/fa0b3e221124143-67cf465dd2c8b.png", label: "Visting Card" } ],
     overview: {
       objective: "To create a premium and minimal brand identity that resonates with luxury jewelry enthusiasts.",
       challenges: "Balancing traditional elegance with modern minimalism while maintaining brand recognition.",
@@ -36,9 +40,9 @@ export const PROJECTS: Project[] = [
     image: "https://i.ibb.co/pBRMp7yY/MOCK-UP.png",
     thumbnail: "https://i.ibb.co/pBRMp7yY/MOCK-UP.png",
     media: [
-      { type: 'image', src: "https://i.ibb.co/pBRMp7yY/MOCK-UP.png" },
-      { type: 'image', src: "https://picsum.photos/seed/wedding-2/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/wedding-3/1920/1080" }
+      { type: 'image', src: "https://i.ibb.co/pBRMp7yY/MOCK-UP.png", label: "Desktop Interface" },
+      { type: 'video', src: "https://video.wixstatic.com/video/bc81e6_a8de38de8a3347fd844ec24140394a3d/1080p/mp4/file.mp4", label: "UI Interaction" },
+      { type: 'image', src: "https://i.ibb.co/XxJpXyb8/Screenshot-2026-03-29-060350.png", label: "Low Fertility" }
     ],
     overview: {
       objective: "Design a clean and structured web experience for Weddings by Event Crafters that showcases services while maintaining an elegant and premium feel.",
@@ -62,9 +66,9 @@ export const PROJECTS: Project[] = [
     image: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png",
     thumbnail: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png",
     media: [
-      { type: 'image', src: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png" },
-      { type: 'image', src: "https://picsum.photos/seed/fhrai-2/1920/1080" },
-      { type: 'video', src: "https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4" }
+      { type: 'image', src: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png", label: "Brochure Mockup" },
+      { type: 'image', src: "https://picsum.photos/seed/fhrai-2/1920/1080", label: "Design Detail" },
+      { type: 'video', src: "https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4", label: "Event Motion" }
     ],
     overview: {
       objective: "Design a professional and visually engaging brochure for FHRAI that clearly communicates event information while maintaining a clean and structured layout.",
@@ -88,9 +92,9 @@ export const PROJECTS: Project[] = [
     image: "https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png",
     thumbnail: "https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png",
     media: [
-      { type: 'image', src: "https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png" },
-      { type: 'image', src: "https://picsum.photos/seed/lyricbook-1/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/lyricbook-2/1920/1080" }
+      { type: 'image', src: "https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png", label: "Lyric Book Cover" },
+      { type: 'image', src: "https://picsum.photos/seed/lyricbook-1/1920/1080", label: "Visual Narrative" },
+      { type: 'image', src: "https://picsum.photos/seed/lyricbook-2/1920/1080", label: "Typography Design" }
     ],
     overview: {
       objective: "To design a visually immersive lyric book inspired by the mood, themes, and storytelling style of Aalas Ka Pedh.",
@@ -114,9 +118,9 @@ export const PROJECTS: Project[] = [
     image: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png",
     thumbnail: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png",
     media: [
-      { type: 'image', src: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png" },
-      { type: 'image', src: "https://picsum.photos/seed/pet-1/1920/1080" },
-      { type: 'image', src: "https://picsum.photos/seed/pet-2/1920/1080" }
+      { type: 'image', src: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png", label: "App Interface" },
+      { type: 'image', src: "https://picsum.photos/seed/pet-1/1920/1080", label: "User Experience" },
+      { type: 'image', src: "https://picsum.photos/seed/pet-2/1920/1080", label: "Interface Design" }
     ],
     overview: {
       objective: "To design an intuitive platform that helps users manage pet care while also enabling quick reporting and tracking of lost and found pets.",
@@ -140,7 +144,7 @@ export const PROJECTS: Project[] = [
     image: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
     thumbnail: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
     media: [
-      { type: 'image', src: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png" }
+      { type: 'image', src: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png", label: "Story Scene" }
     ],
     overview: {
       objective: "To reimagine LEGO’s brand journey through an immersive storytelling experience designed for children, where the narrative is told from the perspective of becoming a LEGO character.",

@@ -61,7 +61,72 @@ const SKILLS = {
 
 // --- Components ---
 
-const Navbar = () => {
+const TransitionOverlay = () => {
+  return (
+    <div id="transition-overlay">
+      <svg viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <path id="draw-path" d="M0,500 Q250,250 500,500 T1000,500" />
+      </svg>
+    </div>
+  );
+};
+
+const TransitionLink = ({ to, children, className, onClick, setIsTransitioning }: { to: string, children: React.ReactNode, className?: string, onClick?: () => void, setIsTransitioning: (val: boolean) => void }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleClick = (e: React.MouseEvent) => {
+    // Handle anchor links separately if they are on the same page
+    if (to.startsWith('/#')) {
+      const id = to.substring(2);
+      const element = document.getElementById(id);
+      if (element && location.pathname === '/') {
+        e.preventDefault();
+        element.scrollIntoView({ behavior: 'smooth' });
+        if (onClick) onClick();
+        return;
+      }
+    }
+
+    e.preventDefault();
+    if (location.pathname === to) {
+      if (onClick) onClick();
+      return;
+    }
+
+    const overlay = document.getElementById('transition-overlay');
+    const path = document.getElementById('draw-path');
+
+    if (overlay && path) {
+      setIsTransitioning(true);
+      overlay.classList.add('active');
+      path.classList.add('draw-animation');
+
+      setTimeout(() => {
+        if (onClick) onClick();
+        navigate(to);
+        window.scrollTo(0, 0);
+        
+        setTimeout(() => {
+          overlay.classList.remove('active');
+          path.classList.remove('draw-animation');
+          setIsTransitioning(false);
+        }, 600);
+      }, 900);
+    } else {
+      if (onClick) onClick();
+      navigate(to);
+    }
+  };
+
+  return (
+    <a href={to} onClick={handleClick} className={className}>
+      {children}
+    </a>
+  );
+};
+
+const Navbar = ({ setIsTransitioning }: { setIsTransitioning: (val: boolean) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
@@ -83,28 +148,30 @@ const Navbar = () => {
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-bg/80 backdrop-blur-md py-4 border-b border-line' : 'bg-transparent py-8'}`}>
       <div className="max-w-7xl mx-auto px-10 flex justify-between items-center">
-        <Link to="/" className="font-display text-xl font-bold tracking-tighter">
-          P.S<span className="text-accent">.</span>
-        </Link>
+        <TransitionLink to="/" setIsTransitioning={setIsTransitioning} className="flex items-center">
+          <img src="https://i.ibb.co/vrFdk6Z/Asset-1-4x.png" alt="Logo" className="nav-logo" />
+        </TransitionLink>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <Link 
+            <TransitionLink 
               key={link.name} 
               to={link.to} 
+              setIsTransitioning={setIsTransitioning}
               className="text-sm font-medium text-muted hover:text-ink transition-colors"
             >
               {link.name}
-            </Link>
+            </TransitionLink>
           ))}
           
-          <Link 
+          <TransitionLink 
             to="/#contact" 
+            setIsTransitioning={setIsTransitioning}
             className="px-5 py-2 border border-line text-ink rounded-full text-sm font-semibold hover:bg-accent hover:text-white transition-all"
           >
             Let's Talk
-          </Link>
+          </TransitionLink>
         </div>
 
         {/* Mobile Toggle */}
@@ -125,14 +192,15 @@ const Navbar = () => {
             className="absolute top-full left-0 w-full bg-bg border-b border-line py-8 px-6 flex flex-col gap-6 md:hidden"
           >
             {navLinks.map((link) => (
-              <Link 
+              <TransitionLink 
                 key={link.name} 
                 to={link.to} 
+                setIsTransitioning={setIsTransitioning}
                 onClick={() => setIsOpen(false)}
                 className="text-2xl font-display font-medium"
               >
                 {link.name}
-              </Link>
+              </TransitionLink>
             ))}
           </motion.div>
         )}
@@ -141,7 +209,7 @@ const Navbar = () => {
   );
 };
 
-const Hero = () => {
+const Hero = ({ isTransitioning }: { isTransitioning?: boolean }) => {
   return (
     <section className="min-h-screen pt-32 pb-20 flex items-center bg-bg overflow-visible">
       <div className="max-w-7xl mx-auto px-10 w-full grid grid-cols-1 lg:grid-cols-[1.1fr,1fr] items-center gap-10 lg:gap-20 overflow-visible">
@@ -152,14 +220,16 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="relative aspect-[16/10] rounded-[20px] overflow-hidden shadow-2xl glass group"
         >
-          <video
-            src="https://video.wixstatic.com/video/bc81e6_d5aa37e6da2f47c1807957fca600cbe3/1080p/mp4/file.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="w-full h-full object-cover"
-          />
+          {!isTransitioning && (
+            <video
+              src="https://video.wixstatic.com/video/bc81e6_d5aa37e6da2f47c1807957fca600cbe3/1080p/mp4/file.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          )}
           {/* Subtle glow/glass effect */}
           <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent pointer-events-none" />
           <div className="absolute inset-0 border border-line rounded-[inherit] pointer-events-none" />
@@ -213,6 +283,7 @@ const Hero = () => {
 interface MediaItem {
   type: 'image' | 'video';
   src: string;
+  label?: string;
 }
 
 // PROJECTS is now imported from constants.ts
@@ -246,6 +317,11 @@ const DynamicMediaShowcase: React.FC<{ media: MediaItem[] }> = ({ media }) => {
             transition={{ duration: 0.8, ease: "easeInOut" }}
             className="w-full h-full"
           >
+            {media[activeIndex].label && (
+              <div className="absolute top-4 left-4 bg-black/60 text-white text-[12px] px-3 py-1.5 rounded-full backdrop-blur-[6px] z-10 pointer-events-none">
+                {media[activeIndex].label}
+              </div>
+            )}
             {media[activeIndex].type === 'image' ? (
               <img 
                 src={media[activeIndex].src} 
@@ -654,7 +730,7 @@ const About = () => {
   );
 };
 
-const StillStoriesPage = () => {
+const StillStoriesPage = ({ setIsTransitioning }: { setIsTransitioning: (val: boolean) => void }) => {
   const [selectedImage, setSelectedImage] = useState<PhotographyItem | null>(null);
 
   useEffect(() => {
@@ -664,10 +740,10 @@ const StillStoriesPage = () => {
   return (
     <section className="min-h-screen py-24 lg:py-32 bg-bg">
       <div className="max-w-7xl mx-auto px-10">
-        <Link to="/" className="inline-flex items-center gap-2 text-accent hover:text-ink transition-colors mb-12 group">
+        <TransitionLink to="/" setIsTransitioning={setIsTransitioning} className="inline-flex items-center gap-2 text-accent hover:text-ink transition-colors mb-12 group">
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           Back to Portfolio
-        </Link>
+        </TransitionLink>
         
         <div className="mb-24">
           <h2 className="text-accent font-mono text-sm uppercase tracking-widest mb-4">Visuals</h2>
@@ -761,7 +837,7 @@ const StillStoriesPage = () => {
   );
 };
 
-const InMotionPage = () => {
+const InMotionPage = ({ setIsTransitioning }: { setIsTransitioning: (val: boolean) => void }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -769,10 +845,10 @@ const InMotionPage = () => {
   return (
     <div className="min-h-screen bg-bg">
       <div className="max-w-7xl mx-auto px-10 pt-32">
-        <Link to="/" className="inline-flex items-center gap-2 text-accent hover:text-ink transition-colors group">
+        <TransitionLink to="/" setIsTransitioning={setIsTransitioning} className="inline-flex items-center gap-2 text-accent hover:text-ink transition-colors group">
           <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
           Back to Portfolio
-        </Link>
+        </TransitionLink>
       </div>
       <InMotion items={MOTION} />
     </div>
@@ -952,7 +1028,7 @@ const Footer = () => {
 
 // --- Main App ---
 
-const HomePage = ({ onProjectClick }: { onProjectClick: (project: Project) => void }) => {
+const HomePage = ({ onProjectClick, isTransitioning }: { onProjectClick: (project: Project) => void; isTransitioning?: boolean }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -970,7 +1046,7 @@ const HomePage = ({ onProjectClick }: { onProjectClick: (project: Project) => vo
 
   return (
     <>
-      <Hero />
+      <Hero isTransitioning={isTransitioning} />
       <WorkShowcase onProjectClick={onProjectClick} />
       <About />
       <Contact />
@@ -1008,57 +1084,125 @@ export default function App() {
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleProjectClick = (project: Project) => {
-    setSelectedProject(project);
-    navigate(`/project/${project.id}`);
+    const overlay = document.getElementById('transition-overlay');
+    const path = document.getElementById('draw-path');
+
+    if (overlay && path) {
+      setIsTransitioning(true);
+      overlay.classList.add('active');
+      path.classList.add('draw-animation');
+
+      setTimeout(() => {
+        setSelectedProject(project);
+        navigate(`/project/${project.id}`);
+        window.scrollTo(0, 0);
+        
+        setTimeout(() => {
+          overlay.classList.remove('active');
+          path.classList.remove('draw-animation');
+          setIsTransitioning(false);
+        }, 600);
+      }, 900);
+    } else {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setSelectedProject(project);
+        navigate(`/project/${project.id}`);
+        window.scrollTo(0, 0);
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 600);
+      }, 500);
+    }
   };
 
   const handleBackToWorks = () => {
-    navigate('/');
-    setSelectedProject(null);
+    const overlay = document.getElementById('transition-overlay');
+    const path = document.getElementById('draw-path');
+
+    if (overlay && path) {
+      setIsTransitioning(true);
+      overlay.classList.add('active');
+      path.classList.add('draw-animation');
+
+      setTimeout(() => {
+        navigate('/');
+        setSelectedProject(null);
+        window.scrollTo(0, 0);
+        
+        setTimeout(() => {
+          overlay.classList.remove('active');
+          path.classList.remove('draw-animation');
+          setIsTransitioning(false);
+        }, 600);
+      }, 900);
+    } else {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        navigate('/');
+        setSelectedProject(null);
+        window.scrollTo(0, 0);
+        setTimeout(() => {
+          setIsTransitioning(false);
+        }, 600);
+      }, 500);
+    }
   };
 
   return (
-    <div className="min-h-screen selection:bg-accent/30 selection:text-ink relative">
+    <div className={`min-h-screen selection:bg-accent/30 selection:text-ink relative transition-all duration-700 ${isTransitioning ? 'page-scale-down' : ''}`}>
       <div className="noise-overlay" />
-      <Navbar />
+      <TransitionOverlay />
+      <Navbar setIsTransitioning={setIsTransitioning} />
+
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <HomePage onProjectClick={handleProjectClick} />
+              <HomePage onProjectClick={handleProjectClick} isTransitioning={isTransitioning} />
               <Footer />
             </motion.div>
           } />
           
-          <Route path="/project/:id" element={<ProjectDetailWrapper onBack={handleBackToWorks} selectedProject={selectedProject} />} />
+          <Route path="/project/:id" element={
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <ProjectDetailWrapper onBack={handleBackToWorks} selectedProject={selectedProject} />
+            </motion.div>
+          } />
 
           <Route path="/still-stories" element={
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <StillStoriesPage />
+              <StillStoriesPage setIsTransitioning={setIsTransitioning} />
               <Footer />
             </motion.div>
           } />
 
           <Route path="/in-motion" element={
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <InMotionPage />
+              <InMotionPage setIsTransitioning={setIsTransitioning} />
               <Footer />
             </motion.div>
           } />

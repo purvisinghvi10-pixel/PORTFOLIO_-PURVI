@@ -14,7 +14,7 @@ export interface Project {
     challenges: string;
   };
   gridImages?: string[];
-  media?: { type: 'image' | 'video'; src: string }[];
+  media?: { type: 'image' | 'video'; src: string; label?: string }[];
   process: string[];
   outcome: string;
   achievements: string[];
