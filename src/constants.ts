@@ -11,7 +11,7 @@ export const PROJECTS: Project[] = [
     thumbnail: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png",
     media: [
       { type: 'image', src: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png" },
-      { type: 'image', src: "https://picsum.photos/seed/silverleaf-2/1920/1080" },
+      { type: 'video', src: "https://video.wixstatic.com/video/bc81e6_788e222cc62e4a85936d4da9b1c1f714/1080p/mp4/file.mp4" },
       { type: 'image', src: "https://picsum.photos/seed/silverleaf-3/1920/1080" }
     ],
     overview: {
@@ -212,50 +212,58 @@ export const PHOTOGRAPHY: PhotographyItem[] = [
 export const MOTION: MotionItem[] = [
   {
     id: 'motion-1',
-    thumbnail: 'https://picsum.photos/seed/motion1/1200/800',
-    videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
-    title: 'Brand Story Reel',
-    category: 'Motion Graphics',
-    aspectRatio: '16/9'
+    thumbnail: '',
+    videoUrl: 'https://video.wixstatic.com/video/bc81e6_31aa0c702855472b8ee9a44691856a57/1080p/mp4/file.mp4',
+    title: 'Motion Study 01',
+    category: 'Motion'
   },
   {
     id: 'motion-2',
-    thumbnail: 'https://picsum.photos/seed/motion2/1200/800',
-    videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
-    title: 'Product Launch Teaser',
-    category: 'Commercial',
-    aspectRatio: '9/16'
+    thumbnail: '',
+    videoUrl: 'https://video.wixstatic.com/video/bc81e6_23d2e37412a7491193b9c804ab4ef91a/1080p/mp4/file.mp4',
+    title: 'Motion Study 02',
+    category: 'Motion'
   },
   {
     id: 'motion-3',
-    thumbnail: 'https://picsum.photos/seed/motion3/1200/800',
-    videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
-    title: 'Abstract Motion Study',
-    category: 'Experimental',
-    aspectRatio: '16/9'
+    thumbnail: '',
+    videoUrl: 'https://video.wixstatic.com/video/bc81e6_0963dd42115b4f94ad28eca8fdb5ec8a/1080p/mp4/file.mp4',
+    title: 'Motion Study 03',
+    category: 'Motion'
   },
   {
     id: 'motion-4',
-    thumbnail: 'https://picsum.photos/seed/motion4/1200/800',
-    videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
-    title: 'Cinematic Sequence',
-    category: 'Film',
-    aspectRatio: '9/16'
+    thumbnail: '',
+    videoUrl: 'https://video.wixstatic.com/video/bc81e6_89892cdea6444a3abf823e73c6c90378/1080p/mp4/file.mp4',
+    title: 'Motion Study 04',
+    category: 'Motion'
   },
   {
     id: 'motion-5',
-    thumbnail: 'https://picsum.photos/seed/motion5/1200/800',
-    videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
-    title: 'Dynamic Typography',
-    category: 'Motion Design',
-    aspectRatio: '16/9'
+    thumbnail: '',
+    videoUrl: 'https://video.wixstatic.com/video/bc81e6_39b13e9fab3c4bcbbb5bbcbf30841514/1080p/mp4/file.mp4',
+    title: 'Motion Study 05',
+    category: 'Motion'
   },
   {
     id: 'motion-6',
-    thumbnail: 'https://picsum.photos/seed/motion6/1200/800',
-    videoUrl: 'https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4',
-    title: 'Visual Effects Test',
-    category: 'VFX',
-    aspectRatio: '9/16'
+    thumbnail: '',
+    videoUrl: 'https://video.wixstatic.com/video/bc81e6_c0b9d61810c044ca864db9881f11fa56/1080p/mp4/file.mp4',
+    title: 'Motion Study 06',
+    category: 'Motion'
+  },
+  {
+    id: 'motion-7',
+    thumbnail: '',
+    videoUrl: 'https://video.wixstatic.com/video/bc81e6_d4829166d98844cd8f8dc88fc1a06c69/1080p/mp4/file.mp4',
+    title: 'Motion Study 07',
+    category: 'Motion'
+  },
+  {
+    id: 'motion-8',
+    thumbnail: '',
+    videoUrl: 'https://video.wixstatic.com/video/bc81e6_9fcce2d0f7f749868db57b8dd8a15928/720p/mp4/file.mp4',
+    title: 'Motion Study 08',
+    category: 'Motion'
   }
 ];
