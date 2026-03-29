@@ -61,72 +61,7 @@ const SKILLS = {
 
 // --- Components ---
 
-const TransitionOverlay = () => {
-  return (
-    <div id="transition-overlay">
-      <svg viewBox="0 0 1000 1000" preserveAspectRatio="none">
-        <path id="draw-path" d="M0,500 Q250,250 500,500 T1000,500" />
-      </svg>
-    </div>
-  );
-};
-
-const TransitionLink = ({ to, children, className, onClick, setIsTransitioning }: { to: string, children: React.ReactNode, className?: string, onClick?: () => void, setIsTransitioning: (val: boolean) => void }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const handleClick = (e: React.MouseEvent) => {
-    // Handle anchor links separately if they are on the same page
-    if (to.startsWith('/#')) {
-      const id = to.substring(2);
-      const element = document.getElementById(id);
-      if (element && location.pathname === '/') {
-        e.preventDefault();
-        element.scrollIntoView({ behavior: 'smooth' });
-        if (onClick) onClick();
-        return;
-      }
-    }
-
-    e.preventDefault();
-    if (location.pathname === to) {
-      if (onClick) onClick();
-      return;
-    }
-
-    const overlay = document.getElementById('transition-overlay');
-    const path = document.getElementById('draw-path');
-
-    if (overlay && path) {
-      setIsTransitioning(true);
-      overlay.classList.add('active');
-      path.classList.add('draw-animation');
-
-      setTimeout(() => {
-        if (onClick) onClick();
-        navigate(to);
-        window.scrollTo(0, 0);
-        
-        setTimeout(() => {
-          overlay.classList.remove('active');
-          path.classList.remove('draw-animation');
-          setIsTransitioning(false);
-        }, 600);
-      }, 900);
-    } else {
-      if (onClick) onClick();
-      navigate(to);
-    }
-  };
-
-  return (
-    <a href={to} onClick={handleClick} className={className}>
-      {children}
-    </a>
-  );
-};
-
-const Navbar = ({ setIsTransitioning }: { setIsTransitioning: (val: boolean) => void }) => {
+const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
@@ -146,32 +81,30 @@ const Navbar = ({ setIsTransitioning }: { setIsTransitioning: (val: boolean) => 
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${scrolled ? 'bg-bg/80 backdrop-blur-md py-4 border-b border-line' : 'bg-transparent py-8'}`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/80 backdrop-blur-md py-4 border-b border-line' : 'bg-transparent py-10'}`}>
       <div className="max-w-7xl mx-auto px-10 flex justify-between items-center">
-        <TransitionLink to="/" setIsTransitioning={setIsTransitioning} className="flex items-center">
+        <Link to="/" className="flex items-center">
           <img src="https://i.ibb.co/vrFdk6Z/Asset-1-4x.png" alt="Logo" className="nav-logo" />
-        </TransitionLink>
+        </Link>
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
-            <TransitionLink 
+            <Link 
               key={link.name} 
               to={link.to} 
-              setIsTransitioning={setIsTransitioning}
               className="text-sm font-medium text-muted hover:text-ink transition-colors"
             >
               {link.name}
-            </TransitionLink>
+            </Link>
           ))}
           
-          <TransitionLink 
+          <Link 
             to="/#contact" 
-            setIsTransitioning={setIsTransitioning}
             className="px-5 py-2 border border-line text-ink rounded-full text-sm font-semibold hover:bg-accent hover:text-white transition-all"
           >
             Let's Talk
-          </TransitionLink>
+          </Link>
         </div>
 
         {/* Mobile Toggle */}
@@ -192,15 +125,14 @@ const Navbar = ({ setIsTransitioning }: { setIsTransitioning: (val: boolean) => 
             className="absolute top-full left-0 w-full bg-bg border-b border-line py-8 px-6 flex flex-col gap-6 md:hidden"
           >
             {navLinks.map((link) => (
-              <TransitionLink 
+              <Link 
                 key={link.name} 
                 to={link.to} 
-                setIsTransitioning={setIsTransitioning}
                 onClick={() => setIsOpen(false)}
                 className="text-2xl font-display font-medium"
               >
                 {link.name}
-              </TransitionLink>
+              </Link>
             ))}
           </motion.div>
         )}
@@ -211,14 +143,14 @@ const Navbar = ({ setIsTransitioning }: { setIsTransitioning: (val: boolean) => 
 
 const Hero = ({ isTransitioning }: { isTransitioning?: boolean }) => {
   return (
-    <section className="min-h-screen pt-32 pb-20 flex items-center bg-bg overflow-visible">
-      <div className="max-w-7xl mx-auto px-10 w-full grid grid-cols-1 lg:grid-cols-[1.1fr,1fr] items-center gap-10 lg:gap-20 overflow-visible">
+    <section className="min-h-screen pt-48 pb-32 flex items-center bg-bg overflow-visible">
+      <div className="max-w-7xl mx-auto px-10 w-full grid grid-cols-1 lg:grid-cols-[1.1fr,1fr] items-center gap-16 lg:gap-24 overflow-visible">
         {/* Left: Video */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative aspect-[16/10] rounded-[20px] overflow-hidden shadow-2xl glass group"
+          transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
+          className="relative aspect-[16/10] rounded-[24px] overflow-hidden shadow-2xl glass group"
         >
           {!isTransitioning && (
             <video
@@ -240,36 +172,36 @@ const Hero = ({ isTransitioning }: { isTransitioning?: boolean }) => {
 
         {/* Right: Text */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="space-y-8 overflow-visible"
+          transition={{ duration: 1, ease: [0.65, 0, 0.35, 1], delay: 0.2 }}
+          className="space-y-10 overflow-visible"
         >
           <div className="overflow-visible">
-            <h2 className="text-accent font-semibold tracking-widest uppercase text-sm mb-4">
+            <h2 className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-6 opacity-80">
               Purvi Singhvi
             </h2>
-            <h1 className="text-5xl md:text-7xl xl:text-8xl font-bold leading-[1.15] tracking-tighter overflow-visible pb-2">
+            <h1 className="text-6xl md:text-8xl xl:text-9xl font-bold leading-[1.05] tracking-tighter overflow-visible pb-2">
               Multidisciplinary <br />
               <span className="inline-block transform translate-y-[2px] text-gradient">Designer</span>
             </h1>
           </div>
-          <p className="text-xl text-muted max-w-xl leading-relaxed">
+          <p className="text-xl md:text-2xl text-muted max-w-xl leading-relaxed font-light">
             I design intuitive and visually engaging digital experiences that combine strong aesthetics with purposeful interaction.
           </p>
-          <div className="flex flex-wrap gap-6">
+          <div className="flex flex-wrap gap-6 pt-4">
             <a 
               href="#projects" 
-              className="group relative px-8 py-4 border border-line text-ink rounded-full font-bold overflow-hidden transition-all"
+              className="group relative px-10 py-5 border border-line text-ink rounded-full font-bold overflow-hidden transition-all duration-500"
             >
               <span className="relative z-10 flex items-center gap-2">
-                View Work <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                View Work <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500" />
               </span>
-              <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]" />
             </a>
             <a 
               href="#contact" 
-              className="px-8 py-4 border border-line rounded-full font-bold hover:border-accent hover:text-white transition-all"
+              className="px-10 py-5 border border-line rounded-full font-bold hover:border-accent hover:text-accent transition-all duration-500"
             >
               Contact Me
             </a>
@@ -384,60 +316,61 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-bg text-ink pt-32 pb-24"
+      className="min-h-screen bg-bg text-ink pt-48 pb-32"
     >
       <div className="max-w-7xl mx-auto px-10">
         {/* Navigation */}
         <button 
           onClick={onBack}
-          className="flex items-center gap-2 text-muted hover:text-accent transition-colors font-medium group mb-12"
+          className="flex items-center gap-3 text-muted hover:text-accent transition-all duration-500 font-bold text-xs uppercase tracking-[0.2em] group mb-16"
         >
-          <ChevronLeft size={20} className="group-hover:-translate-x-1 transition-transform" /> Back to Works
+          <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-500" /> Back to Works
         </button>
 
         {/* 1. Dynamic Hero Media */}
-        <div className="mb-24">
+        <div className="mb-32">
           <motion.div 
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8 }}
-            className="mb-12"
+            transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
+            className="mb-16"
           >
             <DynamicMediaShowcase media={project.media} />
           </motion.div>
-          <div className="flex flex-col md:flex-row justify-between items-end gap-8">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-12">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
+              transition={{ delay: 0.3, duration: 1, ease: [0.65, 0, 0.35, 1] }}
             >
-              <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-4">{project.title}</h1>
-              <p className="text-xl text-muted uppercase tracking-widest">{project.shortDescription}</p>
+              <h1 className="text-7xl md:text-9xl font-bold tracking-tighter mb-6 leading-[0.9]">{project.title}</h1>
+              <p className="text-lg md:text-xl text-muted uppercase tracking-[0.2em] font-semibold opacity-70">{project.shortDescription}</p>
             </motion.div>
           </div>
         </div>
 
-        <div className="space-y-32">
+        <div className="space-y-48">
           {/* 2. Project Overview */}
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32"
+            transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-40"
           >
-            <div className="space-y-12">
+            <div className="space-y-16">
               <div>
-                <h4 className="text-accent font-mono text-xs uppercase tracking-widest mb-4">Project Overview</h4>
-                <p className="text-3xl font-bold tracking-tight">Objective</p>
-                <p className="text-muted mt-4 text-lg leading-relaxed">{project.overview.objective}</p>
+                <h4 className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-6 opacity-80">Project Overview</h4>
+                <p className="text-4xl font-bold tracking-tight mb-6">Objective</p>
+                <p className="text-muted text-xl leading-relaxed font-light">{project.overview.objective}</p>
               </div>
               <div>
-                <p className="text-3xl font-bold tracking-tight">Challenges</p>
-                <p className="text-muted mt-4 text-lg leading-relaxed">{project.overview.challenges}</p>
+                <p className="text-4xl font-bold tracking-tight mb-6">Challenges</p>
+                <p className="text-muted text-xl leading-relaxed font-light">{project.overview.challenges}</p>
               </div>
             </div>
             <div className="flex items-center">
-              <p className="text-xl text-muted leading-relaxed border-l border-accent/30 pl-8">
+              <p className="text-2xl text-muted leading-relaxed border-l-2 border-accent/20 pl-12 font-light italic">
                 {project.overview.description}
               </p>
             </div>
@@ -451,8 +384,9 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
           >
-            <h4 className="text-accent font-mono text-xs uppercase tracking-widest mb-12">Design Process</h4>
+            <h4 className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-12 opacity-80">Design Process</h4>
             <div className="flex flex-wrap gap-6">
               {project.process.map((step, i) => (
                 <motion.div 
@@ -460,8 +394,8 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
                   initial={{ opacity: 0, x: -20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="px-10 py-5 bg-ink/5 border border-line rounded-full text-xl font-medium"
+                  transition={{ delay: i * 0.1, duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
+                  className="px-12 py-6 bg-ink/5 border border-line rounded-full text-xl font-bold tracking-tight"
                 >
                   {step}
                 </motion.div>
@@ -474,27 +408,28 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32"
+            transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-40"
           >
             <div>
-              <h4 className="text-accent font-mono text-xs uppercase tracking-widest mb-6">Outcome</h4>
-              <p className="text-2xl leading-relaxed font-medium">
+              <h4 className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-8 opacity-80">Outcome</h4>
+              <p className="text-3xl leading-relaxed font-medium tracking-tight">
                 {project.outcome}
               </p>
             </div>
             <div>
-              <h4 className="text-accent font-mono text-xs uppercase tracking-widest mb-6">Key Achievements</h4>
-              <ul className="space-y-6">
+              <h4 className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-8 opacity-80">Key Achievements</h4>
+              <ul className="space-y-8">
                 {project.achievements.map((achievement, i) => (
                   <motion.li 
                     key={i} 
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="flex gap-6 text-muted text-lg"
+                    transition={{ delay: i * 0.1, duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
+                    className="flex gap-8 text-muted text-xl font-light leading-relaxed"
                   >
-                    <span className="text-accent font-bold">0{i + 1}</span>
+                    <span className="text-accent font-bold tracking-tighter text-2xl">0{i + 1}</span>
                     {achievement}
                   </motion.li>
                 ))}
@@ -591,14 +526,14 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
   };
 
   return (
-    <section id="projects" className="py-32 bg-bg">
+    <section id="projects" className="py-48 bg-bg">
       <div className="max-w-7xl mx-auto px-10">
-        <div className="mb-24">
-          <h2 className="text-accent font-mono text-sm uppercase tracking-widest mb-4">Portfolio</h2>
-          <h3 className="text-5xl md:text-7xl font-bold tracking-tighter">ALL WORKS.</h3>
+        <div className="mb-32">
+          <h2 className="text-accent font-bold text-xs uppercase tracking-[0.2em] mb-6 opacity-80">Portfolio</h2>
+          <h3 className="text-6xl md:text-8xl font-bold tracking-tighter">Design Stories.</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
           <AnimatePresence mode="popLayout">
             {PROJECTS.slice(0, visibleCount).map((project) => (
               <motion.div
@@ -612,7 +547,7 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="relative aspect-[4/3] rounded-[32px] overflow-hidden mb-6 border border-line shadow-xl shadow-black/5">
+                <div className="relative aspect-[4/3] rounded-[40px] overflow-hidden mb-8 border border-line shadow-2xl shadow-black/5 transition-all duration-700 group-hover:shadow-black/10">
                   {project.slideshowImages ? (
                     <ProjectSlideshow images={project.slideshowImages} title={project.title} />
                   ) : (
@@ -621,27 +556,27 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
                       alt={project.title} 
                       className="w-full h-full object-cover"
                       variants={{
-                        hover: { scale: 1.05 }
+                        hover: { scale: 1.08 }
                       }}
-                      transition={{ duration: 0.7 }}
+                      transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
                       referrerPolicy="no-referrer"
                     />
                   )}
                   <motion.div 
-                    className="absolute inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center pointer-events-none"
+                    className="absolute inset-0 bg-white/40 backdrop-blur-sm flex items-center justify-center pointer-events-none"
                     initial={{ opacity: 0 }}
                     variants={{
                       hover: { opacity: 1 }
                     }}
-                    transition={{ duration: 0.5 }}
+                    transition={{ duration: 0.6, ease: [0.65, 0, 0.35, 1] }}
                   >
-                    <div className="w-16 h-16 bg-white border border-line rounded-full flex items-center justify-center text-ink transform scale-0 group-hover:scale-100 transition-transform duration-500 delay-100 shadow-lg">
-                      <ArrowUpRight size={32} />
+                    <div className="w-20 h-20 bg-white border border-line rounded-full flex items-center justify-center text-ink transform scale-0 group-hover:scale-100 transition-transform duration-700 delay-100 shadow-2xl">
+                      <ArrowUpRight size={36} />
                     </div>
                   </motion.div>
                 </div>
-                <h4 className="text-2xl font-bold mb-2">{project.title}</h4>
-                <p className="text-muted uppercase tracking-widest text-sm">{project.category}</p>
+                <h4 className="text-3xl font-bold mb-3 tracking-tight">{project.title}</h4>
+                <p className="text-muted uppercase tracking-[0.15em] text-xs font-semibold opacity-70">{project.category}</p>
               </motion.div>
             ))}
           </AnimatePresence>
@@ -668,14 +603,14 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
 
 const About = () => {
   return (
-    <section id="about" className="py-24 lg:py-48 bg-ink/5">
+    <section id="about" className="py-48 lg:py-64 bg-ink/5">
       <div className="max-w-7xl mx-auto px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 lg:gap-32">
           <div className="lg:col-span-4">
-            <h2 className="text-accent font-mono text-sm uppercase tracking-widest mb-4">Who I Am</h2>
-            <h3 className="text-5xl font-bold tracking-tighter mb-8">ABOUT.</h3>
+            <h2 className="text-accent font-bold text-xs uppercase tracking-[0.2em] mb-6 opacity-80">Who I Am</h2>
+            <h3 className="text-6xl font-bold tracking-tighter mb-12">ABOUT.</h3>
             
-            <div className="relative aspect-[3/4] rounded-2xl overflow-hidden grayscale hover:grayscale-0 transition-all duration-700">
+            <div className="relative aspect-[3/4] rounded-[32px] overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 shadow-2xl">
               <img 
                 src="https://i.ibb.co/ks4vhZcr/ME.png" 
                 alt="Purvi Singhvi" 
@@ -687,39 +622,39 @@ const About = () => {
 
           <div className="lg:col-span-8 flex flex-col justify-center">
             <motion.div 
-              initial={{ opacity: 0, x: 30 }}
+              initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="space-y-8"
+              transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
+              className="space-y-12"
             >
-              <p className="text-2xl md:text-3xl font-medium leading-tight">
+              <p className="text-3xl md:text-4xl font-medium leading-tight tracking-tight">
                 I’m a multidisciplinary designer with a background in graphic and digital design, currently focusing on UI/UX and user-centered design.
               </p>
-              <p className="text-xl text-muted leading-relaxed">
+              <p className="text-xl md:text-2xl text-muted leading-relaxed font-light">
                 I create visually strong and intuitive digital experiences, combining aesthetics with functionality to solve real user problems. My approach is rooted in clarity, simplicity, and thoughtful decision-making—ensuring every design is purposeful, usable, and engaging.
               </p>
-              <div className="py-8 border-y border-line">
-                <p className="text-3xl font-display italic text-accent">
+              <div className="py-12 border-y border-line">
+                <p className="text-4xl md:text-5xl font-serif italic text-accent leading-tight">
                   "Good design gets attention. Great design keeps people."
                 </p>
               </div>
-              <p className="text-lg text-muted leading-relaxed">
+              <p className="text-xl text-muted leading-relaxed font-light">
                 Outside of design, I enjoy observing everyday experiences, exploring ideas, and constantly learning to improve my craft.
               </p>
               
-              <div className="flex gap-12 pt-8">
+              <div className="flex flex-wrap gap-16 pt-8">
                 <div>
-                  <h4 className="text-accent font-mono text-xs uppercase tracking-widest mb-2">Based in</h4>
-                  <p className="font-bold">Jaipur, India</p>
+                  <h4 className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-3 opacity-80">Based in</h4>
+                  <p className="text-xl font-bold tracking-tight">Jaipur, India</p>
                 </div>
                 <div>
-                  <h4 className="text-accent font-mono text-xs uppercase tracking-widest mb-2">Experience</h4>
-                  <p className="font-bold">4+ Years</p>
+                  <h4 className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-3 opacity-80">Experience</h4>
+                  <p className="text-xl font-bold tracking-tight">4+ Years</p>
                 </div>
                 <div>
-                  <h4 className="text-accent font-mono text-xs uppercase tracking-widest mb-2">Focus</h4>
-                  <p className="font-bold">UI/UX & Branding</p>
+                  <h4 className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-3 opacity-80">Focus</h4>
+                  <p className="text-xl font-bold tracking-tight">UI/UX & Branding</p>
                 </div>
               </div>
             </motion.div>
@@ -730,7 +665,7 @@ const About = () => {
   );
 };
 
-const StillStoriesPage = ({ setIsTransitioning }: { setIsTransitioning: (val: boolean) => void }) => {
+const StillStoriesPage = () => {
   const [selectedImage, setSelectedImage] = useState<PhotographyItem | null>(null);
 
   useEffect(() => {
@@ -738,54 +673,54 @@ const StillStoriesPage = ({ setIsTransitioning }: { setIsTransitioning: (val: bo
   }, []);
 
   return (
-    <section className="min-h-screen py-24 lg:py-32 bg-bg">
+    <section className="min-h-screen py-48 lg:py-64 bg-bg">
       <div className="max-w-7xl mx-auto px-10">
-        <TransitionLink to="/" setIsTransitioning={setIsTransitioning} className="inline-flex items-center gap-2 text-accent hover:text-ink transition-colors mb-12 group">
-          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+        <Link to="/" className="inline-flex items-center gap-3 text-accent hover:text-ink transition-all duration-500 mb-16 group font-bold text-xs uppercase tracking-[0.2em]">
+          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-500" />
           Back to Portfolio
-        </TransitionLink>
+        </Link>
         
-        <div className="mb-24">
-          <h2 className="text-accent font-mono text-sm uppercase tracking-widest mb-4">Visuals</h2>
-          <h3 className="text-6xl md:text-8xl font-bold tracking-tighter uppercase">Still Stories</h3>
+        <div className="mb-32">
+          <h2 className="text-accent font-bold text-xs uppercase tracking-[0.2em] mb-6 opacity-80">Visuals</h2>
+          <h3 className="text-7xl md:text-9xl font-bold tracking-tighter uppercase leading-[0.9]">Still Stories</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
           {PHOTOGRAPHY.map((photo, index) => (
             <motion.div
               key={photo.id}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative cursor-pointer overflow-hidden rounded-2xl aspect-[3/4]"
+              transition={{ delay: index * 0.1, duration: 1, ease: [0.65, 0, 0.35, 1] }}
+              className="group relative cursor-pointer overflow-hidden rounded-[32px] aspect-[3/4] shadow-2xl shadow-black/5 hover:shadow-black/10 transition-all duration-700"
               onClick={() => setSelectedImage(photo)}
             >
               <motion.img
                 src={photo.url}
                 alt={photo.title}
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-[1.1]"
                 referrerPolicy="no-referrer"
               />
               
               {/* Title */}
-              <div className="absolute top-3 left-3 text-white text-[13px] font-medium opacity-0 group-hover:opacity-85 transition-opacity duration-500 z-10">
+              <div className="absolute top-6 left-6 text-white text-[14px] font-bold uppercase tracking-[0.1em] opacity-0 group-hover:opacity-100 transition-all duration-700 z-10">
                 {photo.title}
               </div>
 
               {/* Gradient Overlay */}
-              <div className="absolute bottom-0 left-0 w-full h-2/5 bg-gradient-to-t from-black/60 to-transparent pointer-events-none transition-opacity duration-500 opacity-0 group-hover:opacity-100" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none transition-opacity duration-700 opacity-0 group-hover:opacity-100" />
               
               {/* Caption */}
               {photo.caption && (
-                <p className="absolute bottom-3 left-3 text-white text-[14px] font-normal opacity-60 group-hover:opacity-100 transition-opacity duration-300 z-10 pr-6 leading-tight">
+                <p className="absolute bottom-6 left-6 text-white text-[16px] font-light italic opacity-0 group-hover:opacity-90 transition-all duration-700 delay-100 z-10 pr-12 leading-relaxed">
                   {photo.caption}
                 </p>
               )}
 
               {/* Minimal Eye Icon on Hover */}
-              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="w-10 h-10 bg-white/20 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white">
-                  <Eye size={18} />
+              <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-all duration-700">
+                <div className="w-12 h-12 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center text-white">
+                  <Eye size={20} />
                 </div>
               </div>
             </motion.div>
@@ -837,18 +772,18 @@ const StillStoriesPage = ({ setIsTransitioning }: { setIsTransitioning: (val: bo
   );
 };
 
-const InMotionPage = ({ setIsTransitioning }: { setIsTransitioning: (val: boolean) => void }) => {
+const InMotionPage = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
     <div className="min-h-screen bg-bg">
-      <div className="max-w-7xl mx-auto px-10 pt-32">
-        <TransitionLink to="/" setIsTransitioning={setIsTransitioning} className="inline-flex items-center gap-2 text-accent hover:text-ink transition-colors group">
-          <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+      <div className="max-w-7xl mx-auto px-10 pt-48">
+        <Link to="/" className="inline-flex items-center gap-3 text-accent hover:text-ink transition-all duration-500 group font-bold text-xs uppercase tracking-[0.2em]">
+          <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-500" />
           Back to Portfolio
-        </TransitionLink>
+        </Link>
       </div>
       <InMotion items={MOTION} />
     </div>
@@ -1087,76 +1022,50 @@ export default function App() {
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleProjectClick = (project: Project) => {
-    const overlay = document.getElementById('transition-overlay');
-    const path = document.getElementById('draw-path');
-
-    if (overlay && path) {
-      setIsTransitioning(true);
-      overlay.classList.add('active');
-      path.classList.add('draw-animation');
-
+    setIsTransitioning(true);
+    
+    // Smooth transition logic
+    setTimeout(() => {
+      setSelectedProject(project);
+      navigate(`/project/${project.id}`);
+      window.scrollTo(0, 0);
+      
+      // Reset transition state after a delay to allow the new page to start its entry animation
       setTimeout(() => {
-        setSelectedProject(project);
-        navigate(`/project/${project.id}`);
-        window.scrollTo(0, 0);
-        
-        setTimeout(() => {
-          overlay.classList.remove('active');
-          path.classList.remove('draw-animation');
-          setIsTransitioning(false);
-        }, 600);
-      }, 900);
-    } else {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setSelectedProject(project);
-        navigate(`/project/${project.id}`);
-        window.scrollTo(0, 0);
-        setTimeout(() => {
-          setIsTransitioning(false);
-        }, 600);
-      }, 500);
-    }
+        setIsTransitioning(false);
+      }, 600);
+    }, 500);
   };
 
   const handleBackToWorks = () => {
-    const overlay = document.getElementById('transition-overlay');
-    const path = document.getElementById('draw-path');
-
-    if (overlay && path) {
-      setIsTransitioning(true);
-      overlay.classList.add('active');
-      path.classList.add('draw-animation');
-
+    setIsTransitioning(true);
+    setTimeout(() => {
+      navigate('/');
+      setSelectedProject(null);
+      window.scrollTo(0, 0);
       setTimeout(() => {
-        navigate('/');
-        setSelectedProject(null);
-        window.scrollTo(0, 0);
-        
-        setTimeout(() => {
-          overlay.classList.remove('active');
-          path.classList.remove('draw-animation');
-          setIsTransitioning(false);
-        }, 600);
-      }, 900);
-    } else {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        navigate('/');
-        setSelectedProject(null);
-        window.scrollTo(0, 0);
-        setTimeout(() => {
-          setIsTransitioning(false);
-        }, 600);
-      }, 500);
-    }
+        setIsTransitioning(false);
+      }, 600);
+    }, 500);
   };
 
   return (
-    <div className={`min-h-screen selection:bg-accent/30 selection:text-ink relative transition-all duration-700 ${isTransitioning ? 'page-scale-down' : ''}`}>
+    <div className="min-h-screen selection:bg-accent/30 selection:text-ink relative">
       <div className="noise-overlay" />
-      <TransitionOverlay />
-      <Navbar setIsTransitioning={setIsTransitioning} />
+      <Navbar />
+      
+      {/* Transition Overlay */}
+      <AnimatePresence>
+        {isTransitioning && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4, ease: "easeInOut" }}
+            className="fixed inset-0 bg-bg z-[9999] pointer-events-none"
+          />
+        )}
+      </AnimatePresence>
 
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
@@ -1190,7 +1099,7 @@ export default function App() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <StillStoriesPage setIsTransitioning={setIsTransitioning} />
+              <StillStoriesPage />
               <Footer />
             </motion.div>
           } />
@@ -1202,7 +1111,7 @@ export default function App() {
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <InMotionPage setIsTransitioning={setIsTransitioning} />
+              <InMotionPage />
               <Footer />
             </motion.div>
           } />

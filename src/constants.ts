@@ -67,7 +67,7 @@ export const PROJECTS: Project[] = [
     thumbnail: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png",
     media: [
       { type: 'image', src: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png", label: "Brochure Mockup" },
-      { type: 'image', src: "https://picsum.photos/seed/fhrai-2/1920/1080", label: "Design Detail" },
+      { type: 'image', src: "", label: "Design Detail" },
       { type: 'video', src: "https://video.wixstatic.com/video/11062b_1639f75869404c009951307b2786a345/1080p/mp4/file.mp4", label: "Event Motion" }
     ],
     overview: {
@@ -93,8 +93,10 @@ export const PROJECTS: Project[] = [
     thumbnail: "https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png",
     media: [
       { type: 'image', src: "https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png", label: "Lyric Book Cover" },
-      { type: 'image', src: "https://picsum.photos/seed/lyricbook-1/1920/1080", label: "Visual Narrative" },
-      { type: 'image', src: "https://picsum.photos/seed/lyricbook-2/1920/1080", label: "Typography Design" }
+      { type: 'image', src: "https://i.ibb.co/pjn6dPRD/usiness.jpg", label: "From Inspiration to Final Cover" },
+      { type: 'image', src: "https://i.ibb.co/jkNCxn9N/usiness-1.jpg", label: "Moodboard" },
+      { type: 'image', src: "https://i.ibb.co/4w3zVR7s/Artboard-1-3x-100.jpg", label: "Visual Language" },
+      { type: 'image', src: "https://i.ibb.co/yc1pHs8Y/Artboard-2-3x-100.jpg", label: "Moodboard" }
     ],
     overview: {
       objective: "To design a visually immersive lyric book inspired by the mood, themes, and storytelling style of Aalas Ka Pedh.",
@@ -218,56 +220,64 @@ export const MOTION: MotionItem[] = [
     id: 'motion-1',
     thumbnail: '',
     videoUrl: 'https://video.wixstatic.com/video/bc81e6_31aa0c702855472b8ee9a44691856a57/1080p/mp4/file.mp4',
-    title: 'Motion Study 01',
-    category: 'Motion'
+    title: 'Festive Storytelling Ad',
+    category: 'Motion',
+    description: 'Cultural narrative motion design'
   },
   {
     id: 'motion-2',
     thumbnail: '',
     videoUrl: 'https://video.wixstatic.com/video/bc81e6_23d2e37412a7491193b9c804ab4ef91a/1080p/mp4/file.mp4',
-    title: 'Motion Study 02',
-    category: 'Motion'
+    title: 'Product Highlight Animation',
+    category: 'Motion',
+    description: 'Premium ghee branding visual'
   },
   {
     id: 'motion-3',
     thumbnail: '',
     videoUrl: 'https://video.wixstatic.com/video/bc81e6_0963dd42115b4f94ad28eca8fdb5ec8a/1080p/mp4/file.mp4',
-    title: 'Motion Study 03',
-    category: 'Motion'
+    title: 'Festive Visual Campaign',
+    category: 'Motion',
+    description: 'Traditional celebration theme'
   },
   {
     id: 'motion-4',
     thumbnail: '',
     videoUrl: 'https://video.wixstatic.com/video/bc81e6_89892cdea6444a3abf823e73c6c90378/1080p/mp4/file.mp4',
-    title: 'Motion Study 04',
-    category: 'Motion'
+    title: 'Brand Identity Animation',
+    category: 'Motion',
+    description: 'Logo reveal & packaging'
   },
   {
     id: 'motion-5',
     thumbnail: '',
     videoUrl: 'https://video.wixstatic.com/video/bc81e6_39b13e9fab3c4bcbbb5bbcbf30841514/1080p/mp4/file.mp4',
-    title: 'Motion Study 05',
-    category: 'Motion'
+    title: 'Krishna Festival Campaign',
+    category: 'Motion',
+    description: 'Seasonal marketing visual'
   },
   {
     id: 'motion-6',
     thumbnail: '',
     videoUrl: 'https://video.wixstatic.com/video/bc81e6_c0b9d61810c044ca864db9881f11fa56/1080p/mp4/file.mp4',
-    title: 'Motion Study 06',
-    category: 'Motion'
+    title: '3D Character Scene',
+    category: 'Motion',
+    description: 'Cinematic motion experiment'
   },
   {
     id: 'motion-7',
     thumbnail: '',
     videoUrl: 'https://video.wixstatic.com/video/bc81e6_d4829166d98844cd8f8dc88fc1a06c69/1080p/mp4/file.mp4',
-    title: 'Motion Study 07',
-    category: 'Motion'
+    title: 'Ahmedabad Map Animation',
+    category: 'Motion',
+    description: 'Location storytelling visual'
   },
   {
     id: 'motion-8',
     thumbnail: '',
     videoUrl: 'https://video.wixstatic.com/video/bc81e6_9fcce2d0f7f749868db57b8dd8a15928/720p/mp4/file.mp4',
-    title: 'Motion Study 08',
-    category: 'Motion'
+    title: 'Craft Process Reel',
+    category: 'Motion',
+    description: 'Handmade texture storytelling'
   }
 ];
