@@ -49,7 +49,7 @@ const InMotion: React.FC<{ items: MotionItem[] }> = ({ items }) => {
   }, []);
 
   return (
-    <section id="in-motion" className="py-48 lg:py-64 bg-bg">
+    <section id="in-motion" className="py-48 bg-bg">
       <div className="max-w-7xl mx-auto px-10">
         <div className="mb-32">
           <h2 className="text-accent font-bold text-xs uppercase tracking-[0.2em] mb-6 opacity-80">Living Gallery</h2>
@@ -60,7 +60,7 @@ const InMotion: React.FC<{ items: MotionItem[] }> = ({ items }) => {
           </p>
         </div>
 
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-[32px]">
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-12">
           {items.map((item, index) => (
             <VideoCard 
               key={item.id} 

@@ -143,14 +143,14 @@ const Navbar = () => {
 
 const Hero = ({ isTransitioning }: { isTransitioning?: boolean }) => {
   return (
-    <section className="min-h-screen pt-48 pb-32 flex items-center bg-bg overflow-visible">
+    <section className="min-h-screen pt-48 pb-48 flex items-center bg-bg overflow-visible">
       <div className="max-w-7xl mx-auto px-10 w-full grid grid-cols-1 lg:grid-cols-[1.1fr,1fr] items-center gap-16 lg:gap-24 overflow-visible">
         {/* Left: Video */}
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-          className="relative aspect-[16/10] rounded-[24px] overflow-hidden shadow-2xl glass group"
+          className="relative aspect-[16/10] rounded-[32px] overflow-hidden shadow-2xl glass group"
         >
           {!isTransitioning && (
             <video
@@ -181,9 +181,9 @@ const Hero = ({ isTransitioning }: { isTransitioning?: boolean }) => {
             <h2 className="text-accent font-bold tracking-[0.2em] uppercase text-xs mb-6 opacity-80">
               Purvi Singhvi
             </h2>
-            <h1 className="text-6xl md:text-8xl xl:text-9xl font-bold leading-[1.05] tracking-tighter overflow-visible pb-2">
+            <h1 className="text-6xl md:text-8xl xl:text-9xl font-bold leading-[1.2] tracking-tighter overflow-visible pb-4">
               Multidisciplinary <br />
-              <span className="inline-block transform translate-y-[2px] text-gradient">Designer</span>
+              <span className="inline-block text-gradient">Designer</span>
             </h1>
           </div>
           <p className="text-xl md:text-2xl text-muted max-w-xl leading-relaxed font-light">
@@ -192,16 +192,13 @@ const Hero = ({ isTransitioning }: { isTransitioning?: boolean }) => {
           <div className="flex flex-wrap gap-6 pt-4">
             <a 
               href="#projects" 
-              className="group relative px-10 py-5 border border-line text-ink rounded-full font-bold overflow-hidden transition-all duration-500"
+              className="px-10 py-5 border border-line text-ink rounded-full font-bold hover:border-accent hover:text-accent transition-all duration-500 flex items-center gap-2 group"
             >
-              <span className="relative z-10 flex items-center gap-2">
-                View Work <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500" />
-              </span>
-              <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]" />
+              View Work <ArrowUpRight size={20} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500" />
             </a>
             <a 
               href="#contact" 
-              className="px-10 py-5 border border-line rounded-full font-bold hover:border-accent hover:text-accent transition-all duration-500"
+              className="px-10 py-5 border border-line text-ink rounded-full font-bold hover:border-accent hover:text-accent transition-all duration-500"
             >
               Contact Me
             </a>
@@ -236,7 +233,7 @@ const DynamicMediaShowcase: React.FC<{ media: MediaItem[] }> = ({ media }) => {
     <div className="space-y-8">
       {/* Main Media Display */}
       <div 
-        className="relative aspect-[16/9] rounded-[40px] overflow-hidden shadow-2xl bg-ink/10 group"
+        className="relative aspect-[16/9] rounded-[32px] overflow-hidden shadow-2xl bg-ink/10 group"
         onMouseEnter={() => setIsAutoPlaying(false)}
         onMouseLeave={() => setIsAutoPlaying(true)}
       >
@@ -387,18 +384,27 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
             transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
           >
             <h4 className="text-accent font-bold text-[10px] uppercase tracking-[0.2em] mb-12 opacity-80">Design Process</h4>
-            <div className="flex flex-wrap gap-6">
+            <div className="flex flex-wrap items-center gap-y-12 gap-x-8">
               {project.process.map((step, i) => (
-                <motion.div 
-                  key={step} 
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
-                  className="px-12 py-6 bg-ink/5 border border-line rounded-full text-xl font-bold tracking-tight"
-                >
-                  {step}
-                </motion.div>
+                <React.Fragment key={step}>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1, duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
+                    className="flex items-center gap-6 cursor-default group"
+                  >
+                    <span className="text-accent font-mono text-sm font-bold opacity-40 group-hover:opacity-100 transition-opacity duration-500">
+                      0{i + 1}
+                    </span>
+                    <span className="text-2xl md:text-3xl font-bold tracking-tight text-ink/80">
+                      {step}
+                    </span>
+                  </motion.div>
+                  {i < project.process.length - 1 && (
+                    <div className="hidden md:block w-8 h-px bg-line mx-4" />
+                  )}
+                </React.Fragment>
               ))}
             </div>
           </motion.div>
@@ -475,7 +481,7 @@ const ProjectSlideshow: React.FC<{ images: string[]; title: string }> = ({ image
           key={currentIndex}
           src={images[currentIndex]}
           alt={`${title} - slide ${currentIndex + 1}`}
-          className="w-full h-full object-cover rounded-[20px]"
+          className="w-full h-full object-cover"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -530,10 +536,10 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
       <div className="max-w-7xl mx-auto px-10">
         <div className="mb-32">
           <h2 className="text-accent font-bold text-xs uppercase tracking-[0.2em] mb-6 opacity-80">Portfolio</h2>
-          <h3 className="text-6xl md:text-8xl font-bold tracking-tighter">Design Stories.</h3>
+          <h3 className="text-7xl md:text-9xl font-bold tracking-tighter">Design Stories.</h3>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
           <AnimatePresence mode="popLayout">
             {PROJECTS.slice(0, visibleCount).map((project) => (
               <motion.div
@@ -547,7 +553,7 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.5 }}
               >
-                <div className="relative aspect-[4/3] rounded-[40px] overflow-hidden mb-8 border border-line shadow-2xl shadow-black/5 transition-all duration-700 group-hover:shadow-black/10">
+                <div className="relative aspect-[4/3] rounded-[32px] overflow-hidden mb-8 border border-line shadow-2xl shadow-black/5 transition-all duration-700 group-hover:shadow-black/10">
                   {project.slideshowImages ? (
                     <ProjectSlideshow images={project.slideshowImages} title={project.title} />
                   ) : (
@@ -603,12 +609,12 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
 
 const About = () => {
   return (
-    <section id="about" className="py-48 lg:py-64 bg-ink/5">
+    <section id="about" className="py-48 bg-ink/5">
       <div className="max-w-7xl mx-auto px-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 lg:gap-32">
           <div className="lg:col-span-4">
             <h2 className="text-accent font-bold text-xs uppercase tracking-[0.2em] mb-6 opacity-80">Who I Am</h2>
-            <h3 className="text-6xl font-bold tracking-tighter mb-12">ABOUT.</h3>
+            <h3 className="text-7xl md:text-9xl font-bold tracking-tighter mb-12">ABOUT.</h3>
             
             <div className="relative aspect-[3/4] rounded-[32px] overflow-hidden grayscale hover:grayscale-0 transition-all duration-1000 shadow-2xl">
               <img 
@@ -673,7 +679,7 @@ const StillStoriesPage = () => {
   }, []);
 
   return (
-    <section className="min-h-screen py-48 lg:py-64 bg-bg">
+    <section className="min-h-screen py-48 bg-bg">
       <div className="max-w-7xl mx-auto px-10">
         <Link to="/" className="inline-flex items-center gap-3 text-accent hover:text-ink transition-all duration-500 mb-16 group font-bold text-xs uppercase tracking-[0.2em]">
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-500" />
@@ -779,7 +785,7 @@ const InMotionPage = () => {
 
   return (
     <div className="min-h-screen bg-bg">
-      <div className="max-w-7xl mx-auto px-10 pt-48">
+      <div className="max-w-7xl mx-auto px-10 pt-32 -mb-32 relative z-10">
         <Link to="/" className="inline-flex items-center gap-3 text-accent hover:text-ink transition-all duration-500 group font-bold text-xs uppercase tracking-[0.2em]">
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-500" />
           Back to Portfolio
@@ -825,7 +831,7 @@ const MagneticButton = ({ children, className }: { children: React.ReactNode, cl
 
 const Contact = () => {
   return (
-    <section id="contact" className="relative py-24 lg:py-48 overflow-hidden bg-bg">
+    <section id="contact" className="relative py-48 overflow-hidden bg-bg">
       {/* Subtle Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[160px] pointer-events-none" />
       
@@ -842,7 +848,7 @@ const Contact = () => {
               viewport={{ once: true }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             >
-              <h2 className="text-6xl md:text-8xl font-bold tracking-tighter leading-[0.85] mb-10">
+              <h2 className="text-7xl md:text-9xl font-bold tracking-tighter leading-[0.85] mb-10">
                 Let’s build <br />
                 <span className="text-gradient">something</span> <br />
                 meaningful.
