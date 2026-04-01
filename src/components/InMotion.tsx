@@ -30,8 +30,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ item, onOpen }) => {
       </video>
       
       <div className="motion-label">
-        <h4>{item.title}</h4>
-        {item.description && <p>{item.description}</p>}
+        <h4 className="text-[20px] font-medium leading-[1.2] tracking-tight mb-2">{item.title}</h4>
+        {item.description && <p className="text-[14px] leading-[1.5] opacity-80 text-muted">{item.description}</p>}
       </div>
     </motion.div>
   );
@@ -52,9 +52,9 @@ const InMotion: React.FC<{ items: MotionItem[] }> = ({ items }) => {
     <section id="in-motion" className="py-48 bg-bg">
       <div className="max-w-7xl mx-auto px-10">
         <div className="mb-32">
-          <h2 className="text-accent font-bold text-xs uppercase tracking-[0.2em] mb-6 opacity-80">Living Gallery</h2>
-          <h3 className="text-7xl md:text-9xl font-bold tracking-tighter uppercase leading-[0.9]">IN MOTION.</h3>
-          <p className="text-xl md:text-2xl text-muted mt-12 max-w-2xl leading-relaxed font-light">
+          <h2 className="text-[12px] tracking-[1.5px] uppercase opacity-70 font-bold text-accent mb-6">Living Gallery</h2>
+          <h3 className="text-[clamp(40px,5vw,64px)] font-semibold leading-[1.05] tracking-tighter uppercase">IN MOTION.</h3>
+          <p className="text-[16px] leading-[1.6] text-muted mt-12 max-w-[600px]">
             A curated collection of motion design and video editing work. 
             Immersive, continuous, and dynamic.
           </p>
