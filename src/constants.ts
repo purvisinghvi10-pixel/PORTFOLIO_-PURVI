@@ -17,7 +17,51 @@ export const PROJECTS: Project[] = [
     overview: {
       objective: "Design a clean and structured web experience for Weddings by Event Crafters that showcases services while maintaining an elegant and premium feel.",
       challenges: "Organizing diverse wedding services into a clear, intuitive layout while balancing visual richness with usability.",
-      description: "This project involved creating low-fidelity wireframes and layout structures for the Weddings by Event Crafters website. The focus was on simplifying content, improving navigation, and delivering a seamless user experience."
+      description: "This project involved creating low-fidelity wireframes and layout structures for the Weddings by Event Crafters website. The focus was on simplifying content, improving navigation, and delivering a seamless user experience.",
+      role: "Lead UI/UX Designer",
+      timeline: "4 Weeks",
+      tools: ["Figma", "Adobe Illustrator", "Protopie"]
+    },
+    problemStatement: "Couples planning weddings often feel overwhelmed by the sheer volume of choices and information. Event Crafters needed a digital platform that could present their high-end services in a way that felt calm, curated, and easy to navigate, moving away from the cluttered layouts common in the industry.",
+    userResearch: {
+      description: "I conducted interviews with 10 couples in the early stages of wedding planning to understand their pain points when browsing wedding service websites.",
+      insights: [
+        "Users prioritize visual inspiration but need clear pricing and service breakdowns.",
+        "Mobile responsiveness is critical as 80% of initial browsing happens on phones.",
+        "Trust is built through high-quality imagery and clear testimonials."
+      ]
+    },
+    userFlow: {
+      description: "The flow was designed to lead users from inspiration (Gallery) to information (Services) and finally to action (Contact).",
+      image: "https://i.ibb.co/XxJpXyb8/Screenshot-2026-03-29-060350.png"
+    },
+    wireframes: {
+      description: "Low-fidelity wireframes focused on content hierarchy and ensuring that the 'Premium' feel was established through whitespace and typography even before adding visual assets.",
+      images: [
+        "https://i.ibb.co/XxJpXyb8/Screenshot-2026-03-29-060350.png",
+        "https://i.ibb.co/pBRMp7yY/MOCK-UP.png"
+      ]
+    },
+    uiDesign: {
+      description: "The final UI uses a sophisticated palette of muted tones, elegant serif headings, and high-quality photography to create an aspirational yet accessible atmosphere.",
+      images: [
+        "https://i.ibb.co/pBRMp7yY/MOCK-UP.png",
+        "https://i.ibb.co/XxJpXyb8/Screenshot-2026-03-29-060350.png"
+      ]
+    },
+    designDecisions: [
+      {
+        title: "Minimalist Navigation",
+        description: "Reduced menu items to 4 core categories to prevent choice paralysis."
+      },
+      {
+        title: "Visual-First Hero",
+        description: "Used full-bleed imagery to immediately establish the brand's aesthetic quality."
+      }
+    ],
+    prototype: {
+      description: "The interactive prototype demonstrates the smooth transitions between service categories and the intuitive booking flow.",
+      videoUrl: "https://video.wixstatic.com/video/bc81e6_a8de38de8a3347fd844ec24140394a3d/1080p/mp4/file.mp4"
     },
     process: ["User Research", "Wireframing", "Layout Structuring", "Visual Design", "Final Interface"],
     outcome: "A minimal and intuitive interface that enhances content clarity and delivers a smooth browsing experience aligned with the brand’s premium positioning.",
@@ -25,6 +69,10 @@ export const PROJECTS: Project[] = [
       "Developed structured low-fidelity wireframes to define user flow and layout.",
       "Improved content organization for better readability and navigation.",
       "Created a consistent and refined interface for the wedding platform."
+    ],
+    learnings: [
+      "The importance of balancing aesthetic 'white space' with functional information density.",
+      "How to maintain brand luxury while ensuring fast mobile load times."
     ]
   },
   {
@@ -43,7 +91,51 @@ export const PROJECTS: Project[] = [
     overview: {
       objective: "To design an intuitive platform that helps users manage pet care while also enabling quick reporting and tracking of lost and found pets.",
       challenges: "Simplifying complex interactions like reporting, searching, and contacting while ensuring emotional sensitivity for users dealing with lost pets.",
-      description: "CareHub is designed as a unified solution for pet owners to manage care, find nearby services, and respond quickly in situations like lost pets. The focus was on creating a seamless, user-friendly experience that balances functionality with empathy."
+      description: "CareHub is designed as a unified solution for pet owners to manage care, find nearby services, and respond quickly in situations like lost pets. The focus was on creating a seamless, user-friendly experience that balances functionality with empathy.",
+      role: "Product Designer",
+      timeline: "6 Weeks",
+      tools: ["Figma", "Miro", "After Effects"]
+    },
+    problemStatement: "Pet owners often struggle with fragmented information when their pets go missing. Existing solutions are either too local (Facebook groups) or too complex. CareHub aims to bridge this gap by providing a centralized, real-time platform for pet recovery and daily care management.",
+    userResearch: {
+      description: "I surveyed 50 pet owners and interviewed 5 people who had recently lost a pet to map out the emotional and functional journey of pet recovery.",
+      insights: [
+        "Speed is the most critical factor in pet recovery.",
+        "Users feel high anxiety and need a guided, step-by-step reporting process.",
+        "Community verification of 'found' reports is highly valued."
+      ]
+    },
+    userFlow: {
+      description: "The 'Report Lost Pet' flow was optimized to be completed in under 60 seconds, including photo upload and location tagging.",
+      image: "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png"
+    },
+    wireframes: {
+      description: "Wireframes focused on a bottom-navigation structure for easy one-handed use, as users are often on the move when searching for a pet.",
+      images: [
+        "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png",
+        "https://picsum.photos/seed/pet-1/1920/1080"
+      ]
+    },
+    uiDesign: {
+      description: "The UI uses friendly, rounded corners and a calming blue-and-white palette to reduce user stress while maintaining a professional, 'utility' feel.",
+      images: [
+        "https://i.ibb.co/WpP2Zx4Y/Frame-72-3.png",
+        "https://picsum.photos/seed/pet-2/1920/1080"
+      ]
+    },
+    designDecisions: [
+      {
+        title: "One-Tap Reporting",
+        description: "A prominent floating action button for reporting lost pets from any screen."
+      },
+      {
+        title: "Proximity Alerts",
+        description: "Using geofencing to notify nearby users immediately when a pet is reported lost."
+      }
+    ],
+    prototype: {
+      description: "The prototype highlights the seamless transition from the home dashboard to the lost-pet reporting wizard.",
+      videoUrl: "https://video.wixstatic.com/video/bc81e6_a8de38de8a3347fd844ec24140394a3d/1080p/mp4/file.mp4"
     },
     process: ["User Research", "User Flow Mapping", "Wireframing", "UI Design", "Prototyping"],
     outcome: "A clean and accessible interface that enables users to quickly report, search, and connect—making pet care and recovery faster and more efficient.",
@@ -51,6 +143,10 @@ export const PROJECTS: Project[] = [
       "Simplified reporting and discovery flow for lost & found pets",
       "Improved accessibility and clarity across user journeys",
       "Designed a scalable system for future feature expansion"
+    ],
+    learnings: [
+      "Designing for high-stress scenarios requires extreme simplification of UI elements.",
+      "The value of community-driven data in solving real-world problems."
     ]
   },
   {

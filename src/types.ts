@@ -12,12 +12,42 @@ export interface Project {
     description: string;
     objective: string;
     challenges: string;
+    role?: string;
+    timeline?: string;
+    tools?: string[];
+  };
+  problemStatement?: string;
+  userResearch?: {
+    description: string;
+    insights: string[];
+  };
+  userFlow?: {
+    description: string;
+    image: string;
+  };
+  wireframes?: {
+    description: string;
+    images: string[];
+  };
+  uiDesign?: {
+    description: string;
+    images: string[];
+  };
+  designDecisions?: {
+    title: string;
+    description: string;
+  }[];
+  prototype?: {
+    description: string;
+    videoUrl?: string;
+    embedUrl?: string;
   };
   gridImages?: string[];
   media?: { type: 'image' | 'video'; src: string; label?: string }[];
   process: string[];
   outcome: string;
   achievements: string[];
+  learnings?: string[];
 }
 
 export interface PhotographyItem {
