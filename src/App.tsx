@@ -20,7 +20,13 @@ import {
   Play,
   Maximize2,
   Eye,
-  ArrowLeft
+  ArrowLeft,
+  Smartphone,
+  Info,
+  Target,
+  AlertCircle,
+  Zap,
+  User
 } from 'lucide-react';
 import { PROJECTS, PHOTOGRAPHY, MOTION } from './constants';
 import { Project, PhotographyItem, MotionItem } from './types';
@@ -81,7 +87,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/80 backdrop-blur-md py-4 border-b border-line' : 'bg-transparent py-10'}`}>
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${scrolled ? 'bg-bg/95 backdrop-blur-xl py-5 border-b border-line shadow-lg' : 'bg-bg/50 backdrop-blur-md py-6 border-b border-white/5'}`}>
       <div className="max-w-7xl mx-auto px-10 flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <img src="https://i.ibb.co/vrFdk6Z/Asset-1-4x.png" alt="Logo" className="nav-logo" />
@@ -93,7 +99,7 @@ const Navbar = () => {
             <Link 
               key={link.name} 
               to={link.to} 
-              className="text-[14px] font-medium text-muted hover:text-ink transition-colors"
+              className="text-[17px] font-medium text-muted hover:text-ink transition-colors tracking-wide"
             >
               {link.name}
             </Link>
@@ -101,7 +107,7 @@ const Navbar = () => {
           
           <Link 
             to="/#contact" 
-            className="px-5 py-2 border border-line text-ink rounded-full text-[14px] font-semibold hover:bg-accent hover:text-white transition-all"
+            className="px-6 py-3 bg-ink text-bg rounded-full text-[17px] font-semibold hover:bg-accent hover:text-white transition-all shadow-sm"
           >
             Let's Talk
           </Link>
@@ -143,7 +149,7 @@ const Navbar = () => {
 
 const Hero = ({ isTransitioning }: { isTransitioning?: boolean }) => {
   return (
-    <section className="min-h-screen pt-48 pb-48 flex items-center bg-bg overflow-visible">
+    <section className="min-h-screen pt-64 pb-48 flex items-center bg-bg overflow-visible">
       <div className="max-w-7xl mx-auto px-10 w-full grid grid-cols-1 lg:grid-cols-[1.1fr,1fr] items-center gap-16 lg:gap-24 overflow-visible">
         {/* Left: Video */}
         <motion.div 
@@ -309,7 +315,31 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
   }, []);
 
   const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-    <h4 className="text-[12px] tracking-[1.5px] uppercase opacity-70 font-bold text-accent mb-8">{children}</h4>
+    <h4 className="text-[13px] tracking-[0.1em] uppercase font-bold text-accent mb-2.5">{children}</h4>
+  );
+
+  const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+    <h3 className="text-[32px] font-semibold leading-[1.2] tracking-tight text-ink mb-8">{children}</h3>
+  );
+
+  const Subheading = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+    <h4 className={`text-[20px] font-semibold text-ink mb-4 ${className}`}>{children}</h4>
+  );
+
+  const BodyText = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+    <p className={`text-[16px] leading-[1.6] text-ink/80 ${className}`}>{children}</p>
+  );
+
+  const GridSection = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className={`mb-[100px] ${className}`}
+    >
+      {children}
+    </motion.div>
   );
 
   return (
@@ -317,338 +347,451 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-bg text-ink pt-48 pb-32"
+      className="min-h-screen bg-bg text-ink pb-32"
     >
-      <div className="max-w-7xl mx-auto px-10">
-        {/* Navigation */}
-        <button 
-          onClick={onBack}
-          className="flex items-center gap-3 text-muted hover:text-accent transition-all duration-500 font-bold text-[12px] uppercase tracking-[1.5px] group mb-16"
-        >
-          <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-500" /> Back to Works
-        </button>
-
-        {/* 1. Hero Section */}
-        <div className="mb-20">
-          <motion.div 
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-            className="mb-16"
+      {/* 1. HERO SECTION */}
+      <div className="relative w-full h-[80vh] overflow-hidden mb-[100px]">
+        <div className="absolute inset-0 z-0">
+          <DynamicMediaShowcase media={project.media} />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-10" />
+        
+        <div className="absolute top-12 left-10 z-30">
+          <button 
+            onClick={onBack}
+            className="flex items-center gap-2 px-5 py-3 bg-black/40 backdrop-blur-md border border-white/10 text-white hover:bg-black/60 hover:border-white/20 transition-all duration-300 rounded-full font-semibold text-[15px] group shadow-xl"
           >
-            <DynamicMediaShowcase media={project.media} />
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 1, ease: [0.65, 0, 0.35, 1] }}
-          >
-            <h1 className="text-[clamp(40px,5vw,64px)] font-semibold leading-[1.05] tracking-tighter mb-4">{project.title}</h1>
-            <p className="text-[14px] leading-[1.5] opacity-80 text-muted uppercase tracking-[1.5px] font-semibold">{project.shortDescription}</p>
-          </motion.div>
+            <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-300" /> 
+            <span>Back</span>
+          </button>
         </div>
 
-        <div className="space-y-20">
-          {/* 2. Project Overview */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-20"
-          >
-            <div className="lg:col-span-8 space-y-8">
-              <SectionLabel>Project Overview</SectionLabel>
-              <p className="text-[16px] leading-[1.6] text-muted max-w-[600px] mt-3">
-                {project.overview.description}
+        <div className="absolute bottom-20 left-0 right-0 z-20">
+          <div className="max-w-[1200px] mx-auto px-10">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-3xl"
+            >
+              <h1 className="text-[clamp(40px,6vw,80px)] font-semibold leading-[1.05] tracking-tighter text-white mb-6">
+                {project.title}
+              </h1>
+              <p className="text-[18px] md:text-[20px] leading-[1.4] text-white/80 max-w-2xl font-medium">
+                {project.shortDescription}
               </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-8">
-                <div>
-                  <h5 className="text-[28px] font-medium leading-[1.2] tracking-tight mb-4">Objective</h5>
-                  <p className="text-[16px] leading-[1.6] text-muted">{project.overview.objective}</p>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-[1200px] mx-auto px-10">
+        {/* 1. PROJECT OVERVIEW */}
+        <GridSection>
+          {/* Goal - Full Width */}
+          <div className="mb-16 md:mb-24">
+            <div className="max-w-[700px]">
+              <SectionLabel>Goal</SectionLabel>
+              <BodyText className="text-[18px] md:text-[20px] font-medium text-ink leading-relaxed">
+                {project.overview.objective}
+              </BodyText>
+            </div>
+          </div>
+          
+          {/* Two Column Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+            {/* Left Column */}
+            <div className="space-y-10">
+              <div>
+                <SectionLabel>Role</SectionLabel>
+                <p className="text-[16px] font-semibold text-ink">{project.overview.role || 'UX Designer'}</p>
+              </div>
+              <div>
+                <SectionLabel>Duration</SectionLabel>
+                <p className="text-[16px] font-semibold text-ink">{project.overview.duration || project.overview.timeline || '4 Weeks'}</p>
+              </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="space-y-10">
+              <div>
+                <SectionLabel>Responsibilities</SectionLabel>
+                <div className="flex flex-col gap-2">
+                  {project.overview.responsibilities?.map(res => (
+                    <span key={res} className="text-[16px] font-medium text-ink/70">{res}</span>
+                  ))}
                 </div>
-                <div>
-                  <h5 className="text-[28px] font-medium leading-[1.2] tracking-tight mb-4">Challenges</h5>
-                  <p className="text-[16px] leading-[1.6] text-muted">{project.overview.challenges}</p>
+              </div>
+              <div>
+                <SectionLabel>Tools</SectionLabel>
+                <div className="flex flex-col gap-2">
+                  {project.overview.tools?.map(tool => (
+                    <span key={tool} className="text-[16px] font-medium text-ink/70">{tool}</span>
+                  ))}
                 </div>
               </div>
             </div>
-            <div className="lg:col-span-4 lg:pl-12 space-y-12 border-l border-line">
-              {project.overview.role && (
-                <div>
-                  <h5 className="text-[12px] tracking-[1.5px] uppercase opacity-70 font-bold text-muted mb-2">Role</h5>
-                  <p className="text-[16px] leading-[1.6]">{project.overview.role}</p>
+          </div>
+        </GridSection>
+
+        {/* 2. THE PROBLEM */}
+        <GridSection>
+          <div className="max-w-[800px]">
+            <SectionLabel>Problem</SectionLabel>
+            <BodyText className="text-[24px] md:text-[28px] font-bold text-ink leading-tight">
+              {project.problemDefinition || project.problemStatement || project.overview.challenges}
+            </BodyText>
+          </div>
+        </GridSection>
+
+        {/* 2. USER RESEARCH */}
+        {(project.userResearch || project.painPoints || project.userPersona || project.journeyMapping) && (
+          <div className="mb-[100px]">
+            <SectionLabel>User Research</SectionLabel>
+            <SectionTitle>Understanding the User</SectionTitle>
+            
+            {/* Pain Points - 3 Columns */}
+            {project.painPoints && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                {project.painPoints.map((point, i) => (
+                  <div key={i} className="p-8 bg-ink/[0.02] border border-line rounded-2xl">
+                    <span className="text-accent font-bold text-[13px] mb-4 block uppercase tracking-wider">Pain Point 0{i+1}</span>
+                    <BodyText className="font-medium text-ink">{point}</BodyText>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Persona - Card Layout */}
+            {project.userPersona && (
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start bg-ink/[0.02] p-8 lg:p-16 rounded-[40px] border border-line mb-16">
+                {/* Left: Circular Image & Basic Info */}
+                <div className="lg:col-span-4 flex flex-col items-center text-center lg:text-left lg:items-start">
+                  <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-xl mb-8">
+                    <img src={project.userPersona.image} alt={project.userPersona.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                  </div>
+                  <div className="space-y-2">
+                    <h3 className="text-[28px] font-bold text-ink">{project.userPersona.name}</h3>
+                    <p className="text-accent font-bold uppercase tracking-widest text-[12px]">{project.userPersona.basicInfo}</p>
+                  </div>
+                  
+                  {/* Device Usage - Small Icons/Text */}
+                  {project.userPersona.deviceUsage && (
+                    <div className="mt-10 pt-10 border-t border-line w-full">
+                      <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
+                        <Smartphone size={14} /> Device Usage
+                      </h4>
+                      <div className="flex flex-wrap gap-3">
+                        {project.userPersona.deviceUsage.map((device, i) => (
+                          <span key={i} className="px-3 py-1 bg-white border border-line rounded-full text-[12px] font-medium text-ink/70">{device}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Right: Content Grid */}
+                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                  {/* About */}
+                  <div className="md:col-span-2">
+                    <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-3 flex items-center gap-2">
+                      <Info size={14} /> About
+                    </h4>
+                    <p className="text-[16px] leading-relaxed text-ink/80 font-medium">{project.userPersona.about}</p>
+                  </div>
+
+                  {/* Goals & Needs */}
+                  <div>
+                    <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
+                      <Target size={14} /> Goals & Needs
+                    </h4>
+                    <ul className="space-y-3">
+                      {(project.userPersona.needs || [project.userPersona.goal]).map((goal, i) => (
+                        <li key={i} className="flex gap-3 items-start">
+                          <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                          <span className="text-[14px] leading-tight font-medium text-ink/80">{goal}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Frustrations */}
+                  <div>
+                    <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
+                      <AlertCircle size={14} /> Frustrations
+                    </h4>
+                    <ul className="space-y-3">
+                      {(project.userPersona.frustrations || project.userPersona.painPoints).map((p, i) => (
+                        <li key={i} className="flex gap-3 items-start">
+                          <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2 shrink-0" />
+                          <span className="text-[14px] leading-tight font-medium text-ink/80">{p}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {/* Motivations */}
+                  {project.userPersona.motivations && (
+                    <div className="md:col-span-2 pt-6 border-t border-line">
+                      <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
+                        <Zap size={14} /> Motivations
+                      </h4>
+                      <div className="flex flex-wrap gap-3">
+                        {project.userPersona.motivations.map((m, i) => (
+                          <span key={i} className="px-4 py-2 bg-accent/5 text-accent rounded-xl text-[13px] font-bold border border-accent/10">{m}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Journey - Full Width Visual */}
+            {project.journeyMapping && (
+              <div className="space-y-8">
+                <div className="max-w-2xl">
+                  <Subheading>User Journey Map</Subheading>
+                  <BodyText>{project.journeyMapping.description}</BodyText>
+                </div>
+                <div className="rounded-2xl overflow-hidden border border-line">
+                  <img src={project.journeyMapping.image} alt="Journey Map" className="w-full h-auto" referrerPolicy="no-referrer" />
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 3. STARTING DESIGN */}
+        {(project.appMap || project.userFlow || project.wireframes || project.uiDesign) && (
+          <div className="mb-[100px]">
+            <SectionLabel>Starting Design</SectionLabel>
+            <SectionTitle>Architecting the Solution</SectionTitle>
+            
+            <div className="space-y-24">
+              {/* App Map */}
+              {project.appMap && (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                  <div className="lg:col-span-5 space-y-4">
+                    <Subheading>Information Architecture</Subheading>
+                    <BodyText>{project.appMap.description}</BodyText>
+                  </div>
+                  <div className="lg:col-span-7">
+                    <div className="rounded-xl overflow-hidden border border-line bg-ink/[0.02]">
+                      <img src={project.appMap.image} alt="App Map" className="w-full h-auto" referrerPolicy="no-referrer" />
+                    </div>
+                  </div>
                 </div>
               )}
-              {project.overview.timeline && (
-                <div>
-                  <h5 className="text-[12px] tracking-[1.5px] uppercase opacity-70 font-bold text-muted mb-2">Timeline</h5>
-                  <p className="text-[16px] leading-[1.6]">{project.overview.timeline}</p>
+
+              {/* User Flow */}
+              {project.userFlow && (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                  <div className="lg:col-span-5 lg:order-2 space-y-4">
+                    <Subheading>User Flow</Subheading>
+                    <BodyText>{project.userFlow.description}</BodyText>
+                  </div>
+                  <div className="lg:col-span-7 lg:order-1">
+                    <div className="rounded-xl overflow-hidden border border-line bg-ink/[0.02]">
+                      <img src={project.userFlow.image} alt="User Flow" className="w-full h-auto" referrerPolicy="no-referrer" />
+                    </div>
+                  </div>
                 </div>
               )}
-              {project.overview.tools && (
-                <div>
-                  <h5 className="text-[12px] tracking-[1.5px] uppercase opacity-70 font-bold text-muted mb-2">Tools</h5>
-                  <div className="flex flex-wrap gap-2">
-                    {project.overview.tools.map(tool => (
-                      <span key={tool} className="text-[14px] bg-ink/5 px-3 py-1 rounded-full">{tool}</span>
+
+              {/* Wireframes */}
+              {project.wireframes && (
+                <div className="space-y-12 py-12 flex flex-col items-center text-center">
+                  <div className="max-w-2xl">
+                    <Subheading>Digital Wireframes</Subheading>
+                    <BodyText>{project.wireframes.description}</BodyText>
+                  </div>
+                  <div className="w-full max-w-4xl">
+                    {project.wireframes.images?.map((img, i) => (
+                      <div key={i} className="rounded-2xl overflow-hidden border border-line bg-ink/[0.02] p-4 shadow-sm">
+                        <img src={img} alt="Wireframe" className="w-full h-auto rounded-lg" referrerPolicy="no-referrer" />
+                      </div>
+                    ))}
+                    {project.wireframes.sections?.map((section, idx) => (
+                      <div key={idx} className="col-span-full grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {section.images.map((img, i) => (
+                          <div key={i} className="rounded-2xl overflow-hidden border border-line bg-ink/[0.02] p-4">
+                            <img src={img} alt={section.title} className="w-full h-auto rounded-lg" referrerPolicy="no-referrer" />
+                          </div>
+                        ))}
+                      </div>
                     ))}
                   </div>
                 </div>
               )}
             </div>
-          </motion.div>
+          </div>
+        )}
 
-          {/* Design Process Section */}
-          {project.process && project.process.length > 0 && (
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-              className="space-y-8"
-            >
-              <SectionLabel>Design Process</SectionLabel>
-              <div className="flex flex-wrap gap-4">
-                {project.process.map((step, i) => (
-                  <div 
-                    key={i}
-                    className="flex items-center gap-3 bg-ink/[0.04] px-5 py-3 rounded-full cursor-default"
-                  >
-                    <span className="text-accent font-mono text-[12px] font-bold">0{i + 1}</span>
-                    <span className="text-[14px] font-medium text-ink/80">{step}</span>
+        {/* 4. REFINING DESIGN */}
+        {(project.mockups || project.highFidelityUI || project.finalUI) && (
+          <div className="mb-[100px]">
+            <SectionLabel>Refining Design</SectionLabel>
+            <SectionTitle>Polishing the Experience</SectionTitle>
+
+            {/* Mockups - Grid Layout */}
+            {project.mockups && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+                {project.mockups.images.map((img, i) => (
+                  <div key={i} className="rounded-3xl overflow-hidden border border-line shadow-lg">
+                    <img src={img} alt="Mockup" className="w-full h-auto" referrerPolicy="no-referrer" />
                   </div>
                 ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* 3. Problem Statement */}
-          {project.problemStatement && (
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-              className="max-w-4xl"
-            >
-              <SectionLabel>Problem Statement</SectionLabel>
-              <p className="text-[16px] leading-[1.6] text-muted max-w-[600px]">
-                {project.problemStatement}
-              </p>
-            </motion.div>
-          )}
-
-          {/* 4. User Research */}
-          {project.userResearch && (
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-20"
-            >
-              <div className="space-y-8">
-                <SectionLabel>User Research</SectionLabel>
-                <p className="text-[16px] leading-[1.6] text-muted max-w-[600px] mt-3">
-                  {project.userResearch.description}
-                </p>
-              </div>
-              <div className="bg-ink/[0.02] p-12 rounded-[32px] border border-line">
-                <h5 className="text-[12px] tracking-[1.5px] uppercase opacity-70 font-bold text-accent mb-8">Key Insights</h5>
-                <ul className="space-y-6">
-                  {project.userResearch.insights.map((insight, i) => (
-                    <li key={i} className="flex gap-4 items-start">
-                      <span className="text-accent font-mono text-[14px] mt-1">0{i+1}</span>
-                      <p className="text-[16px] leading-[1.6]">{insight}</p>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          )}
-
-          {/* 5. User Flow */}
-          {project.userFlow && (
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-              className="space-y-8"
-            >
-              <SectionLabel>User Flow</SectionLabel>
-              <p className="text-[16px] leading-[1.6] text-muted max-w-[600px] mt-3">
-                {project.userFlow.description}
-              </p>
-              <div className="rounded-[32px] overflow-hidden border border-line bg-ink/5">
-                <img 
-                  src={project.userFlow.image} 
-                  alt="User Flow" 
-                  className="w-full h-auto object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
-            </motion.div>
-          )}
-
-          {/* 6. Wireframes */}
-          {project.wireframes && (
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-              className="space-y-8"
-            >
-              <SectionLabel>Wireframes</SectionLabel>
-              <p className="text-[16px] leading-[1.6] text-muted max-w-[600px] mt-3">
-                {project.wireframes.description}
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {project.wireframes.images.map((img, i) => (
-                  <div key={i} className="rounded-[24px] overflow-hidden border border-line bg-ink/5">
-                    <img 
-                      src={img} 
-                      alt={`Wireframe ${i+1}`} 
-                      className="w-full h-auto object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* 7. UI Design */}
-          {project.uiDesign && (
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-              className="space-y-8"
-            >
-              <SectionLabel>UI Design</SectionLabel>
-              <p className="text-[16px] leading-[1.6] text-muted max-w-[600px] mt-3">
-                {project.uiDesign.description}
-              </p>
-              <div className="space-y-12">
-                {project.uiDesign.images.map((img, i) => (
-                  <div key={i} className="rounded-[32px] overflow-hidden shadow-2xl">
-                    <img 
-                      src={img} 
-                      alt={`UI Design ${i+1}`} 
-                      className="w-full h-auto object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* 8. Design Decisions */}
-          {project.designDecisions && (
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-            >
-              <SectionLabel>Design Decisions</SectionLabel>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                {project.designDecisions.map((decision, i) => (
-                  <div key={i} className="space-y-4">
-                    <h5 className="text-[28px] font-medium leading-[1.2] tracking-tight mb-4">{decision.title}</h5>
-                    <p className="text-[16px] leading-[1.6] text-muted">{decision.description}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* 9. Prototype / Interaction */}
-          {project.prototype && (
-            <motion.div 
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-              className="space-y-8"
-            >
-              <SectionLabel>Prototype / Interaction</SectionLabel>
-              <p className="text-[16px] leading-[1.6] text-muted max-w-[600px] mt-3">
-                {project.prototype.description}
-              </p>
-              {project.prototype.videoUrl && (
-                <div className="rounded-[32px] overflow-hidden shadow-2xl aspect-video bg-ink/10">
-                  <video 
-                    src={project.prototype.videoUrl} 
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline 
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-            </motion.div>
-          )}
-
-          {/* 10. Outcome & 11. Learnings */}
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-            className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-40"
-          >
-            <div className="space-y-12">
-              <div>
-                <SectionLabel>Outcome</SectionLabel>
-                <p className="text-[16px] leading-[1.6] text-muted max-w-[600px]">
-                  {project.outcome}
-                </p>
-              </div>
-              <div className="pt-12">
-                <h4 className="text-[12px] tracking-[1.5px] uppercase opacity-70 font-bold text-accent mb-8">Key Achievements</h4>
-                <ul className="space-y-8">
-                  {project.achievements.map((achievement, i) => (
-                    <motion.li 
-                      key={i} 
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1, duration: 0.8, ease: [0.65, 0, 0.35, 1] }}
-                      className="flex gap-8 text-muted text-[16px] leading-[1.6] font-light"
-                    >
-                      <span className="text-accent font-bold tracking-tighter text-2xl">0{i + 1}</span>
-                      {achievement}
-                    </motion.li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-            {project.learnings && (
-              <div className="bg-ink/[0.02] p-12 rounded-[32px] border border-line h-fit">
-                <SectionLabel>Learnings</SectionLabel>
-                <ul className="space-y-8">
-                  {project.learnings.map((learning, i) => (
-                    <li key={i} className="flex gap-6 items-start">
-                      <div className="w-1.5 h-1.5 rounded-full bg-accent mt-3 shrink-0" />
-                      <p className="text-[16px] leading-[1.6] text-muted">{learning}</p>
-                    </li>
-                  ))}
-                </ul>
               </div>
             )}
-          </motion.div>
+
+            {/* High Fidelity - Aligned Rows */}
+            {project.highFidelityUI && (
+              <div className="space-y-16">
+                <div className="max-w-2xl">
+                  <Subheading>High-Fidelity Interface</Subheading>
+                  <BodyText>{project.highFidelityUI.description}</BodyText>
+                </div>
+                <div className="space-y-12">
+                  {project.highFidelityUI.images.map((img, i) => (
+                    <div key={i} className="rounded-[32px] overflow-hidden border border-line shadow-2xl">
+                      <img src={img} alt="High Fidelity" className="w-full h-auto" referrerPolicy="no-referrer" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Final UI Groups */}
+            {project.finalUI && (
+              <div className="mt-24 space-y-24">
+                {Object.entries(project.finalUI).map(([key, section]) => (
+                  <div key={key} className="space-y-8">
+                    <div className="max-w-2xl">
+                      <Subheading className="capitalize">{key.replace(/([A-Z])/g, ' $1')}</Subheading>
+                      <BodyText>{section.description}</BodyText>
+                    </div>
+                    <div className="grid grid-cols-1 gap-12">
+                      {section.images.map((img, i) => (
+                        <div key={i} className="rounded-[32px] overflow-hidden border border-line shadow-xl">
+                          <img src={img} alt={key} className="w-full h-auto" referrerPolicy="no-referrer" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 5. USABILITY STUDIES */}
+        {(project.usabilityThinking || project.interactionThinking) && (
+          <div className="mb-[100px]">
+            <SectionLabel>Usability Studies</SectionLabel>
+            <SectionTitle>Testing & Iteration</SectionTitle>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="p-8 bg-ink/[0.02] border border-line rounded-2xl md:col-span-2">
+                <SectionLabel>Key Insights</SectionLabel>
+                <p className="text-[20px] leading-[1.5] font-semibold text-ink/90">
+                  {project.usabilityThinking}
+                </p>
+              </div>
+              <div className="p-8 bg-accent/5 border border-accent/10 rounded-2xl">
+                <SectionLabel>Interaction Goal</SectionLabel>
+                <BodyText className="font-medium">
+                  {project.interactionThinking || "Ensuring seamless transitions and intuitive feedback loops across all user touchpoints."}
+                </BodyText>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* 6. OUTCOME */}
+        <div className="mb-[100px] pt-24 border-t border-line">
+          <SectionLabel>Project Outcome</SectionLabel>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+            <div>
+              <Subheading>Takeaways</Subheading>
+              <BodyText>{project.outcome}</BodyText>
+            </div>
+            <div>
+              <Subheading>Impact</Subheading>
+              <ul className="space-y-4">
+                {project.achievements.map((achievement, i) => (
+                  <li key={i} className="flex gap-3 items-start">
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                    <BodyText className="text-[15px]">{achievement}</BodyText>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <Subheading>What I Learned</Subheading>
+              <ul className="space-y-4">
+                {project.learnings?.map((learning, i) => (
+                  <li key={i} className="flex gap-3 items-start">
+                    <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                    <BodyText className="text-[15px]">{learning}</BodyText>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
+
+        {/* DESIGN SYSTEM (Optional but kept for completeness) */}
+        {project.designSystem && (
+          <div className="mb-[100px] pt-24 border-t border-line">
+            <SectionLabel>Design System</SectionLabel>
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+              <div className="lg:col-span-4 space-y-10">
+                <h6 className="text-[11px] tracking-[0.15em] uppercase opacity-40 font-bold text-ink">Color Palette</h6>
+                <div className="grid grid-cols-1 gap-6">
+                  {project.designSystem.colors.map((color, i) => (
+                    <div key={i} className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-lg border border-line shadow-sm" style={{ backgroundColor: color.hex }} />
+                      <div>
+                        <p className="text-[13px] font-mono uppercase tracking-wider">{color.hex}</p>
+                        <p className="text-[14px] text-ink/60 font-medium">{color.label}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="lg:col-span-8 space-y-12">
+                <h6 className="text-[11px] tracking-[0.15em] uppercase opacity-40 font-bold text-ink">Typography System</h6>
+                <div className="space-y-12">
+                  {project.designSystem.typography.map((font, i) => (
+                    <div key={i} className="space-y-6">
+                      <div className="border-b border-line pb-4">
+                        <h4 className="text-[24px] font-semibold tracking-tight">{font.fontFamily}</h4>
+                        <p className="text-[11px] text-ink/40 uppercase tracking-widest font-bold">{font.type} Typeface</p>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        {font.hierarchy.map((item, idx) => (
+                          <div key={idx} className="space-y-2">
+                            <div className="flex items-baseline justify-between border-b border-line/30 pb-1">
+                              <span className="text-[10px] text-ink/40 uppercase tracking-wider font-bold">{item.level}</span>
+                              <span className="text-[10px] font-mono text-ink/30">{item.size} / {item.weight}</span>
+                            </div>
+                            <p className="truncate leading-tight" style={{ fontFamily: font.fontFamily, fontSize: '24px', fontWeight: item.weight === 'Bold' ? 700 : item.weight === 'Medium' ? 500 : 400 }}>The quick brown fox</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </motion.div>
   );
 };
+
 
 const ProjectSlideshow: React.FC<{ images: string[]; title: string }> = ({ images, title }) => {
   const [currentIndex, setCurrentIndex] = useState(0);

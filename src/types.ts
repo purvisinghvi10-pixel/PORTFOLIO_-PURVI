@@ -13,13 +13,45 @@ export interface Project {
     objective: string;
     challenges: string;
     role?: string;
+    responsibilities?: string[];
     timeline?: string;
+    duration?: string;
     tools?: string[];
   };
+  problemDefinition?: string;
   problemStatement?: string;
+  existingExperienceAnalysis?: {
+    description: string;
+    images: string[];
+  };
+  uxStrategy?: {
+    description: string;
+    points: string[];
+  };
   userResearch?: {
     description: string;
     insights: string[];
+  };
+  painPoints?: string[];
+  userPersona?: {
+    name: string;
+    basicInfo?: string;
+    about?: string;
+    goal: string;
+    needs?: string[];
+    painPoints: string[];
+    frustrations?: string[];
+    motivations?: string[];
+    deviceUsage?: string[];
+    image?: string;
+  };
+  journeyMapping?: {
+    description: string;
+    image: string;
+  };
+  appMap?: {
+    description: string;
+    image: string;
   };
   userFlow?: {
     description: string;
@@ -27,9 +59,43 @@ export interface Project {
   };
   wireframes?: {
     description: string;
+    images?: string[];
+    sections?: { title: string; description: string; images: string[] }[];
+  };
+  usabilityThinking?: string;
+  refiningDesign?: {
+    description: string;
     images: string[];
   };
+  designSystem?: {
+    colors: { hex: string; label: string }[];
+    typography: {
+      type: string;
+      fontFamily: string;
+      usage: string;
+      hierarchy: {
+        level: string;
+        size: string;
+        weight: string;
+      }[];
+    }[];
+    components: string[];
+  };
   uiDesign?: {
+    description: string;
+    images: string[];
+  };
+  highFidelityUI?: {
+    description: string;
+    images: string[];
+  };
+  finalUI?: {
+    exploration?: { description: string; images: string[] };
+    coreExperience?: { description: string; images: string[] };
+    keyActions?: { description: string; images: string[] };
+  };
+  interactionThinking?: string;
+  mockups?: {
     description: string;
     images: string[];
   };
