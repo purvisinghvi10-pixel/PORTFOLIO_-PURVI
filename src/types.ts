@@ -109,6 +109,11 @@ export interface Project {
     embedUrl?: string;
   };
   gridImages?: string[];
+  imageShowcase?: {
+    fullWidth?: string;
+    grid?: string[];
+  };
+  showcaseVideo?: string;
   media?: { type: 'image' | 'video'; src: string; label?: string }[];
   process: string[];
   outcome: string;

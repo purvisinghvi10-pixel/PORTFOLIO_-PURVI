@@ -379,20 +379,38 @@ export const PROJECTS: Project[] = [
       { type: 'image', src: "https://i.ibb.co/wN0QJ4wv/c23cfd221124143-67cf465dd2226.jpg", label: "Thank You Card" },
       { type: 'image', src: "https://i.ibb.co/ynX1WGXK/fa0b3e221124143-67cf465dd2c8b.png", label: "Visting Card" } ],
     overview: {
-      objective: "To create a premium and minimal brand identity that resonates with luxury jewelry enthusiasts.",
+      objective: "To create a premium and minimal brand identity for a luxury silver jewelry brand.",
       challenges: "Balancing traditional elegance with modern minimalism while maintaining brand recognition.",
-      description: "Silver Leaf required a visual language that felt both timeless and contemporary. We focused on clean lines, a sophisticated color palette, and high-end typography to elevate the brand's presence in the market.",
+      description: "Silver Leaf reflects refined elegance through clean forms, a muted color palette, and high-contrast typography, creating a timeless and sophisticated brand presence.",
       role: "Brand Designer",
       duration: "3 Weeks",
       tools: ["Adobe Illustrator", "Photoshop", "After Effects"]
     },
-    process: ["Research", "Concept Development", "Wireframing", "Visual Design", "Brand Application"],
-    outcome: "A refined and cohesive brand identity that elevated Silver Leaf’s visual presence and established it as a minimal, premium jewelry brand across all touchpoints.",
+    process: ["Discovery", "Brand Strategy", "Logo Design", "Brand Identity", "Brand Applications"],
+    designSystem: {
+      colors: [
+        { hex: "#C9C9C9", label: "Silver Grey" },
+        { hex: "#2B2B2B", label: "Charcoal" },
+        { hex: "#F5F5F5", label: "Off White" },
+        { hex: "#D8CFC4", label: "Warm Beige" }
+      ],
+      components: []
+    },
+    outcome: "A refined and cohesive brand identity that balances minimalism with luxury, establishing Silver Leaf as a premium jewelry brand.",
     achievements: [
-      "Developed a distinctive and elegant visual system aligned with a minimal luxury aesthetic.",
-      "Created consistent branding across logo, packaging, visiting cards, and digital assets.",
-      "Designed a smooth logo animation to enhance brand storytelling and digital presence."
-    ]
+      "Created a distinct and elegant visual system",
+      "Ensured consistency across packaging and brand assets",
+      "Strengthened brand storytelling through motion and application"
+    ],
+    imageShowcase: {
+      fullWidth: "https://i.ibb.co/qYT6TVKn/Artboard-2-4x.png",
+      grid: [
+        "https://i.ibb.co/v44x0J4t/10pcs-Portable-Frosted-Zipper-Closure-Jewel.png",
+        "https://i.ibb.co/0p3XbKHD/Burlap-Bag-Mockup.png",
+        "https://i.ibb.co/4Bjb116/0dcc96221124143-67cf465dd1bc5.png",
+        "https://i.ibb.co/wN0QJ4wv/c23cfd221124143-67cf465dd2226.jpg"
+      ]
+    }
   },
   {
     id: '04',
@@ -420,7 +438,17 @@ export const PROJECTS: Project[] = [
       "Strong visual storytelling aligned with music",
       "Balanced typography and readability",
       "Cohesive and consistent design language"
-    ]
+    ],
+    showcaseVideo: "https://video.wixstatic.com/video/bc81e6_fbee3f71812a4fd189e5cc4e8b411de6/1080p/mp4/file.mp4",
+    imageShowcase: {
+      fullWidth: "https://i.ibb.co/RT2r22Wb/Chat-GPT-Image-Feb-21-2026-05-58-55-AM.png",
+      grid: [
+        "https://i.ibb.co/pjn6dPRD/usiness.jpg",
+        "https://i.ibb.co/jkNCxn9N/usiness-1.jpg",
+        "https://i.ibb.co/4w3zVR7s/Artboard-1-3x-100.jpg",
+        "https://i.ibb.co/yc1pHs8Y/Artboard-2-3x-100.jpg"
+      ]
+    }
   },
   {
     id: '05',
@@ -446,7 +474,16 @@ export const PROJECTS: Project[] = [
       "Designed a clear and organized layout for effective information flow.",
       "Applied strong typography to enhance readability and hierarchy.",
       "Delivered a polished and professional brochure aligned with the event’s requirements."
-    ]
+    ],
+    showcaseVideo: "https://video.wixstatic.com/video/bc81e6_611113969af14783bdb201b3d82788e5/1080p/mp4/file.mp4",
+    imageShowcase: {
+      fullWidth: "https://i.ibb.co/0jTZLFC2/Free-A4-Brochure-Mockup-6.png",
+      grid: [
+        "https://picsum.photos/seed/brochure1/1200/800",
+        "https://picsum.photos/seed/brochure2/1200/800",
+        "https://picsum.photos/seed/brochure3/1200/800"
+      ]
+    }
   },
   {
     id: '06',
@@ -470,7 +507,15 @@ export const PROJECTS: Project[] = [
       "Created a character-driven storytelling concept",
       "Translated brand journey into a kid-friendly narrative",
       "Designed a visually engaging 3D pop-up experience"
-    ]
+    ],
+    imageShowcase: {
+      fullWidth: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
+      grid: [
+        "https://picsum.photos/seed/lego1/1200/800",
+        "https://picsum.photos/seed/lego2/1200/800",
+        "https://picsum.photos/seed/lego3/1200/800"
+      ]
+    }
   }
 ];
 

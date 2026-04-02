@@ -314,20 +314,22 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
     window.scrollTo(0, 0);
   }, []);
 
+  const isUIUX = project.category.toLowerCase().includes('ui/ux');
+
   const SectionLabel = ({ children }: { children: React.ReactNode }) => (
-    <h4 className="text-[13px] tracking-[0.1em] uppercase font-bold text-accent mb-2.5">{children}</h4>
+    <h4 className="text-[12px] md:text-[13px] tracking-[0.15em] uppercase font-bold text-accent mb-4">{children}</h4>
   );
 
   const SectionTitle = ({ children }: { children: React.ReactNode }) => (
-    <h3 className="text-[32px] font-semibold leading-[1.2] tracking-tight text-ink mb-8">{children}</h3>
+    <h3 className="text-[28px] md:text-[40px] font-semibold leading-[1.1] tracking-tighter text-ink mb-10">{children}</h3>
   );
 
   const Subheading = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-    <h4 className={`text-[20px] font-semibold text-ink mb-4 ${className}`}>{children}</h4>
+    <h4 className={`text-[20px] md:text-[24px] font-semibold text-ink mb-5 ${className}`}>{children}</h4>
   );
 
   const BodyText = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
-    <p className={`text-[16px] leading-[1.6] text-ink/80 ${className}`}>{children}</p>
+    <p className={`text-[16px] md:text-[18px] leading-[1.6] text-ink/70 font-medium ${className}`}>{children}</p>
   );
 
   const GridSection = ({ children, className = "" }: { children: React.ReactNode, className?: string }) => (
@@ -336,7 +338,7 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className={`mb-[100px] ${className}`}
+      className={`mb-24 md:mb-32 ${className}`}
     >
       {children}
     </motion.div>
@@ -347,37 +349,57 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="min-h-screen bg-bg text-ink pb-32"
+      className="min-h-screen bg-bg text-ink pb-32 pt-20 md:pt-24"
     >
       {/* 1. HERO SECTION */}
-      <div className="relative w-full h-[80vh] overflow-hidden mb-[100px]">
+      <div className="relative w-full h-[70vh] md:h-[80vh] overflow-hidden mb-16 md:mb-24">
         <div className="absolute inset-0 z-0">
-          <DynamicMediaShowcase media={project.media} />
+          {project.media && project.media.length > 0 && (
+            <div className="w-full h-full">
+              {project.media[0].type === 'image' ? (
+                <img 
+                  src={project.media[0].src} 
+                  alt={project.title} 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <video 
+                  autoPlay 
+                  muted 
+                  loop 
+                  playsInline
+                  src={project.media[0].src} 
+                  className="w-full h-full object-cover"
+                />
+              )}
+            </div>
+          )}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/60 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70 z-10" />
         
-        <div className="absolute top-12 left-10 z-30">
+        <div className="absolute top-8 md:top-12 left-6 md:left-10 z-30">
           <button 
             onClick={onBack}
-            className="flex items-center gap-2 px-5 py-3 bg-black/40 backdrop-blur-md border border-white/10 text-white hover:bg-black/60 hover:border-white/20 transition-all duration-300 rounded-full font-semibold text-[15px] group shadow-xl"
+            className="flex items-center gap-2 px-4 md:px-5 py-2.5 md:py-3 bg-black/40 backdrop-blur-md border border-white/10 text-white hover:bg-black/60 hover:border-white/20 transition-all duration-300 rounded-full font-semibold text-[14px] md:text-[15px] group shadow-xl"
           >
             <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-300" /> 
             <span>Back</span>
           </button>
         </div>
 
-        <div className="absolute bottom-20 left-0 right-0 z-20">
-          <div className="max-w-[1200px] mx-auto px-10">
+        <div className="absolute bottom-12 md:bottom-20 left-0 right-0 z-20">
+          <div className="max-w-[1440px] mx-auto px-6 md:px-10">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="max-w-3xl"
+              className="max-w-4xl"
             >
-              <h1 className="text-[clamp(40px,6vw,80px)] font-semibold leading-[1.05] tracking-tighter text-white mb-6">
+              <h1 className="text-[clamp(32px,8vw,72px)] font-semibold leading-[1.1] tracking-tighter text-white mb-6">
                 {project.title}
               </h1>
-              <p className="text-[18px] md:text-[20px] leading-[1.4] text-white/80 max-w-2xl font-medium">
+              <p className="text-[16px] md:text-[20px] leading-[1.5] text-white/90 max-w-2xl font-medium">
                 {project.shortDescription}
               </p>
             </motion.div>
@@ -385,48 +407,44 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
         </div>
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-10">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10">
         {/* 1. PROJECT OVERVIEW */}
         <GridSection>
-          {/* Goal - Full Width */}
-          <div className="mb-16 md:mb-24">
-            <div className="max-w-[700px]">
-              <SectionLabel>Goal</SectionLabel>
-              <BodyText className="text-[18px] md:text-[20px] font-medium text-ink leading-relaxed">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+            {/* Left: Objective/Goal */}
+            <div className="lg:col-span-7">
+              <SectionLabel>Overview</SectionLabel>
+              <h2 className="text-[24px] md:text-[32px] font-semibold leading-[1.2] text-ink mb-8">
                 {project.overview.objective}
+              </h2>
+              <BodyText className="max-w-2xl">
+                {project.overview.description}
               </BodyText>
             </div>
-          </div>
-          
-          {/* Two Column Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
-            {/* Left Column */}
-            <div className="space-y-10">
+
+            {/* Right: Project Details Meta */}
+            <div className="lg:col-span-5 grid grid-cols-2 gap-x-8 gap-y-12 pt-4">
               <div>
                 <SectionLabel>Role</SectionLabel>
-                <p className="text-[16px] font-semibold text-ink">{project.overview.role || 'UX Designer'}</p>
+                <p className="text-[16px] md:text-[17px] font-bold text-ink">{project.overview.role || 'Designer'}</p>
               </div>
               <div>
                 <SectionLabel>Duration</SectionLabel>
-                <p className="text-[16px] font-semibold text-ink">{project.overview.duration || project.overview.timeline || '4 Weeks'}</p>
+                <p className="text-[16px] md:text-[17px] font-bold text-ink">{project.overview.duration || project.overview.timeline || '4 Weeks'}</p>
               </div>
-            </div>
-
-            {/* Right Column */}
-            <div className="space-y-10">
-              <div>
+              <div className="col-span-2">
                 <SectionLabel>Responsibilities</SectionLabel>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-wrap gap-x-6 gap-y-2">
                   {project.overview.responsibilities?.map(res => (
-                    <span key={res} className="text-[16px] font-medium text-ink/70">{res}</span>
+                    <span key={res} className="text-[15px] md:text-[16px] font-medium text-ink/60">{res}</span>
                   ))}
                 </div>
               </div>
-              <div>
+              <div className="col-span-2">
                 <SectionLabel>Tools</SectionLabel>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-wrap gap-x-6 gap-y-2">
                   {project.overview.tools?.map(tool => (
-                    <span key={tool} className="text-[16px] font-medium text-ink/70">{tool}</span>
+                    <span key={tool} className="text-[15px] md:text-[16px] font-medium text-ink/60">{tool}</span>
                   ))}
                 </div>
               </div>
@@ -434,358 +452,451 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
           </div>
         </GridSection>
 
-        {/* 2. THE PROBLEM */}
-        <GridSection>
-          <div className="max-w-[800px]">
-            <SectionLabel>Problem</SectionLabel>
-            <BodyText className="text-[24px] md:text-[28px] font-bold text-ink leading-tight">
-              {project.problemDefinition || project.problemStatement || project.overview.challenges}
-            </BodyText>
-          </div>
-        </GridSection>
-
-        {/* 2. USER RESEARCH */}
-        {(project.userResearch || project.painPoints || project.userPersona || project.journeyMapping) && (
-          <div className="mb-[100px]">
-            <SectionLabel>User Research</SectionLabel>
-            <SectionTitle>Understanding the User</SectionTitle>
-            
-            {/* Pain Points - 3 Columns */}
-            {project.painPoints && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-                {project.painPoints.map((point, i) => (
-                  <div key={i} className="p-8 bg-ink/[0.02] border border-line rounded-2xl">
-                    <span className="text-accent font-bold text-[13px] mb-4 block uppercase tracking-wider">Pain Point 0{i+1}</span>
-                    <BodyText className="font-medium text-ink">{point}</BodyText>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* Persona - Card Layout */}
-            {project.userPersona && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start bg-ink/[0.02] p-8 lg:p-16 rounded-[40px] border border-line mb-16">
-                {/* Left: Circular Image & Basic Info */}
-                <div className="lg:col-span-4 flex flex-col items-center text-center lg:text-left lg:items-start">
-                  <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-xl mb-8">
-                    <img src={project.userPersona.image} alt={project.userPersona.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                  </div>
-                  <div className="space-y-2">
-                    <h3 className="text-[28px] font-bold text-ink">{project.userPersona.name}</h3>
-                    <p className="text-accent font-bold uppercase tracking-widest text-[12px]">{project.userPersona.basicInfo}</p>
-                  </div>
-                  
-                  {/* Device Usage - Small Icons/Text */}
-                  {project.userPersona.deviceUsage && (
-                    <div className="mt-10 pt-10 border-t border-line w-full">
-                      <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
-                        <Smartphone size={14} /> Device Usage
-                      </h4>
-                      <div className="flex flex-wrap gap-3">
-                        {project.userPersona.deviceUsage.map((device, i) => (
-                          <span key={i} className="px-3 py-1 bg-white border border-line rounded-full text-[12px] font-medium text-ink/70">{device}</span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Right: Content Grid */}
-                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
-                  {/* About */}
-                  <div className="md:col-span-2">
-                    <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-3 flex items-center gap-2">
-                      <Info size={14} /> About
-                    </h4>
-                    <p className="text-[16px] leading-relaxed text-ink/80 font-medium">{project.userPersona.about}</p>
-                  </div>
-
-                  {/* Goals & Needs */}
-                  <div>
-                    <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
-                      <Target size={14} /> Goals & Needs
-                    </h4>
-                    <ul className="space-y-3">
-                      {(project.userPersona.needs || [project.userPersona.goal]).map((goal, i) => (
-                        <li key={i} className="flex gap-3 items-start">
-                          <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
-                          <span className="text-[14px] leading-tight font-medium text-ink/80">{goal}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Frustrations */}
-                  <div>
-                    <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
-                      <AlertCircle size={14} /> Frustrations
-                    </h4>
-                    <ul className="space-y-3">
-                      {(project.userPersona.frustrations || project.userPersona.painPoints).map((p, i) => (
-                        <li key={i} className="flex gap-3 items-start">
-                          <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2 shrink-0" />
-                          <span className="text-[14px] leading-tight font-medium text-ink/80">{p}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Motivations */}
-                  {project.userPersona.motivations && (
-                    <div className="md:col-span-2 pt-6 border-t border-line">
-                      <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
-                        <Zap size={14} /> Motivations
-                      </h4>
-                      <div className="flex flex-wrap gap-3">
-                        {project.userPersona.motivations.map((m, i) => (
-                          <span key={i} className="px-4 py-2 bg-accent/5 text-accent rounded-xl text-[13px] font-bold border border-accent/10">{m}</span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            {/* Journey - Full Width Visual */}
-            {project.journeyMapping && (
-              <div className="space-y-8">
-                <div className="max-w-2xl">
-                  <Subheading>User Journey Map</Subheading>
-                  <BodyText>{project.journeyMapping.description}</BodyText>
-                </div>
-                <div className="rounded-2xl overflow-hidden border border-line">
-                  <img src={project.journeyMapping.image} alt="Journey Map" className="w-full h-auto" referrerPolicy="no-referrer" />
-                </div>
-              </div>
-            )}
+        {/* SHOWCASE VIDEO */}
+        {project.showcaseVideo && (
+          <div className="mb-24 md:mb-40">
+            <div className="w-full aspect-video rounded-3xl overflow-hidden border border-line shadow-2xl bg-black/5">
+              <video 
+                src={project.showcaseVideo} 
+                controls 
+                className="w-full h-full object-cover"
+                playsInline
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
           </div>
         )}
 
-        {/* 3. STARTING DESIGN */}
-        {(project.appMap || project.userFlow || project.wireframes || project.uiDesign) && (
-          <div className="mb-[100px]">
-            <SectionLabel>Starting Design</SectionLabel>
-            <SectionTitle>Architecting the Solution</SectionTitle>
-            
-            <div className="space-y-24">
-              {/* App Map */}
-              {project.appMap && (
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-                  <div className="lg:col-span-5 space-y-4">
-                    <Subheading>Information Architecture</Subheading>
-                    <BodyText>{project.appMap.description}</BodyText>
-                  </div>
-                  <div className="lg:col-span-7">
-                    <div className="rounded-xl overflow-hidden border border-line bg-ink/[0.02]">
-                      <img src={project.appMap.image} alt="App Map" className="w-full h-auto" referrerPolicy="no-referrer" />
+        {/* 2. THE PROCESS (For Non-UI/UX) */}
+        {!isUIUX && project.process && (
+          <GridSection>
+            <div className="max-w-4xl">
+              <SectionLabel>Process</SectionLabel>
+              <SectionTitle>How it came to life</SectionTitle>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-12">
+                {project.process.map((step, i) => (
+                  <div key={i} className="flex gap-6 items-start">
+                    <span className="text-[32px] font-display font-bold text-accent/20 leading-none">0{i+1}</span>
+                    <div>
+                      <h5 className="text-[18px] font-bold text-ink mb-2">{step}</h5>
+                      <div className="w-8 h-0.5 bg-accent/20" />
                     </div>
                   </div>
-                </div>
-              )}
+                ))}
+              </div>
+            </div>
+          </GridSection>
+        )}
 
-              {/* User Flow */}
-              {project.userFlow && (
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-                  <div className="lg:col-span-5 lg:order-2 space-y-4">
-                    <Subheading>User Flow</Subheading>
-                    <BodyText>{project.userFlow.description}</BodyText>
-                  </div>
-                  <div className="lg:col-span-7 lg:order-1">
-                    <div className="rounded-xl overflow-hidden border border-line bg-ink/[0.02]">
-                      <img src={project.userFlow.image} alt="User Flow" className="w-full h-auto" referrerPolicy="no-referrer" />
-                    </div>
-                  </div>
-                </div>
-              )}
+        {/* UI/UX SPECIFIC SECTIONS */}
+        {isUIUX && (
+          <>
+            {/* 2. THE PROBLEM */}
+            <GridSection>
+              <div className="max-w-[800px]">
+                <SectionLabel>Problem</SectionLabel>
+                <BodyText className="text-[24px] md:text-[28px] font-bold text-ink leading-tight">
+                  {project.problemDefinition || project.problemStatement || project.overview.challenges}
+                </BodyText>
+              </div>
+            </GridSection>
 
-              {/* Wireframes */}
-              {project.wireframes && (
-                <div className="space-y-12 py-12 flex flex-col items-center text-center">
-                  <div className="max-w-2xl">
-                    <Subheading>Digital Wireframes</Subheading>
-                    <BodyText>{project.wireframes.description}</BodyText>
-                  </div>
-                  <div className="w-full max-w-4xl">
-                    {project.wireframes.images?.map((img, i) => (
-                      <div key={i} className="rounded-2xl overflow-hidden border border-line bg-ink/[0.02] p-4 shadow-sm">
-                        <img src={img} alt="Wireframe" className="w-full h-auto rounded-lg" referrerPolicy="no-referrer" />
+            {/* 2. USER RESEARCH */}
+            {(project.userResearch || project.painPoints || project.userPersona || project.journeyMapping) && (
+              <div className="mb-24 md:mb-32">
+                <SectionLabel>User Research</SectionLabel>
+                <SectionTitle>Understanding the User</SectionTitle>
+                
+                {/* Pain Points - 3 Columns */}
+                {project.painPoints && (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    {project.painPoints.map((point, i) => (
+                      <div key={i} className="p-8 bg-ink/[0.02] border border-line rounded-2xl">
+                        <span className="text-accent font-bold text-[13px] mb-4 block uppercase tracking-wider">Pain Point 0{i+1}</span>
+                        <BodyText className="font-medium text-ink">{point}</BodyText>
                       </div>
                     ))}
-                    {project.wireframes.sections?.map((section, idx) => (
-                      <div key={idx} className="col-span-full grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {section.images.map((img, i) => (
-                          <div key={i} className="rounded-2xl overflow-hidden border border-line bg-ink/[0.02] p-4">
-                            <img src={img} alt={section.title} className="w-full h-auto rounded-lg" referrerPolicy="no-referrer" />
+                  </div>
+                )}
+
+                {/* Persona - Card Layout */}
+                {project.userPersona && (
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start bg-ink/[0.02] p-8 lg:p-16 rounded-[40px] border border-line mb-16">
+                    {/* Left: Circular Image & Basic Info */}
+                    <div className="lg:col-span-4 flex flex-col items-center text-center lg:text-left lg:items-start">
+                      <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-white shadow-xl mb-8">
+                        <img src={project.userPersona.image} alt={project.userPersona.name} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                      </div>
+                      <div className="space-y-2">
+                        <h3 className="text-[28px] font-bold text-ink">{project.userPersona.name}</h3>
+                        <p className="text-accent font-bold uppercase tracking-widest text-[12px]">{project.userPersona.basicInfo}</p>
+                      </div>
+                      
+                      {/* Device Usage - Small Icons/Text */}
+                      {project.userPersona.deviceUsage && (
+                        <div className="mt-10 pt-10 border-t border-line w-full">
+                          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
+                            <Smartphone size={14} /> Device Usage
+                          </h4>
+                          <div className="flex flex-wrap gap-3">
+                            {project.userPersona.deviceUsage.map((device, i) => (
+                              <span key={i} className="px-3 py-1 bg-white border border-line rounded-full text-[12px] font-medium text-ink/70">{device}</span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Right: Content Grid */}
+                    <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-10">
+                      {/* About */}
+                      <div className="md:col-span-2">
+                        <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-3 flex items-center gap-2">
+                          <Info size={14} /> About
+                        </h4>
+                        <p className="text-[16px] leading-relaxed text-ink/80 font-medium">{project.userPersona.about}</p>
+                      </div>
+
+                      {/* Goals & Needs */}
+                      <div>
+                        <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
+                          <Target size={14} /> Goals & Needs
+                        </h4>
+                        <ul className="space-y-3">
+                          {(project.userPersona.needs || [project.userPersona.goal]).map((goal, i) => (
+                            <li key={i} className="flex gap-3 items-start">
+                              <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
+                              <span className="text-[14px] leading-tight font-medium text-ink/80">{goal}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Frustrations */}
+                      <div>
+                        <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
+                          <AlertCircle size={14} /> Frustrations
+                        </h4>
+                        <ul className="space-y-3">
+                          {(project.userPersona.frustrations || project.userPersona.painPoints).map((p, i) => (
+                            <li key={i} className="flex gap-3 items-start">
+                              <div className="w-1.5 h-1.5 rounded-full bg-red-400 mt-2 shrink-0" />
+                              <span className="text-[14px] leading-tight font-medium text-ink/80">{p}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Motivations */}
+                      {project.userPersona.motivations && (
+                        <div className="md:col-span-2 pt-6 border-t border-line">
+                          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-4 flex items-center gap-2">
+                            <Zap size={14} /> Motivations
+                          </h4>
+                          <div className="flex flex-wrap gap-3">
+                            {project.userPersona.motivations.map((m, i) => (
+                              <span key={i} className="px-4 py-2 bg-accent/5 text-accent rounded-xl text-[13px] font-bold border border-accent/10">{m}</span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Journey - Full Width Visual */}
+                {project.journeyMapping && (
+                  <div className="space-y-8">
+                    <div className="max-w-2xl">
+                      <Subheading>User Journey Map</Subheading>
+                      <BodyText>{project.journeyMapping.description}</BodyText>
+                    </div>
+                    <div className="rounded-2xl overflow-hidden border border-line">
+                      <img src={project.journeyMapping.image} alt="Journey Map" className="w-full h-auto" referrerPolicy="no-referrer" />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 3. STARTING DESIGN */}
+            {(project.appMap || project.userFlow || project.wireframes || project.uiDesign) && (
+              <div className="mb-24 md:mb-32">
+                <SectionLabel>Starting Design</SectionLabel>
+                <SectionTitle>Architecting the Solution</SectionTitle>
+                
+                <div className="space-y-24">
+                  {/* App Map */}
+                  {project.appMap && (
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                      <div className="lg:col-span-5 space-y-4">
+                        <Subheading>Information Architecture</Subheading>
+                        <BodyText>{project.appMap.description}</BodyText>
+                      </div>
+                      <div className="lg:col-span-7">
+                        <div className="rounded-xl overflow-hidden border border-line bg-ink/[0.02]">
+                          <img src={project.appMap.image} alt="App Map" className="w-full h-auto" referrerPolicy="no-referrer" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* User Flow */}
+                  {project.userFlow && (
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+                      <div className="lg:col-span-5 lg:order-2 space-y-4">
+                        <Subheading>User Flow</Subheading>
+                        <BodyText>{project.userFlow.description}</BodyText>
+                      </div>
+                      <div className="lg:col-span-7 lg:order-1">
+                        <div className="rounded-xl overflow-hidden border border-line bg-ink/[0.02]">
+                          <img src={project.userFlow.image} alt="User Flow" className="w-full h-auto" referrerPolicy="no-referrer" />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Wireframes */}
+                  {project.wireframes && (
+                    <div className="space-y-12 py-16 md:py-24 flex flex-col items-center text-center">
+                      <div className="max-w-3xl">
+                        <Subheading>Digital Wireframes</Subheading>
+                        <BodyText className="text-center">{project.wireframes.description}</BodyText>
+                      </div>
+                      <div className="w-full max-w-5xl">
+                        {project.wireframes.images?.map((img, i) => (
+                          <div key={i} className="rounded-2xl overflow-hidden border border-line bg-ink/[0.02] p-4 shadow-sm mb-8 last:mb-0">
+                            <img src={img} alt="Wireframe" className="w-full h-auto rounded-lg" referrerPolicy="no-referrer" />
+                          </div>
+                        ))}
+                        {project.wireframes.sections?.map((section, idx) => (
+                          <div key={idx} className="col-span-full grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 last:mb-0">
+                            {section.images.map((img, i) => (
+                              <div key={i} className="rounded-2xl overflow-hidden border border-line bg-ink/[0.02] p-4">
+                                <img src={img} alt={section.title} className="w-full h-auto rounded-lg" referrerPolicy="no-referrer" />
+                              </div>
+                            ))}
                           </div>
                         ))}
                       </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* 4. REFINING DESIGN */}
+            {(project.mockups || project.highFidelityUI || project.finalUI) && (
+              <div className="mb-24 md:mb-32">
+                <SectionLabel>Refining Design</SectionLabel>
+                <SectionTitle>Polishing the Experience</SectionTitle>
+
+                {/* Mockups - Grid Layout */}
+                {project.mockups && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+                    {project.mockups.images.map((img, i) => (
+                      <div key={i} className="rounded-3xl overflow-hidden border border-line shadow-lg">
+                        <img src={img} alt="Mockup" className="w-full h-auto" referrerPolicy="no-referrer" />
+                      </div>
                     ))}
                   </div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+                )}
 
-        {/* 4. REFINING DESIGN */}
-        {(project.mockups || project.highFidelityUI || project.finalUI) && (
-          <div className="mb-[100px]">
-            <SectionLabel>Refining Design</SectionLabel>
-            <SectionTitle>Polishing the Experience</SectionTitle>
-
-            {/* Mockups - Grid Layout */}
-            {project.mockups && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
-                {project.mockups.images.map((img, i) => (
-                  <div key={i} className="rounded-3xl overflow-hidden border border-line shadow-lg">
-                    <img src={img} alt="Mockup" className="w-full h-auto" referrerPolicy="no-referrer" />
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* High Fidelity - Aligned Rows */}
-            {project.highFidelityUI && (
-              <div className="space-y-16">
-                <div className="max-w-2xl">
-                  <Subheading>High-Fidelity Interface</Subheading>
-                  <BodyText>{project.highFidelityUI.description}</BodyText>
-                </div>
-                <div className="space-y-12">
-                  {project.highFidelityUI.images.map((img, i) => (
-                    <div key={i} className="rounded-[32px] overflow-hidden border border-line shadow-2xl">
-                      <img src={img} alt="High Fidelity" className="w-full h-auto" referrerPolicy="no-referrer" />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Final UI Groups */}
-            {project.finalUI && (
-              <div className="mt-24 space-y-24">
-                {Object.entries(project.finalUI).map(([key, section]) => (
-                  <div key={key} className="space-y-8">
+                {/* High Fidelity - Aligned Rows */}
+                {project.highFidelityUI && (
+                  <div className="space-y-16">
                     <div className="max-w-2xl">
-                      <Subheading className="capitalize">{key.replace(/([A-Z])/g, ' $1')}</Subheading>
-                      <BodyText>{section.description}</BodyText>
+                      <Subheading>High-Fidelity Interface</Subheading>
+                      <BodyText>{project.highFidelityUI.description}</BodyText>
                     </div>
-                    <div className="grid grid-cols-1 gap-12">
-                      {section.images.map((img, i) => (
-                        <div key={i} className="rounded-[32px] overflow-hidden border border-line shadow-xl">
-                          <img src={img} alt={key} className="w-full h-auto" referrerPolicy="no-referrer" />
+                    <div className="space-y-12">
+                      {project.highFidelityUI.images.map((img, i) => (
+                        <div key={i} className="rounded-[32px] overflow-hidden border border-line shadow-2xl">
+                          <img src={img} alt="High Fidelity" className="w-full h-auto" referrerPolicy="no-referrer" />
                         </div>
                       ))}
                     </div>
                   </div>
+                )}
+
+                {/* Final UI Groups */}
+                {project.finalUI && (
+                  <div className="mt-24 space-y-24">
+                    {Object.entries(project.finalUI).map(([key, section]) => (
+                      <div key={key} className="space-y-8">
+                        <div className="max-w-2xl">
+                          <Subheading className="capitalize">{key.replace(/([A-Z])/g, ' $1')}</Subheading>
+                          <BodyText>{section.description}</BodyText>
+                        </div>
+                        <div className="grid grid-cols-1 gap-12">
+                          {section.images.map((img, i) => (
+                            <div key={i} className="rounded-[32px] overflow-hidden border border-line shadow-xl">
+                              <img src={img} alt={key} className="w-full h-auto" referrerPolicy="no-referrer" />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* 5. USABILITY STUDIES */}
+            {(project.usabilityThinking || project.interactionThinking) && (
+              <div className="mb-24 md:mb-32">
+                <SectionLabel>Usability Studies</SectionLabel>
+                <SectionTitle>Testing & Iteration</SectionTitle>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="p-8 bg-ink/[0.02] border border-line rounded-2xl md:col-span-2">
+                    <SectionLabel>Key Insights</SectionLabel>
+                    <p className="text-[20px] leading-[1.5] font-semibold text-ink/90">
+                      {project.usabilityThinking}
+                    </p>
+                  </div>
+                  <div className="p-8 bg-accent/5 border border-accent/10 rounded-2xl">
+                    <SectionLabel>Interaction Goal</SectionLabel>
+                    <BodyText className="font-medium">
+                      {project.interactionThinking || "Ensuring seamless transitions and intuitive feedback loops across all user touchpoints."}
+                    </BodyText>
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* IMAGE SHOWCASE (For non-UI/UX projects) */}
+        {project.imageShowcase && (
+          <GridSection className="mb-32 md:mb-48 space-y-24 md:space-y-40">
+            {project.imageShowcase.fullWidth && (
+              <div className="w-full rounded-[32px] md:rounded-[48px] overflow-hidden border border-line shadow-2xl">
+                <img 
+                  src={project.imageShowcase.fullWidth} 
+                  alt="Project Showcase Full" 
+                  className="w-full h-auto object-cover"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            )}
+            
+            {project.imageShowcase.grid && project.imageShowcase.grid.length > 0 && (
+              <div className={`grid grid-cols-1 ${
+                project.imageShowcase.grid.length === 2 ? 'md:grid-cols-2' : 
+                project.imageShowcase.grid.length === 3 ? 'md:grid-cols-3' : 
+                'md:grid-cols-2'
+              } gap-8 md:gap-16`}>
+                {project.imageShowcase.grid.map((img, i) => (
+                  <div key={i} className="rounded-3xl overflow-hidden border border-line shadow-xl bg-ink/[0.02]">
+                    <img 
+                      src={img} 
+                      alt={`Showcase Grid ${i}`} 
+                      className="w-full h-full object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
                 ))}
               </div>
             )}
-          </div>
-        )}
-
-        {/* 5. USABILITY STUDIES */}
-        {(project.usabilityThinking || project.interactionThinking) && (
-          <div className="mb-[100px]">
-            <SectionLabel>Usability Studies</SectionLabel>
-            <SectionTitle>Testing & Iteration</SectionTitle>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="p-8 bg-ink/[0.02] border border-line rounded-2xl md:col-span-2">
-                <SectionLabel>Key Insights</SectionLabel>
-                <p className="text-[20px] leading-[1.5] font-semibold text-ink/90">
-                  {project.usabilityThinking}
-                </p>
-              </div>
-              <div className="p-8 bg-accent/5 border border-accent/10 rounded-2xl">
-                <SectionLabel>Interaction Goal</SectionLabel>
-                <BodyText className="font-medium">
-                  {project.interactionThinking || "Ensuring seamless transitions and intuitive feedback loops across all user touchpoints."}
-                </BodyText>
-              </div>
-            </div>
-          </div>
+          </GridSection>
         )}
 
         {/* 6. OUTCOME */}
-        <div className="mb-[100px] pt-24 border-t border-line">
-          <SectionLabel>Project Outcome</SectionLabel>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
-            <div>
-              <Subheading>Takeaways</Subheading>
-              <BodyText>{project.outcome}</BodyText>
+        <GridSection className="mb-24 md:mb-32 pt-24 border-t border-line">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            <div className="lg:col-span-4">
+              <SectionLabel>Project Outcome</SectionLabel>
+              <h3 className="text-[28px] md:text-[36px] font-semibold leading-tight text-ink">
+                Final Reflections & Results
+              </h3>
             </div>
-            <div>
-              <Subheading>Impact</Subheading>
-              <ul className="space-y-4">
-                {project.achievements.map((achievement, i) => (
-                  <li key={i} className="flex gap-3 items-start">
-                    <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
-                    <BodyText className="text-[15px]">{achievement}</BodyText>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <Subheading>What I Learned</Subheading>
-              <ul className="space-y-4">
-                {project.learnings?.map((learning, i) => (
-                  <li key={i} className="flex gap-3 items-start">
-                    <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
-                    <BodyText className="text-[15px]">{learning}</BodyText>
-                  </li>
-                ))}
-              </ul>
+            
+            <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16">
+              <div>
+                <Subheading>Takeaways</Subheading>
+                <BodyText className="text-ink/60">{project.outcome}</BodyText>
+              </div>
+              <div>
+                <Subheading>Impact</Subheading>
+                <ul className="space-y-4">
+                  {project.achievements.map((achievement, i) => (
+                    <li key={i} className="flex gap-4 items-start">
+                      <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2.5 shrink-0" />
+                      <BodyText className="text-[15px] md:text-[16px] !leading-snug">{achievement}</BodyText>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {project.learnings && project.learnings.length > 0 && (
+                <div className="md:col-span-2 pt-12 border-t border-line/50">
+                  <Subheading>Key Learnings</Subheading>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {project.learnings.map((learning, i) => (
+                      <div key={i} className="flex gap-4 items-start">
+                        <span className="text-accent font-bold text-[14px]">0{i+1}</span>
+                        <BodyText className="text-[15px] md:text-[16px]">{learning}</BodyText>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
+        </GridSection>
 
-        {/* DESIGN SYSTEM (Optional but kept for completeness) */}
+        {/* DESIGN SYSTEM */}
         {project.designSystem && (
-          <div className="mb-[100px] pt-24 border-t border-line">
+          <GridSection className="mb-24 md:mb-32 pt-24 border-t border-line">
             <SectionLabel>Design System</SectionLabel>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-              <div className="lg:col-span-4 space-y-10">
-                <h6 className="text-[11px] tracking-[0.15em] uppercase opacity-40 font-bold text-ink">Color Palette</h6>
-                <div className="grid grid-cols-1 gap-6">
+            <div className="space-y-24">
+              {/* Color Palette */}
+              <div>
+                <Subheading className="mb-8">Color Palette</Subheading>
+                <div className="flex flex-wrap gap-8 md:gap-12">
                   {project.designSystem.colors.map((color, i) => (
-                    <div key={i} className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg border border-line shadow-sm" style={{ backgroundColor: color.hex }} />
-                      <div>
-                        <p className="text-[13px] font-mono uppercase tracking-wider">{color.hex}</p>
-                        <p className="text-[14px] text-ink/60 font-medium">{color.label}</p>
+                    <div key={i} className="flex flex-col items-center gap-4">
+                      <div 
+                        className="w-20 h-20 md:w-24 md:h-24 rounded-full border border-line shadow-sm" 
+                        style={{ backgroundColor: color.hex }} 
+                      />
+                      <div className="text-center">
+                        <p className="text-[14px] font-bold text-ink">{color.label}</p>
+                        <p className="text-[12px] font-mono text-ink/40 uppercase tracking-wider">{color.hex}</p>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-              <div className="lg:col-span-8 space-y-12">
-                <h6 className="text-[11px] tracking-[0.15em] uppercase opacity-40 font-bold text-ink">Typography System</h6>
-                <div className="space-y-12">
-                  {project.designSystem.typography.map((font, i) => (
-                    <div key={i} className="space-y-6">
-                      <div className="border-b border-line pb-4">
-                        <h4 className="text-[24px] font-semibold tracking-tight">{font.fontFamily}</h4>
-                        <p className="text-[11px] text-ink/40 uppercase tracking-widest font-bold">{font.type} Typeface</p>
+
+              {/* Typography */}
+              {project.designSystem.typography && project.designSystem.typography.length > 0 && (
+                <div>
+                  <Subheading className="mb-8">Typography</Subheading>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                    {project.designSystem.typography.map((font, i) => (
+                      <div key={i} className="space-y-6">
+                        <div className="border-b border-line pb-4">
+                          <p className="text-[12px] text-accent font-bold uppercase tracking-widest mb-1">{font.type} — {font.usage}</p>
+                          <h4 className="text-[24px] font-semibold text-ink">{font.fontFamily}</h4>
+                        </div>
+                        <div className="py-4">
+                          {font.type === 'Heading' ? (
+                            <p className="text-[80px] md:text-[120px] leading-none font-bold text-ink/10" style={{ fontFamily: font.fontFamily }}>Aa</p>
+                          ) : (
+                            <p className="text-[16px] md:text-[18px] leading-relaxed text-ink/60 max-w-md" style={{ fontFamily: font.fontFamily }}>
+                              The quick brown fox jumps over the lazy dog. A refined and cohesive brand identity that elevated Silver Leaf’s visual presence and established it as a minimal, premium jewelry brand across all touchpoints.
+                            </p>
+                          )}
+                        </div>
                       </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        {font.hierarchy.map((item, idx) => (
-                          <div key={idx} className="space-y-2">
-                            <div className="flex items-baseline justify-between border-b border-line/30 pb-1">
-                              <span className="text-[10px] text-ink/40 uppercase tracking-wider font-bold">{item.level}</span>
-                              <span className="text-[10px] font-mono text-ink/30">{item.size} / {item.weight}</span>
-                            </div>
-                            <p className="truncate leading-tight" style={{ fontFamily: font.fontFamily, fontSize: '24px', fontWeight: item.weight === 'Bold' ? 700 : item.weight === 'Medium' ? 500 : 400 }}>The quick brown fox</p>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
-          </div>
+          </GridSection>
         )}
       </div>
     </motion.div>
@@ -877,8 +988,8 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
   };
 
   return (
-    <section id="projects" className="py-48 bg-bg">
-      <div className="max-w-7xl mx-auto px-10">
+    <section id="projects" className="py-32 md:py-48 bg-bg">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10">
         <div className="mb-20">
           <h2 className="text-[12px] tracking-[1.5px] uppercase opacity-70 font-bold text-accent mb-6">Portfolio</h2>
           <h3 className="text-[clamp(40px,5vw,64px)] font-semibold leading-[1.05] tracking-tighter">Design Stories.</h3>
@@ -954,9 +1065,9 @@ const WorkShowcase: React.FC<{ onProjectClick: (project: Project) => void }> = (
 
 const About = () => {
   return (
-    <section id="about" className="py-48 bg-ink/5">
-      <div className="max-w-7xl mx-auto px-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 lg:gap-32">
+    <section id="about" className="py-32 md:py-48 bg-ink/5">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
           <div className="lg:col-span-4">
             <h2 className="text-[12px] tracking-[1.5px] uppercase opacity-70 font-bold text-accent mb-6">Who I Am</h2>
             <h3 className="text-[clamp(40px,5vw,64px)] font-semibold leading-[1.05] tracking-tighter mb-12">ABOUT.</h3>
@@ -1024,8 +1135,8 @@ const StillStoriesPage = () => {
   }, []);
 
   return (
-    <section className="min-h-screen py-48 bg-bg">
-      <div className="max-w-7xl mx-auto px-10">
+    <section className="min-h-screen py-32 md:py-48 bg-bg">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10">
         <Link to="/" className="inline-flex items-center gap-3 text-accent hover:text-ink transition-all duration-500 mb-16 group font-bold text-xs uppercase tracking-[0.2em]">
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-500" />
           Back to Portfolio
@@ -1130,7 +1241,7 @@ const InMotionPage = () => {
 
   return (
     <div className="min-h-screen bg-bg">
-      <div className="max-w-7xl mx-auto px-10 pt-32 -mb-32 relative z-10">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 pt-32 -mb-32 relative z-10">
         <Link to="/" className="inline-flex items-center gap-3 text-accent hover:text-ink transition-all duration-500 group font-bold text-xs uppercase tracking-[0.2em]">
           <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform duration-500" />
           Back to Portfolio
@@ -1176,11 +1287,11 @@ const MagneticButton = ({ children, className }: { children: React.ReactNode, cl
 
 const Contact = () => {
   return (
-    <section id="contact" className="relative py-[120px] px-6 md:px-[60px] overflow-visible bg-bg">
+    <section id="contact" className="relative py-32 md:py-48 overflow-visible bg-bg">
       {/* Subtle Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[160px] pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 relative z-10">
         {/* Thin Divider Line Above Section */}
         <div className="w-full h-px bg-line mb-32" />
 
@@ -1295,7 +1406,7 @@ const Contact = () => {
 const Footer = () => {
   return (
     <footer className="py-12 border-t border-line">
-      <div className="max-w-7xl mx-auto px-10 flex flex-col md:flex-row justify-between items-center gap-8">
+      <div className="max-w-[1440px] mx-auto px-6 md:px-10 flex flex-col md:flex-row justify-between items-center gap-8">
         <p className="text-muted text-[14px] leading-[1.5]">
           © {new Date().getFullYear()} Purvi Singhvi
         </p>
