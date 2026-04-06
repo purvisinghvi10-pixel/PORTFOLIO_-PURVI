@@ -8,6 +8,8 @@ export interface Project {
   slideshowImages?: string[];
   thumbnail?: string;
   heroImage?: string;
+  context?: string;
+  contextImage?: string;
   overview: {
     description: string;
     objective: string;
@@ -35,27 +37,43 @@ export interface Project {
   painPoints?: string[];
   userPersona?: {
     name: string;
-    basicInfo?: string;
-    about?: string;
-    goal: string;
-    needs?: string[];
+    profile: string;
+    goals: string[];
+    needs: string[];
     painPoints: string[];
-    frustrations?: string[];
-    motivations?: string[];
-    deviceUsage?: string[];
+    behavior: string[];
     image?: string;
   };
   journeyMapping?: {
     description: string;
-    image: string;
+    image?: string;
+    steps?: {
+      stage: string;
+      actions: string[];
+      touchpoints?: string[];
+      thoughts?: string;
+      emotion?: 'positive' | 'neutral' | 'negative';
+    }[];
   };
   appMap?: {
     description: string;
-    image: string;
+    image?: string;
+    nodes?: {
+      id: string;
+      label: string;
+      children?: string[];
+      type?: 'page' | 'feature' | 'action' | 'root' | 'category';
+    }[];
   };
   userFlow?: {
     description: string;
-    image: string;
+    image?: string;
+    steps?: {
+      id: string;
+      label: string;
+      type: 'start' | 'process' | 'decision' | 'end';
+      next?: string | { yes: string; no: string };
+    }[];
   };
   wireframes?: {
     description: string;
@@ -68,8 +86,8 @@ export interface Project {
     images: string[];
   };
   designSystem?: {
-    colors: { hex: string; label: string }[];
-    typography: {
+    colors?: { hex: string; label: string }[];
+    typography?: {
       type: string;
       fontFamily: string;
       usage: string;
@@ -79,7 +97,7 @@ export interface Project {
         weight: string;
       }[];
     }[];
-    components: string[];
+    components?: string[];
   };
   uiDesign?: {
     description: string;
@@ -110,8 +128,8 @@ export interface Project {
   };
   gridImages?: string[];
   imageShowcase?: {
-    fullWidth?: string;
-    grid?: string[];
+    fullWidth?: string | { src: string; label?: string };
+    grid?: (string | { src: string; label?: string })[];
   };
   showcaseVideo?: string;
   media?: { type: 'image' | 'video'; src: string; label?: string }[];
