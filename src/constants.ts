@@ -336,32 +336,49 @@ export const PROJECTS: Project[] = [
   {
     id: '06',
     number: '06',
-    title: "My LEGO Journey",
-    category: "3D Pop-Up Storytelling Experience for Kids",
-    shortDescription: "Immersive brand storytelling for children",
-    image: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
-    thumbnail: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png",
+    title: "Scented Journeys of India – Packaging Series",
+    category: "Packaging Design",
+    shortDescription: "A premium packaging series inspired by Indian regions, translating cultural essence into sensory fragrance experiences.",
+    image: "https://i.ibb.co/7xp8LXQd/Elegant-perfume-boxes-on-marble.png",
+    thumbnail: "https://i.ibb.co/7xp8LXQd/Elegant-perfume-boxes-on-marble.png",
     media: [
-      { type: 'image', src: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png", label: "Story Scene" }
+      { type: 'image', src: "https://i.ibb.co/v44x0J4t/10pcs-Portable-Frosted-Zipper-Closure-Jewel.png", label: "Packaging Series" },
+      { type: 'image', src: "https://i.ibb.co/0p3XbKHD/Burlap-Bag-Mockup.png", label: "Material Exploration" }
     ],
     overview: {
-      objective: "To reimagine LEGO’s brand journey through an immersive storytelling experience designed for children, where the narrative is told from the perspective of becoming a LEGO character.",
-      challenges: "Translating a brand story into a playful, engaging format that resonates with kids while maintaining clarity, imagination, and visual storytelling consistency.",
-      description: "This project explores LEGO’s brand journey through a unique narrative approach. The concept imagines myself as a LEGO character, guiding children through a playful and imaginative world. Designed as a 3D pop-up style experience, the visuals bring the story to life through depth, movement, and vibrant compositions. The goal was to create an engaging and memorable storytelling experience that aligns with LEGO’s core values of creativity and play."
+      objective: "To design a premium packaging series that captures the diverse olfactory and cultural essence of different Indian regions.",
+      challenges: "Translating abstract scents and complex cultural narratives into a cohesive visual language that feels both traditional and modern.",
+      description: "Scented Journeys of India is a sensory-driven packaging project. Each variant in the series is inspired by a specific region, using color, patterns, and typography to evoke the local atmosphere. The design focuses on premium materials and intricate details to create a luxury unboxing experience."
     },
-    process: ["Brand Research", "Concept Development", "Storyboarding", "3D Visual Exploration", "Final Composition & Rendering"],
-    outcome: "A fun and immersive 3D storytelling experience that transforms LEGO’s brand journey into an engaging narrative for children.",
+    problemStatement: "Fragrance packaging often lacks a deep cultural connection, feeling generic or disconnected from the heritage it claims to represent. The challenge was to create a series that feels like a journey through India, where the packaging itself tells a story before the scent is even experienced.",
+    designDecisions: [
+      {
+        title: "Regional Color Palettes",
+        description: "Using colors that evoke specific Indian landscapes—saffron for the north, deep blues for the coastal south."
+      },
+      {
+        title: "Intricate Pattern Work",
+        description: "Developing custom patterns inspired by regional textiles and architecture to add depth and luxury."
+      },
+      {
+        title: "Tactile Material Selection",
+        description: "Choosing textured papers and foil stamping to enhance the sensory experience of the packaging."
+      }
+    ],
+    process: ["Regional Research", "Moodboarding", "Visual Language Development", "Packaging Structure Design", "Mockup & Presentation"],
+    outcome: "A cohesive and visually stunning packaging series that successfully communicates the brand's premium positioning and cultural roots.",
     achievements: [
-      "Created a character-driven storytelling concept",
-      "Translated brand journey into a kid-friendly narrative",
-      "Designed a visually engaging 3D pop-up experience"
+      "Developed a unique visual identity for each region",
+      "Created a premium unboxing experience",
+      "Balanced traditional motifs with modern design aesthetics"
     ],
     imageShowcase: {
-      fullWidth: { src: "https://i.ibb.co/bMmtBQsh/A-5-vertical-1.png", label: "Story Frame" },
+      fullWidth: { src: "https://i.ibb.co/v44x0J4t/10pcs-Portable-Frosted-Zipper-Closure-Jewel.png", label: "Packaging Collection" },
       grid: [
-        { src: "https://picsum.photos/seed/lego1/1200/800", label: "3D Composition" },
-        { src: "https://picsum.photos/seed/lego2/1200/800", label: "Character Scene" },
-        { src: "https://picsum.photos/seed/lego3/1200/800", label: "Narrative Moment" }
+        { src: "https://i.ibb.co/0p3XbKHD/Burlap-Bag-Mockup.png", label: "Texture Detail" },
+        { src: "https://i.ibb.co/4Bjb116/0dcc96221124143-67cf465dd1bc5.png", label: "Pattern Design" },
+        { src: "https://i.ibb.co/wN0QJ4wv/c23cfd221124143-67cf465dd2226.jpg", label: "Regional Inspiration" },
+        { src: "https://i.ibb.co/ynX1WGXK/fa0b3e221124143-67cf465dd2c8b.png", label: "Brand Application" }
       ]
     }
   }

@@ -168,6 +168,15 @@ const Navbar = () => {
             </Link>
           ))}
           
+          <a 
+            href="https://i.ibb.co/Vp2H3GT5/Resume-purvi.png" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="px-6 py-3 border border-line text-muted rounded-full text-[17px] font-semibold hover:border-ink hover:text-ink transition-all flex items-center gap-2"
+          >
+            Resume <ExternalLink size={16} />
+          </a>
+
           <Link 
             to="/#contact" 
             className="px-6 py-3 bg-ink text-bg rounded-full text-[17px] font-semibold hover:bg-accent hover:text-white transition-all shadow-sm"
@@ -203,6 +212,15 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
+            <a 
+              href="https://i.ibb.co/Vp2H3GT5/Resume-purvi.png" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+              className="text-2xl font-display font-medium flex items-center gap-2"
+            >
+              Resume <ExternalLink size={20} />
+            </a>
           </motion.div>
         )}
       </AnimatePresence>
