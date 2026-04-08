@@ -417,9 +417,19 @@ const DynamicMediaShowcase: React.FC<{ media: MediaItem[] }> = ({ media }) => {
 };
 
 const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ project, onBack }) => {
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [project.id]);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedImage(null);
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
 
   const isUIUX = project.category === "UI/UX Design";
 
@@ -564,6 +574,155 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
             </div>
           </div>
         </GridSection>
+        
+        {/* Custom Sections for Non-UI/UX */}
+        {project.customSections && project.customSections.map((section, idx) => (
+          <section key={section.id} className={`${idx % 2 === 0 ? 'bg-bg' : 'bg-ink/[0.02] border-y border-line'} py-24 md:py-32`}>
+            <GridSection>
+              {section.fullWidth ? (
+                <div className="space-y-12">
+                  <div className="max-w-3xl">
+                    <SectionLabel>{section.label || section.title}</SectionLabel>
+                    <Subheading className="mb-6">{section.title}</Subheading>
+                    {section.description && <BodyText className="max-w-[600px]">{section.description}</BodyText>}
+                  </div>
+                  {section.image && (
+                    <div 
+                      className="rounded-[32px] overflow-hidden border border-line shadow-2xl cursor-pointer"
+                      onClick={() => setSelectedImage(section.image!)}
+                    >
+                      <img src={section.image} alt={section.title} className="w-full h-auto hover:scale-[1.02] transition-transform duration-500" referrerPolicy="no-referrer" />
+                    </div>
+                  )}
+                  {section.images && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {section.images.map((img, i) => (
+                        <div 
+                          key={i} 
+                          className="rounded-3xl overflow-hidden border border-line shadow-lg cursor-pointer"
+                          onClick={() => setSelectedImage(img)}
+                        >
+                          <img src={img} alt={`${section.title} ${i}`} className="w-full h-auto hover:scale-[1.02] transition-transform duration-500" referrerPolicy="no-referrer" />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : section.research ? (
+                <div className="space-y-12">
+                  <div className="max-w-3xl">
+                    <SectionLabel>{section.label || section.title}</SectionLabel>
+                    <Subheading className="mb-6">{section.title}</Subheading>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                    {section.research.map((col: any, i: number) => (
+                      <div key={i} className="space-y-10">
+                        <h4 className="text-[20px] font-bold text-ink border-b border-line pb-4">{col.title}</h4>
+                        <div className="space-y-8">
+                          {col.content.map((item: any, j: number) => (
+                            <div key={j} className="space-y-4">
+                              <h5 className="text-[14px] font-bold uppercase tracking-widest text-accent">{item.heading}</h5>
+                              <ul className="space-y-3">
+                                {item.points.map((point: string, k: number) => (
+                                  <li key={k} className="flex gap-3 items-start text-[16px] text-muted leading-relaxed">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-2" />
+                                    {point}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : section.labeledImages ? (
+                <div className="space-y-16">
+                  <div className="max-w-3xl">
+                    <SectionLabel>{section.label || section.title}</SectionLabel>
+                    <Subheading className="mb-6">{section.title}</Subheading>
+                    {section.description && <BodyText className="max-w-[600px]">{section.description}</BodyText>}
+                  </div>
+                  <div className={`grid ${section.labeledImages.length === 2 ? 'grid-cols-2' : 'grid-cols-3'} gap-4 md:gap-8`}>
+                    {section.labeledImages.map((item, i) => (
+                      <div 
+                        key={i} 
+                        className="space-y-4 md:space-y-6 group cursor-pointer"
+                        onClick={() => setSelectedImage(item.src)}
+                      >
+                        <div className="rounded-2xl md:rounded-3xl overflow-hidden border border-line shadow-lg bg-white aspect-[4/3]">
+                          <img 
+                            src={item.src} 
+                            alt={item.label} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                            referrerPolicy="no-referrer" 
+                          />
+                        </div>
+                        <div className="text-center">
+                          <p className="text-[14px] font-bold uppercase tracking-widest text-ink/40">{item.label}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                  <div className="lg:col-span-5">
+                    <SectionLabel>{section.label || section.title}</SectionLabel>
+                    <Subheading className="mb-6">{section.title}</Subheading>
+                    {section.description && <BodyText className="max-w-[600px] mb-8">{section.description}</BodyText>}
+                    
+                    {section.points && (
+                      <ul className="space-y-4 mb-8">
+                        {section.points.map((point, i) => (
+                          <li key={i} className="flex gap-3 items-start text-[15px] text-ink/80">
+                            <CheckCircle size={18} className="text-accent shrink-0 mt-0.5" />
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {section.insights && (
+                      <div className="grid grid-cols-1 gap-4 mb-8">
+                        {section.insights.map((insight, i) => (
+                          <div key={i} className="p-6 rounded-2xl border border-line bg-bg">
+                            <p className="text-[15px] font-medium text-ink">{insight}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="lg:col-span-6 lg:col-start-7">
+                    {section.image && (
+                      <div 
+                        className="rounded-[32px] overflow-hidden border border-line shadow-2xl cursor-pointer"
+                        onClick={() => setSelectedImage(section.image!)}
+                      >
+                        <img src={section.image} alt={section.title} className="w-full h-auto hover:scale-[1.02] transition-transform duration-500" referrerPolicy="no-referrer" />
+                      </div>
+                    )}
+                    {section.images && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {section.images.map((img, i) => (
+                          <div 
+                            key={i} 
+                            className="rounded-2xl overflow-hidden border border-line shadow-lg cursor-pointer"
+                            onClick={() => setSelectedImage(img)}
+                          >
+                            <img src={img} alt={`${section.title} ${i}`} className="w-full h-auto hover:scale-[1.02] transition-transform duration-500" referrerPolicy="no-referrer" />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </GridSection>
+          </section>
+        ))}
 
         {/* Video Showcase */}
         {project.showcaseVideo && (
@@ -637,23 +796,27 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
         )}
 
         {/* Outcome for Non-UI/UX */}
-        <GridSection className="py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-            <div className="lg:col-span-5">
-              <SectionLabel>The Outcome</SectionLabel>
-              <Subheading className="mb-6">Final Results</Subheading>
-              <BodyText>{project.outcome}</BodyText>
-            </div>
-            <div className="lg:col-span-6 lg:col-start-7 space-y-6">
-              {project.achievements.map((achievement, i) => (
-                <div key={i} className="flex gap-4 items-start p-6 rounded-2xl bg-ink/[0.02] border border-line">
-                  <CheckCircle size={20} className="text-accent shrink-0 mt-1" />
-                  <p className="text-[16px] font-medium text-ink">{achievement}</p>
+        {project.outcome && (
+          <GridSection className="py-24">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+              <div className="lg:col-span-5">
+                <SectionLabel>The Outcome</SectionLabel>
+                <Subheading className="mb-6">Final Results</Subheading>
+                <BodyText>{project.outcome}</BodyText>
+              </div>
+              {project.achievements && (
+                <div className="lg:col-span-6 lg:col-start-7 space-y-6">
+                  {project.achievements.map((achievement, i) => (
+                    <div key={i} className="flex gap-4 items-start p-6 rounded-2xl bg-ink/[0.02] border border-line">
+                      <CheckCircle size={20} className="text-accent shrink-0 mt-1" />
+                      <p className="text-[16px] font-medium text-ink">{achievement}</p>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
-          </div>
-        </GridSection>
+          </GridSection>
+        )}
 
         {/* Footer Navigation */}
         <GridSection className="pt-32 border-t border-line">
@@ -668,6 +831,36 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
             </button>
           </div>
         </GridSection>
+
+        {/* Lightbox */}
+        <AnimatePresence>
+          {selectedImage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 md:p-10"
+              onClick={() => setSelectedImage(null)}
+            >
+              <motion.button
+                className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors"
+                onClick={() => setSelectedImage(null)}
+              >
+                <X size={32} />
+              </motion.button>
+              <motion.img
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                src={selectedImage}
+                alt="Enlarged view"
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+                referrerPolicy="no-referrer"
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.div>
     );
   }
@@ -729,489 +922,702 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
         </motion.div>
       </section>
 
-      {/* 1. OVERVIEW */}
-      <GridSection className="py-24 md:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-          <div className="lg:col-span-7">
-            <SectionLabel>Overview</SectionLabel>
-            <Subheading className="mb-8">Project Summary</Subheading>
-            <BodyText className="mb-8 max-w-[600px]">{project.overview.description}</BodyText>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-              <div>
-                <h5 className="text-[13px] font-bold uppercase tracking-widest text-accent mb-4 flex items-center gap-2">
-                  <Target size={16} /> Objective
-                </h5>
-                <BodyText className="text-[16px]">{project.overview.objective}</BodyText>
-              </div>
-              <div>
-                <h5 className="text-[13px] font-bold uppercase tracking-widest text-accent mb-4 flex items-center gap-2">
-                  <Zap size={16} /> Challenges
-                </h5>
-                <BodyText className="text-[16px]">{project.overview.challenges}</BodyText>
-              </div>
-            </div>
-          </div>
-          
-          <div className="lg:col-span-4 lg:col-start-9">
-            <div className="p-8 rounded-3xl border border-line bg-ink/[0.02] space-y-8">
-              <div>
-                <h5 className="text-[11px] font-bold uppercase tracking-widest text-ink/40 mb-3 flex items-center gap-2">
-                  <Briefcase size={14} /> Role
-                </h5>
-                <p className="text-[16px] font-semibold text-ink">{project.overview.role || "Lead Designer"}</p>
-              </div>
-              <div>
-                <h5 className="text-[11px] font-bold uppercase tracking-widest text-ink/40 mb-3 flex items-center gap-2">
-                  <Clock size={14} /> Duration
-                </h5>
-                <p className="text-[16px] font-semibold text-ink">{project.overview.duration || project.overview.timeline || "4 Weeks"}</p>
-              </div>
-              <div>
-                <h5 className="text-[11px] font-bold uppercase tracking-widest text-ink/40 mb-3 flex items-center gap-2">
-                  <Wrench size={14} /> Tools
-                </h5>
-                <div className="flex flex-wrap gap-2">
-                  {(project.overview.tools || ["Figma", "Adobe CC"]).map((tool, i) => (
-                    <span key={i} className="px-3 py-1 rounded-full bg-bg border border-line text-[12px] font-medium text-muted">
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </GridSection>
-
-      {/* 2. CONTEXT */}
-      {project.context && (
-        <section className="bg-ink/[0.02] py-24 md:py-32 border-y border-line">
-          <GridSection>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-              <div className="lg:col-span-5">
-                <SectionLabel>Context</SectionLabel>
-                <Subheading className="mb-6">The Background</Subheading>
-                <BodyText className="max-w-[600px]">{project.context}</BodyText>
-              </div>
-              <div className="lg:col-span-6 lg:col-start-7">
-                <div className="aspect-video rounded-3xl bg-ink/5 border border-line overflow-hidden shadow-sm">
-                  {project.contextImage ? (
-                    <img 
-                      src={project.contextImage} 
-                      alt="Context Visual" 
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                    />
-                  ) : (
-                    <div className="flex items-center justify-center h-full">
-                      <div className="text-center p-12">
-                        <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent mx-auto mb-6">
-                          <Search size={32} />
-                        </div>
-                        <p className="text-[14px] font-bold uppercase tracking-widest text-ink/40">Market Research & Analysis</p>
-                      </div>
+      {project.customSections ? (
+        project.customSections.map((section, idx) => (
+          <section key={section.id} className={`${idx % 2 === 0 ? 'bg-bg' : 'bg-ink/[0.02] border-y border-line'} py-24 md:py-32`}>
+            <GridSection>
+              {section.fullWidth ? (
+                <div className="space-y-12">
+                  <div className="max-w-3xl">
+                    <SectionLabel>{section.label}</SectionLabel>
+                    <Subheading className="mb-6">{section.title}</Subheading>
+                    <BodyText className="max-w-[600px]">{section.description}</BodyText>
+                  </div>
+                  {section.image && (
+                    <div 
+                      className="rounded-[32px] overflow-hidden border border-line shadow-2xl cursor-pointer"
+                      onClick={() => setSelectedImage(section.image!)}
+                    >
+                      <img src={section.image} alt={section.title} className="w-full h-auto hover:scale-[1.02] transition-transform duration-500" referrerPolicy="no-referrer" />
                     </div>
                   )}
-                </div>
-              </div>
-            </div>
-          </GridSection>
-        </section>
-      )}
-
-      {/* 3. PROBLEM */}
-      {project.problemStatement && (
-        <section className="bg-ink text-white py-32 overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-accent/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
-          <GridSection>
-            <div className="grid grid-cols-1 lg:grid-cols-12">
-              <div className="lg:col-span-10 lg:col-start-2 text-center">
-                <SectionLabel><span className="text-accent/60">Problem</span></SectionLabel>
-                <h2 className="text-[32px] md:text-[56px] font-bold leading-[1.1] tracking-tight mb-12 max-w-[900px] mx-auto">
-                  {project.problemStatement}
-                </h2>
-                <div className="w-24 h-1 bg-accent mx-auto rounded-full" />
-              </div>
-            </div>
-          </GridSection>
-        </section>
-      )}
-
-      {/* 4. USER UNDERSTANDING */}
-      <section className="py-24 md:py-32">
-        <GridSection>
-          <div className="max-w-3xl mb-24">
-            <SectionLabel>User Understanding</SectionLabel>
-            <Subheading className="mb-6">Empathizing with the User</Subheading>
-            <BodyText className="max-w-[600px]">To build a solution that truly resonates, I deep-dived into user behaviors, motivations, and pain points through extensive research and mapping.</BodyText>
-          </div>
-
-          {project.userResearch && (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32">
-              <div className="lg:col-span-5">
-                <h4 className="text-[24px] font-bold text-ink mb-6">Research Insights</h4>
-                <BodyText className="mb-8 max-w-[600px]">{project.userResearch.description}</BodyText>
-              </div>
-              <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
-                {project.userResearch.insights.map((insight, i) => (
-                  <motion.div 
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="p-8 rounded-3xl border border-line bg-bg hover:border-accent/30 transition-colors group"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform">
-                      <Lightbulb size={20} />
-                    </div>
-                    <p className="text-[16px] font-medium leading-relaxed text-ink">{insight}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Persona */}
-          {project.userPersona && (
-            <div className="mb-32">
-              <div className="bg-white rounded-[48px] p-8 md:p-16 border border-line shadow-2xl overflow-hidden">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-                  <div className="lg:col-span-4 flex flex-col items-center text-center">
-                    <div className="relative mb-8">
-                      <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-8 border-bg shadow-xl">
-                        <img 
-                          src={project.userPersona.image || "https://picsum.photos/seed/persona/400/400"} 
-                          alt={project.userPersona.name} 
-                          className="w-full h-full object-cover"
-                          referrerPolicy="no-referrer"
-                        />
-                      </div>
-                      <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-accent text-white px-6 py-2 rounded-full text-[14px] font-bold shadow-lg whitespace-nowrap">
-                        {project.userPersona.name.split(',')[1]?.trim() || "User"}
-                      </div>
-                    </div>
-                    <h3 className="text-[24px] font-bold text-ink mb-2">{project.userPersona.name.split(',')[0]}</h3>
-                    <p className="text-muted text-[15px] max-w-[280px]">{project.userPersona.profile.split('.')[0]}</p>
-                  </div>
-                  
-                  <div className="lg:col-span-8 space-y-12">
-                    <div>
-                      <h5 className="text-[12px] font-bold uppercase tracking-widest text-accent mb-4">Profile</h5>
-                      <p className="text-muted text-[16px] leading-relaxed max-w-[600px]">{project.userPersona.profile}</p>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-                      <div>
-                        <h5 className="text-[12px] font-bold uppercase tracking-widest text-accent mb-6">Goals & Needs</h5>
-                        <ul className="space-y-4">
-                          {project.userPersona.goals.map((item, i) => (
-                            <li key={`goal-${i}`} className="flex gap-3 items-start text-[15px] text-ink/80">
-                              <CheckCircle size={18} className="text-accent shrink-0 mt-0.5" />
-                              {item}
-                            </li>
-                          ))}
-                          {project.userPersona.needs.map((item, i) => (
-                            <li key={`need-${i}`} className="flex gap-3 items-start text-[15px] text-ink/80">
-                              <CheckCircle size={18} className="text-accent shrink-0 mt-0.5" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      
-                      <div>
-                        <h5 className="text-[12px] font-bold uppercase tracking-widest text-accent mb-6">Pain Points & Behavior</h5>
-                        <ul className="space-y-4">
-                          {project.userPersona.painPoints.map((item, i) => (
-                            <li key={`pain-${i}`} className="flex gap-3 items-start text-[15px] text-ink/80">
-                              <X size={18} className="text-red-400 shrink-0 mt-0.5" />
-                              {item}
-                            </li>
-                          ))}
-                          {project.userPersona.behavior.map((item, i) => (
-                            <li key={`behavior-${i}`} className="flex gap-3 items-start text-[15px] text-ink/80">
-                              <X size={18} className="text-red-400 shrink-0 mt-0.5" />
-                              {item}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Journey Map */}
-          {project.journeyMapping && (
-            <div className="space-y-12">
-              <div className="max-w-2xl">
-                <h4 className="text-[24px] font-serif font-bold text-ink mb-4">User Journey Map</h4>
-                <BodyText className="max-w-[600px]">{project.journeyMapping.description}</BodyText>
-              </div>
-              
-              {project.journeyMapping.image ? (
-                <div className="rounded-[48px] overflow-hidden border border-line shadow-2xl bg-white p-4 md:p-8">
-                  <img 
-                    src={project.journeyMapping.image} 
-                    alt="User Journey Map" 
-                    className="w-full h-auto mx-auto rounded-3xl"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-              ) : project.journeyMapping.steps && (
-                <div className="overflow-x-auto pb-8 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
-                  <div className="flex items-start gap-4 min-w-max">
-                    {project.journeyMapping.steps.map((step, i) => (
-                      <React.Fragment key={i}>
-                        <motion.div 
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          viewport={{ once: true }}
-                          transition={{ delay: i * 0.1 }}
-                          className="w-72 p-10 rounded-[32px] border border-line bg-white shadow-sm flex flex-col gap-8"
+                  {section.images && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {section.images.map((img, i) => (
+                        <div 
+                          key={i} 
+                          className="rounded-3xl overflow-hidden border border-line shadow-lg cursor-pointer"
+                          onClick={() => setSelectedImage(img)}
                         >
-                          <div className="space-y-1">
-                            <h5 className="text-[22px] font-serif font-bold text-ink leading-tight">{i + 1}. {step.stage}</h5>
-                          </div>
-                          
-                          <div className="space-y-6">
-                            <div className="space-y-2">
-                              <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-ink/40">Action</p>
-                              <div className="space-y-1">
-                                {step.actions.map((action, ai) => (
-                                  <p key={ai} className="text-[15px] font-sans text-ink/80 leading-relaxed">{action}</p>
-                                ))}
-                              </div>
-                            </div>
-                            
-                            {step.touchpoints && (
-                              <div className="space-y-2">
-                                <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-ink/40">Touchpoint</p>
-                                <div className="space-y-1">
-                                  {step.touchpoints.map((tp, ti) => (
-                                    <p key={ti} className="text-[15px] font-sans text-ink/80 leading-relaxed">{tp}</p>
-                                  ))}
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </motion.div>
-                        
-                        {i < project.journeyMapping.steps.length - 1 && (
-                          <div className="flex items-center pt-28">
-                            <div className="w-10 h-px bg-line/60 relative">
-                              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t border-r border-line/60 rotate-45" />
-                            </div>
-                          </div>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </GridSection>
-      </section>
-
-      {/* 5. INFORMATION ARCHITECTURE */}
-      {project.appMap && (
-        <section className="bg-ink/[0.02] py-24 md:py-32 border-y border-line">
-          <GridSection>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-              <div className="lg:col-span-5">
-                <SectionLabel>Information Architecture</SectionLabel>
-                <Subheading className="mb-6">The Structural Backbone</Subheading>
-                <BodyText className="max-w-[600px] mb-8">{project.appMap.description}</BodyText>
-              </div>
-              {project.appMap.image ? (
-                <div className="lg:col-span-12">
-                  <div className="rounded-[40px] overflow-hidden border border-line shadow-2xl bg-white p-6 md:p-12 flex flex-col items-center">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-8">Information Architecture</p>
-                    <img src={project.appMap.image} alt="App Map" className="w-full h-auto max-h-[700px] object-cover mx-auto rounded-3xl" referrerPolicy="no-referrer" />
-                  </div>
-                </div>
-              ) : project.appMap.nodes && (
-                <div className="lg:col-span-12">
-                  <div className="rounded-[48px] border border-line shadow-2xl bg-white p-6 md:p-12 flex flex-col items-center overflow-hidden">
-                    <div className="w-full flex justify-center px-4">
-                      <div className="scale-[0.4] sm:scale-[0.6] md:scale-[0.8] lg:scale-100 origin-top transition-all duration-500 py-4">
-                        <IATree nodes={project.appMap.nodes} rootId="root" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </GridSection>
-        </section>
-      )}
-
-      {/* 6. USER FLOW */}
-      {project.userFlow && (
-        <GridSection className="py-24 md:py-32">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-            {project.userFlow.image && (
-              <div className="lg:col-span-12 order-2 lg:order-1">
-                <div className="rounded-[40px] overflow-hidden border border-line shadow-2xl bg-white p-6 md:p-12">
-                  <img src={project.userFlow.image} alt="User Flow" className="w-full h-auto max-h-[600px] object-contain mx-auto rounded-2xl" referrerPolicy="no-referrer" />
-                </div>
-              </div>
-            )}
-            <div className="lg:col-span-5 lg:col-start-8 order-1 lg:order-2">
-              <SectionLabel>User Flow</SectionLabel>
-              <Subheading className="mb-6">Mapping the Journey</Subheading>
-              <BodyText className="max-w-[600px] mb-8">{project.userFlow.description}</BodyText>
-            </div>
-          </div>
-        </GridSection>
-      )}
-
-      {/* 7. WIREFRAMES */}
-      {project.wireframes && (
-        <section className="bg-ink/5 py-24 md:py-32 border-y border-line">
-          <GridSection>
-            <div className="max-w-3xl mb-16">
-              <SectionLabel>Wireframes</SectionLabel>
-              <Subheading className="mb-6">Low-Fidelity Explorations</Subheading>
-              <BodyText className="max-w-[600px]">{project.wireframes.description}</BodyText>
-            </div>
-            
-            {project.wireframes.sections ? (
-              <div className="space-y-24">
-                {project.wireframes.sections.map((section, i) => (
-                  <div key={i} className="space-y-10">
-                    <div className="max-w-2xl">
-                      <h5 className="text-[20px] font-bold text-ink mb-3">{section.title}</h5>
-                      <p className="text-muted text-[15px] max-w-[600px]">{section.description}</p>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {section.images.map((img, j) => (
-                        <div key={j} className="rounded-2xl overflow-hidden border border-line shadow-lg bg-white">
-                          <img src={img} alt={`${section.title} ${j}`} className="w-full h-auto" referrerPolicy="no-referrer" />
+                          <img src={img} alt={`${section.title} ${i}`} className="w-full h-auto hover:scale-[1.02] transition-transform duration-500" referrerPolicy="no-referrer" />
                         </div>
                       ))}
                     </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {project.wireframes.images?.map((img, i) => (
-                  <div key={i} className="rounded-3xl overflow-hidden border border-line shadow-xl bg-white">
-                    <img src={img} alt={`Wireframe ${i}`} className="w-full h-auto" referrerPolicy="no-referrer" />
-                  </div>
-                ))}
-              </div>
-            )}
-          </GridSection>
-        </section>
-      )}
-
-      {/* 8. KEY DESIGN DECISIONS */}
-      {project.designDecisions && (
-        <GridSection className="py-24 md:py-32">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-            <div className="lg:col-span-4">
-              <SectionLabel>Key Design Decisions</SectionLabel>
-              <Subheading className="mb-6">Strategic Choices</Subheading>
-              <BodyText className="max-w-[600px]">Critical decisions made during the design process to balance user needs with functional requirements.</BodyText>
-            </div>
-            <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-              {project.designDecisions.map((decision, i) => (
-                <div key={i} className="p-8 rounded-3xl border border-line bg-ink/[0.02] hover:border-accent/30 transition-colors">
-                  <h5 className="text-[18px] font-bold text-ink mb-3">{decision.title}</h5>
-                  <p className="text-[15px] text-muted leading-relaxed">{decision.description}</p>
+                  )}
                 </div>
-              ))}
-            </div>
-          </div>
-        </GridSection>
-      )}
-
-      {/* 9. FINAL INTERFACE */}
-      {project.finalUI && (
-        <section className="py-24 md:py-32 bg-ink text-white overflow-hidden">
-          <GridSection>
-            <div className="max-w-3xl mb-16 md:mb-24">
-              <SectionLabel><span className="text-accent/60">Final Interface</span></SectionLabel>
-              <Subheading className="text-white mb-6">The Polished Experience</Subheading>
-              <BodyText className="text-white/60 max-w-[600px]">The final interface combines strategic UX with refined visual aesthetics to deliver a seamless and engaging user journey.</BodyText>
-            </div>
-            
-            <div className="space-y-32">
-              {Object.entries(project.finalUI).map(([key, flow], i) => (
-                <div key={i} className="space-y-12">
-                  <div className="max-w-2xl">
-                    <h5 className="text-[13px] font-bold uppercase tracking-widest text-accent mb-3">
-                      {key.replace(/([A-Z])/g, ' $1').trim()}
-                    </h5>
-                    <p className="text-[24px] md:text-[32px] font-bold text-white leading-tight">{flow.description}</p>
+              ) : section.research ? (
+                <div className="space-y-12">
+                  <div className="max-w-3xl">
+                    <SectionLabel>{section.label}</SectionLabel>
+                    <Subheading className="mb-6">{section.title}</Subheading>
                   </div>
-                  <div className="grid grid-cols-1 gap-12">
-                    {flow.images.map((img, j) => (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+                    {section.research.map((col: any, i: number) => (
+                      <div key={i} className="space-y-10">
+                        <h4 className="text-[20px] font-bold text-ink border-b border-line pb-4">{col.title}</h4>
+                        <div className="space-y-8">
+                          {col.content.map((item: any, j: number) => (
+                            <div key={j} className="space-y-4">
+                              <h5 className="text-[14px] font-bold uppercase tracking-widest text-accent">{item.heading}</h5>
+                              <ul className="space-y-3">
+                                {item.points.map((point: string, k: number) => (
+                                  <li key={k} className="flex gap-3 items-start text-[16px] text-muted leading-relaxed">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-2" />
+                                    {point}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : section.labeledImages ? (
+                <div className="space-y-16">
+                  <div className="max-w-3xl">
+                    <SectionLabel>{section.label}</SectionLabel>
+                    <Subheading className="mb-6">{section.title}</Subheading>
+                    <BodyText className="max-w-[600px]">{section.description}</BodyText>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4 md:gap-8">
+                    {section.labeledImages.map((item, i) => (
+                      <div 
+                        key={i} 
+                        className="space-y-4 md:space-y-6 group cursor-pointer"
+                        onClick={() => setSelectedImage(item.src)}
+                      >
+                        <div className="rounded-2xl md:rounded-3xl overflow-hidden border border-line shadow-lg bg-white aspect-[4/3]">
+                          <img 
+                            src={item.src} 
+                            alt={item.label} 
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                            referrerPolicy="no-referrer" 
+                          />
+                        </div>
+                        <div className="text-center">
+                          <p className="text-[14px] font-bold uppercase tracking-widest text-ink/40">{item.label}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                  <div className="lg:col-span-5">
+                    <SectionLabel>{section.label}</SectionLabel>
+                    <Subheading className="mb-6">{section.title}</Subheading>
+                    <BodyText className="max-w-[600px] mb-8">{section.description}</BodyText>
+                    
+                    {section.points && (
+                      <ul className="space-y-4 mb-8">
+                        {section.points.map((point, i) => (
+                          <li key={i} className="flex gap-3 items-start text-[15px] text-ink/80">
+                            <CheckCircle size={18} className="text-accent shrink-0 mt-0.5" />
+                            {point}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {section.insights && (
+                      <div className="grid grid-cols-1 gap-4 mb-8">
+                        {section.insights.map((insight, i) => (
+                          <div key={i} className="p-6 rounded-2xl border border-line bg-bg">
+                            <p className="text-[15px] font-medium text-ink">{insight}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {section.content && (
+                      <div className="mt-8 whitespace-pre-wrap font-mono text-[13px] text-ink/60 bg-ink/[0.03] p-6 rounded-2xl border border-line">
+                        {section.content}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="lg:col-span-6 lg:col-start-7">
+                    {section.image && (
+                      <div 
+                        className="rounded-[32px] overflow-hidden border border-line shadow-2xl cursor-pointer"
+                        onClick={() => setSelectedImage(section.image!)}
+                      >
+                        <img src={section.image} alt={section.title} className="w-full h-auto hover:scale-[1.02] transition-transform duration-500" referrerPolicy="no-referrer" />
+                      </div>
+                    )}
+                    {section.images && (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {section.images.map((img, i) => (
+                          <div 
+                            key={i} 
+                            className="rounded-2xl overflow-hidden border border-line shadow-lg cursor-pointer"
+                            onClick={() => setSelectedImage(img)}
+                          >
+                            <img src={img} alt={`${section.title} ${i}`} className="w-full h-auto hover:scale-[1.02] transition-transform duration-500" referrerPolicy="no-referrer" />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {section.decisions && (
+                      <div className="space-y-6">
+                        {section.decisions.map((decision, i) => (
+                          <div key={i} className="p-8 rounded-3xl border border-line bg-white shadow-sm">
+                            <h5 className="text-[18px] font-bold text-ink mb-2">{decision.title}</h5>
+                            <p className="text-[15px] text-muted leading-relaxed">{decision.description}</p>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </GridSection>
+          </section>
+        ))
+      ) : (
+        <>
+          {/* 1. OVERVIEW */}
+          <GridSection className="py-24 md:py-32">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+              <div className="lg:col-span-7">
+                <SectionLabel>Overview</SectionLabel>
+                <Subheading className="mb-8">Project Summary</Subheading>
+                <BodyText className="mb-8 max-w-[600px]">{project.overview.description}</BodyText>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                  <div>
+                    <h5 className="text-[13px] font-bold uppercase tracking-widest text-accent mb-4 flex items-center gap-2">
+                      <Target size={16} /> Objective
+                    </h5>
+                    <BodyText className="text-[16px]">{project.overview.objective}</BodyText>
+                  </div>
+                  <div>
+                    <h5 className="text-[13px] font-bold uppercase tracking-widest text-accent mb-4 flex items-center gap-2">
+                      <Zap size={16} /> Challenges
+                    </h5>
+                    <BodyText className="text-[16px]">{project.overview.challenges}</BodyText>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="lg:col-span-4 lg:col-start-9">
+                <div className="p-8 rounded-3xl border border-line bg-ink/[0.02] space-y-8">
+                  <div>
+                    <h5 className="text-[11px] font-bold uppercase tracking-widest text-ink/40 mb-3 flex items-center gap-2">
+                      <Briefcase size={14} /> Role
+                    </h5>
+                    <p className="text-[16px] font-semibold text-ink">{project.overview.role || "Lead Designer"}</p>
+                  </div>
+                  <div>
+                    <h5 className="text-[11px] font-bold uppercase tracking-widest text-ink/40 mb-3 flex items-center gap-2">
+                      <Clock size={14} /> Duration
+                    </h5>
+                    <p className="text-[16px] font-semibold text-ink">{project.overview.duration || project.overview.timeline || "4 Weeks"}</p>
+                  </div>
+                  <div>
+                    <h5 className="text-[11px] font-bold uppercase tracking-widest text-ink/40 mb-3 flex items-center gap-2">
+                      <Wrench size={14} /> Tools
+                    </h5>
+                    <div className="flex flex-wrap gap-2">
+                      {(project.overview.tools || ["Figma", "Adobe CC"]).map((tool, i) => (
+                        <span key={i} className="px-3 py-1 rounded-full bg-bg border border-line text-[12px] font-medium text-muted">
+                          {tool}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </GridSection>
+
+          {/* 2. CONTEXT */}
+          {project.context && (
+            <section className="bg-ink/[0.02] py-24 md:py-32 border-y border-line">
+              <GridSection>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                  <div className="lg:col-span-5">
+                    <SectionLabel>Context</SectionLabel>
+                    <Subheading className="mb-6">The Background</Subheading>
+                    <BodyText className="max-w-[600px]">{project.context}</BodyText>
+                  </div>
+                  <div className="lg:col-span-6 lg:col-start-7">
+                    <div className="aspect-video rounded-3xl bg-ink/5 border border-line overflow-hidden shadow-sm">
+                      {project.contextImage ? (
+                        <img 
+                          src={project.contextImage} 
+                          alt="Context Visual" 
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-full">
+                          <div className="text-center p-12">
+                            <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center text-accent mx-auto mb-6">
+                              <Search size={32} />
+                            </div>
+                            <p className="text-[14px] font-bold uppercase tracking-widest text-ink/40">Market Research & Analysis</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </GridSection>
+            </section>
+          )}
+
+          {/* 3. PROBLEM */}
+          {project.problemStatement && (
+            <section className="bg-ink text-white py-32 overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-1/2 h-full bg-accent/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
+              <GridSection>
+                <div className="grid grid-cols-1 lg:grid-cols-12">
+                  <div className="lg:col-span-10 lg:col-start-2 text-center">
+                    <SectionLabel><span className="text-accent/60">Problem</span></SectionLabel>
+                    <h2 className="text-[32px] md:text-[56px] font-bold leading-[1.1] tracking-tight mb-12 max-w-[900px] mx-auto">
+                      {project.problemStatement}
+                    </h2>
+                    <div className="w-24 h-1 bg-accent mx-auto rounded-full" />
+                  </div>
+                </div>
+              </GridSection>
+            </section>
+          )}
+
+          {/* 4. USER UNDERSTANDING */}
+          <section className="py-24 md:py-32">
+            <GridSection>
+              <div className="max-w-3xl mb-24">
+                <SectionLabel>User Understanding</SectionLabel>
+                <Subheading className="mb-6">Empathizing with the User</Subheading>
+                <BodyText className="max-w-[600px]">To build a solution that truly resonates, I deep-dived into user behaviors, motivations, and pain points through extensive research and mapping.</BodyText>
+              </div>
+
+              {project.userResearch && (
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-32">
+                  <div className="lg:col-span-5">
+                    <h4 className="text-[24px] font-bold text-ink mb-6">Research Insights</h4>
+                    <BodyText className="mb-8 max-w-[600px]">{project.userResearch.description}</BodyText>
+                  </div>
+                  <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {project.userResearch.insights.map((insight, i) => (
                       <motion.div 
-                        key={j}
-                        initial={{ opacity: 0, y: 40 }}
+                        key={i}
+                        initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: j * 0.1 }}
-                        className="w-full rounded-[48px] overflow-hidden border border-white/10 shadow-2xl"
+                        transition={{ delay: i * 0.1 }}
+                        className="p-8 rounded-3xl border border-line bg-bg hover:border-accent/30 transition-colors group"
                       >
-                        <img src={img} alt={`${key} ${j}`} className="w-full h-[400px] md:h-[600px] object-cover" referrerPolicy="no-referrer" />
+                        <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform">
+                          <Lightbulb size={20} />
+                        </div>
+                        <p className="text-[16px] font-medium leading-relaxed text-ink">{insight}</p>
                       </motion.div>
                     ))}
                   </div>
                 </div>
-              ))}
-            </div>
-          </GridSection>
-        </section>
-      )}
+              )}
 
-      {/* 10. OUTCOME & 11. LEARNING */}
-      <GridSection className="py-24 md:py-32">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
-          <div className="lg:col-span-5">
-            <SectionLabel>Outcome</SectionLabel>
-            <Subheading className="mb-6">Results & Impact</Subheading>
-            <BodyText className="max-w-[600px]">{project.outcome}</BodyText>
-          </div>
-          <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-8">
-            {(project.achievements || []).map((achievement, i) => (
-              <div key={i} className="p-8 rounded-3xl border border-line bg-ink/[0.02] flex flex-col justify-between">
-                <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent mb-6">
-                  <CheckCircle size={20} />
+              {/* Persona */}
+              {project.userPersona && (
+                <div className="mb-32">
+                  <div className="bg-white rounded-[48px] p-8 md:p-16 border border-line shadow-2xl overflow-hidden">
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                      <div className="lg:col-span-4 flex flex-col items-center text-center">
+                        <div className="relative mb-8">
+                          <div className="w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-8 border-bg shadow-xl">
+                            <img 
+                              src={project.userPersona.image || "https://picsum.photos/seed/persona/400/400"} 
+                              alt={project.userPersona.name} 
+                              className="w-full h-full object-cover"
+                              referrerPolicy="no-referrer"
+                            />
+                          </div>
+                          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-accent text-white px-6 py-2 rounded-full text-[14px] font-bold shadow-lg whitespace-nowrap">
+                            {project.userPersona.name.split(',')[1]?.trim() || "User"}
+                          </div>
+                        </div>
+                        <h3 className="text-[24px] font-bold text-ink mb-2">{project.userPersona.name.split(',')[0]}</h3>
+                        <p className="text-muted text-[15px] max-w-[280px]">{project.userPersona.profile.split('.')[0]}</p>
+                      </div>
+                      
+                      <div className="lg:col-span-8 space-y-12">
+                        <div>
+                          <h5 className="text-[12px] font-bold uppercase tracking-widest text-accent mb-4">Profile</h5>
+                          <p className="text-muted text-[16px] leading-relaxed max-w-[600px]">{project.userPersona.profile}</p>
+                        </div>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+                          <div>
+                            <h5 className="text-[12px] font-bold uppercase tracking-widest text-accent mb-6">Goals & Needs</h5>
+                            <ul className="space-y-4">
+                              {project.userPersona.goals.map((item, i) => (
+                                <li key={`goal-${i}`} className="flex gap-3 items-start text-[15px] text-ink/80">
+                                  <CheckCircle size={18} className="text-accent shrink-0 mt-0.5" />
+                                  {item}
+                                </li>
+                              ))}
+                              {project.userPersona.needs.map((item, i) => (
+                                <li key={`need-${i}`} className="flex gap-3 items-start text-[15px] text-ink/80">
+                                  <CheckCircle size={18} className="text-accent shrink-0 mt-0.5" />
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          
+                          <div>
+                            <h5 className="text-[12px] font-bold uppercase tracking-widest text-accent mb-6">Pain Points & Behavior</h5>
+                            <ul className="space-y-4">
+                              {project.userPersona.painPoints.map((item, i) => (
+                                <li key={`pain-${i}`} className="flex gap-3 items-start text-[15px] text-ink/80">
+                                  <X size={18} className="text-red-400 shrink-0 mt-0.5" />
+                                  {item}
+                                </li>
+                              ))}
+                              {project.userPersona.behavior.map((item, i) => (
+                                <li key={`behavior-${i}`} className="flex gap-3 items-start text-[15px] text-ink/80">
+                                  <X size={18} className="text-red-400 shrink-0 mt-0.5" />
+                                  {item}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-[15px] font-bold text-ink leading-snug">{achievement}</p>
+              )}
+
+              {/* Journey Map */}
+              {project.journeyMapping && (
+                <div className="space-y-12">
+                  <div className="max-w-2xl">
+                    <h4 className="text-[24px] font-serif font-bold text-ink mb-4">User Journey Map</h4>
+                    <BodyText className="max-w-[600px]">{project.journeyMapping.description}</BodyText>
+                  </div>
+                  
+                  {project.journeyMapping.image ? (
+                    <div className="rounded-[48px] overflow-hidden border border-line shadow-2xl bg-white p-4 md:p-8">
+                      <img 
+                        src={project.journeyMapping.image} 
+                        alt="User Journey Map" 
+                        className="w-full h-auto mx-auto rounded-3xl"
+                        referrerPolicy="no-referrer"
+                      />
+                    </div>
+                  ) : project.journeyMapping.steps && (
+                    <div className="overflow-x-auto pb-8 -mx-4 px-4 md:mx-0 md:px-0 scrollbar-hide">
+                      <div className="flex items-start gap-4 min-w-max">
+                        {project.journeyMapping.steps.map((step, i) => (
+                          <React.Fragment key={i}>
+                            <motion.div 
+                              initial={{ opacity: 0, y: 20 }}
+                              whileInView={{ opacity: 1, y: 0 }}
+                              viewport={{ once: true }}
+                              transition={{ delay: i * 0.1 }}
+                              className="w-72 p-10 rounded-[32px] border border-line bg-white shadow-sm flex flex-col gap-8"
+                            >
+                              <div className="space-y-1">
+                                <h5 className="text-[22px] font-serif font-bold text-ink leading-tight">{i + 1}. {step.stage}</h5>
+                              </div>
+                              
+                              <div className="space-y-6">
+                                <div className="space-y-2">
+                                  <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-ink/40">Action</p>
+                                  <div className="space-y-1">
+                                    {step.actions.map((action, ai) => (
+                                      <p key={ai} className="text-[15px] font-sans text-ink/80 leading-relaxed">{action}</p>
+                                    ))}
+                                  </div>
+                                </div>
+                                
+                                {step.touchpoints && (
+                                  <div className="space-y-2">
+                                    <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-ink/40">Touchpoint</p>
+                                    <div className="space-y-1">
+                                      {step.touchpoints.map((tp, ti) => (
+                                        <p key={ti} className="text-[15px] font-sans text-ink/80 leading-relaxed">{tp}</p>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </motion.div>
+                            
+                            {i < project.journeyMapping.steps.length - 1 && (
+                              <div className="flex items-center pt-28">
+                                <div className="w-10 h-px bg-line/60 relative">
+                                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t border-r border-line/60 rotate-45" />
+                                </div>
+                              </div>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </GridSection>
+          </section>
+
+          {/* 5. INFORMATION ARCHITECTURE */}
+          {project.appMap && (
+            <section className="bg-ink/[0.02] py-24 md:py-32 border-y border-line">
+              <GridSection>
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                  <div className="lg:col-span-5">
+                    <SectionLabel>Information Architecture</SectionLabel>
+                    <Subheading className="mb-6">The Structural Backbone</Subheading>
+                    <BodyText className="max-w-[600px] mb-8">{project.appMap.description}</BodyText>
+                  </div>
+                  {project.appMap.image ? (
+                    <div className="lg:col-span-12">
+                      <div className="rounded-[40px] overflow-hidden border border-line shadow-2xl bg-white p-6 md:p-12 flex flex-col items-center">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-ink/40 mb-8">Information Architecture</p>
+                        <img src={project.appMap.image} alt="App Map" className="w-full h-auto max-h-[700px] object-cover mx-auto rounded-3xl" referrerPolicy="no-referrer" />
+                      </div>
+                    </div>
+                  ) : project.appMap.nodes && (
+                    <div className="lg:col-span-12">
+                      <div className="rounded-[48px] border border-line shadow-2xl bg-white p-6 md:p-12 flex flex-col items-center overflow-hidden">
+                        <div className="w-full flex justify-center px-4">
+                          <div className="scale-[0.4] sm:scale-[0.6] md:scale-[0.8] lg:scale-100 origin-top transition-all duration-500 py-4">
+                            <IATree nodes={project.appMap.nodes} rootId="root" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </GridSection>
+            </section>
+          )}
+
+          {/* 6. USER FLOW */}
+          {project.userFlow && (
+            <GridSection className="py-24 md:py-32">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                {project.userFlow.image && (
+                  <div className="lg:col-span-12 order-2 lg:order-1">
+                    <div className="rounded-[40px] overflow-hidden border border-line shadow-2xl bg-white p-6 md:p-12">
+                      <img src={project.userFlow.image} alt="User Flow" className="w-full h-auto max-h-[600px] object-contain mx-auto rounded-2xl" referrerPolicy="no-referrer" />
+                    </div>
+                  </div>
+                )}
+                <div className="lg:col-span-5 lg:col-start-8 order-1 lg:order-2">
+                  <SectionLabel>User Flow</SectionLabel>
+                  <Subheading className="mb-6">Mapping the Journey</Subheading>
+                  <BodyText className="max-w-[600px] mb-8">{project.userFlow.description}</BodyText>
+                </div>
               </div>
-            ))}
-          </div>
-        </div>
-        
-        {project.learnings && (
-          <div className="pt-24 border-t border-line">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-              <div className="lg:col-span-4">
-                <SectionLabel>Learning</SectionLabel>
-                <Subheading className="mb-6">Key Takeaways</Subheading>
-                <BodyText className="max-w-[600px]">Reflecting on the process and the valuable lessons learned during the development of this project.</BodyText>
+            </GridSection>
+          )}
+
+          {/* 7. WIREFRAMES */}
+          {project.wireframes && (
+            <section className="bg-ink/5 py-24 md:py-32 border-y border-line">
+              <GridSection>
+                <div className="max-w-3xl mb-16">
+                  <SectionLabel>Wireframes</SectionLabel>
+                  <Subheading className="mb-6">Low-Fidelity Explorations</Subheading>
+                  <BodyText className="max-w-[600px]">{project.wireframes.description}</BodyText>
+                </div>
+                
+                {project.wireframes.sections ? (
+                  <div className="space-y-24">
+                    {project.wireframes.sections.map((section, i) => (
+                      <div key={i} className="space-y-10">
+                        <div className="max-w-2xl">
+                          <h5 className="text-[20px] font-bold text-ink mb-3">{section.title}</h5>
+                          <p className="text-muted text-[15px] max-w-[600px]">{section.description}</p>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                          {section.images.map((img, j) => (
+                            <div key={j} className="rounded-2xl overflow-hidden border border-line shadow-lg bg-white">
+                              <img src={img} alt={`${section.title} ${j}`} className="w-full h-auto" referrerPolicy="no-referrer" />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {project.wireframes.images?.map((img, i) => (
+                      <div key={i} className="rounded-3xl overflow-hidden border border-line shadow-xl bg-white">
+                        <img src={img} alt={`Wireframe ${i}`} className="w-full h-auto" referrerPolicy="no-referrer" />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </GridSection>
+            </section>
+          )}
+
+          {/* 8. KEY DESIGN DECISIONS */}
+          {project.designDecisions && (
+            <GridSection className="py-24 md:py-32">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <div className="lg:col-span-4">
+                  <SectionLabel>Key Design Decisions</SectionLabel>
+                  <Subheading className="mb-6">Strategic Choices</Subheading>
+                  <BodyText className="max-w-[600px]">Critical decisions made during the design process to balance user needs with functional requirements.</BodyText>
+                </div>
+                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {project.designDecisions.map((decision, i) => (
+                    <div key={i} className="p-8 rounded-3xl border border-line bg-ink/[0.02] hover:border-accent/30 transition-colors">
+                      <h5 className="text-[18px] font-bold text-ink mb-3">{decision.title}</h5>
+                      <p className="text-[15px] text-muted leading-relaxed">{decision.description}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-12">
-                {project.learnings.map((learning, i) => (
-                  <div key={i} className="flex gap-6 items-start">
-                    <span className="text-[32px] font-bold text-accent/20 leading-none">0{i+1}</span>
-                    <p className="text-[16px] text-muted leading-relaxed">{learning}</p>
+            </GridSection>
+          )}
+
+          {/* 9. FINAL INTERFACE */}
+          {project.finalUI && (
+            <section className="py-24 md:py-32 bg-ink text-white overflow-hidden">
+              <GridSection>
+                <div className="max-w-3xl mb-16 md:mb-24">
+                  <SectionLabel><span className="text-accent/60">Final Interface</span></SectionLabel>
+                  <Subheading className="text-white mb-6">The Polished Experience</Subheading>
+                  <BodyText className="text-white/60 max-w-[600px]">The final interface combines strategic UX with refined visual aesthetics to deliver a seamless and engaging user journey.</BodyText>
+                </div>
+                
+                <div className="space-y-32">
+                  {Object.entries(project.finalUI).map(([key, flow], i) => (
+                    <div key={i} className="space-y-12">
+                      <div className="max-w-2xl">
+                        <h5 className="text-[13px] font-bold uppercase tracking-widest text-accent mb-3">
+                          {key.replace(/([A-Z])/g, ' $1').trim()}
+                        </h5>
+                        <p className="text-[24px] md:text-[32px] font-bold text-white leading-tight">{flow.description}</p>
+                      </div>
+                      <div className="grid grid-cols-1 gap-12">
+                        {flow.images.map((img, j) => (
+                          <motion.div 
+                            key={j}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: j * 0.1 }}
+                            className="w-full rounded-[48px] overflow-hidden border border-white/10 shadow-2xl"
+                          >
+                            <img src={img} alt={`${key} ${j}`} className="w-full h-[400px] md:h-[600px] object-cover" referrerPolicy="no-referrer" />
+                          </motion.div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </GridSection>
+            </section>
+          )}
+
+          {/* 10. OUTCOME & 11. LEARNING */}
+          <GridSection className="py-24 md:py-32">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
+              <div className="lg:col-span-5">
+                <SectionLabel>Outcome</SectionLabel>
+                <Subheading className="mb-6">Results & Impact</Subheading>
+                <BodyText className="max-w-[600px]">{project.outcome}</BodyText>
+              </div>
+              <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-8">
+                {(project.achievements || []).map((achievement, i) => (
+                  <div key={i} className="p-8 rounded-3xl border border-line bg-ink/[0.02] flex flex-col justify-between">
+                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent mb-6">
+                      <CheckCircle size={20} />
+                    </div>
+                    <p className="text-[15px] font-bold text-ink leading-snug">{achievement}</p>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
-        )}
-      </GridSection>
+            
+            {project.learnings && (
+              <div className="pt-24 border-t border-line">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                  <div className="lg:col-span-4">
+                    <SectionLabel>Learning</SectionLabel>
+                    <Subheading className="mb-6">Key Takeaways</Subheading>
+                    <BodyText className="max-w-[600px]">Reflecting on the process and the valuable lessons learned during the development of this project.</BodyText>
+                  </div>
+                  <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-12">
+                    {project.learnings.map((learning, i) => (
+                      <div key={i} className="flex gap-6 items-start">
+                        <span className="text-[32px] font-bold text-accent/20 leading-none">0{i+1}</span>
+                        <p className="text-[16px] text-muted leading-relaxed">{learning}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+          </GridSection>
+        </>
+      )}
+
+      {/* 10. OUTCOME & 11. LEARNING */}
+      {(project.outcome || project.learnings) && (
+        <GridSection className="py-24 md:py-32">
+          {project.outcome && (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
+              <div className="lg:col-span-5">
+                <SectionLabel>Outcome</SectionLabel>
+                <Subheading className="mb-6">Results & Impact</Subheading>
+                <BodyText className="max-w-[600px]">{project.outcome}</BodyText>
+              </div>
+              <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-8">
+                {(project.achievements || []).map((achievement, i) => (
+                  <div key={i} className="p-8 rounded-3xl border border-line bg-ink/[0.02] flex flex-col justify-between">
+                    <div className="w-10 h-10 rounded-full bg-accent/10 flex items-center justify-center text-accent mb-6">
+                      <CheckCircle size={20} />
+                    </div>
+                    <p className="text-[15px] font-bold text-ink leading-snug">{achievement}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {project.learnings && (
+            <div className={`pt-24 ${project.outcome ? 'border-t border-line' : ''}`}>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+                <div className="lg:col-span-4">
+                  <SectionLabel>Learning</SectionLabel>
+                  <Subheading className="mb-6">Key Takeaways</Subheading>
+                  <BodyText className="max-w-[600px]">Reflecting on the process and the valuable lessons learned during the development of this project.</BodyText>
+                </div>
+                <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-12">
+                  {project.learnings.map((learning, i) => (
+                    <div key={i} className="flex gap-6 items-start">
+                      <span className="text-[32px] font-bold text-accent/20 leading-none">0{i+1}</span>
+                      <p className="text-[16px] text-muted leading-relaxed">{learning}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </GridSection>
+      )}
 
       {/* Footer Navigation */}
       <GridSection className="pt-32 border-t border-line">
@@ -1226,6 +1632,36 @@ const ProjectDetail: React.FC<{ project: Project; onBack: () => void }> = ({ pro
           </button>
         </div>
       </GridSection>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {selectedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4 md:p-10"
+            onClick={() => setSelectedImage(null)}
+          >
+            <motion.button
+              className="absolute top-6 right-6 text-white/60 hover:text-white transition-colors"
+              onClick={() => setSelectedImage(null)}
+            >
+              <X size={32} />
+            </motion.button>
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              src={selectedImage}
+              alt="Enlarged view"
+              className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+              referrerPolicy="no-referrer"
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };

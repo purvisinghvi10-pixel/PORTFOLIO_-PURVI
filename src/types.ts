@@ -134,9 +134,30 @@ export interface Project {
   showcaseVideo?: string;
   media?: { type: 'image' | 'video'; src: string; label?: string }[];
   process: string[];
-  outcome: string;
-  achievements: string[];
+  outcome?: string;
+  achievements?: string[];
   learnings?: string[];
+  customSections?: {
+    id: string;
+    title: string;
+    label: string;
+    description?: string;
+    content?: string;
+    image?: string;
+    images?: string[];
+    points?: string[];
+    insights?: string[];
+    decisions?: { title: string; description: string }[];
+    labeledImages?: { src: string; label: string }[];
+    fullWidth?: boolean;
+    research?: {
+      title: string;
+      content: {
+        heading: string;
+        points: string[];
+      }[];
+    }[];
+  }[];
 }
 
 export interface PhotographyItem {

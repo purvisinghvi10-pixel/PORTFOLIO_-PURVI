@@ -342,45 +342,103 @@ export const PROJECTS: Project[] = [
     image: "https://i.ibb.co/7xp8LXQd/Elegant-perfume-boxes-on-marble.png",
     thumbnail: "https://i.ibb.co/7xp8LXQd/Elegant-perfume-boxes-on-marble.png",
     media: [
-      { type: 'image', src: "https://i.ibb.co/v44x0J4t/10pcs-Portable-Frosted-Zipper-Closure-Jewel.png", label: "Packaging Series" },
-      { type: 'image', src: "https://i.ibb.co/0p3XbKHD/Burlap-Bag-Mockup.png", label: "Material Exploration" }
+      { type: 'image', src: "https://i.ibb.co/d08tDMwc/kerala.png", label: "Packaging Series" },
+      { type: 'image', src: "https://i.ibb.co/d08tDMwc/kerala.png", label: "Material Exploration" }
     ],
     overview: {
       objective: "To design a premium packaging series that captures the diverse olfactory and cultural essence of different Indian regions.",
       challenges: "Translating abstract scents and complex cultural narratives into a cohesive visual language that feels both traditional and modern.",
       description: "Scented Journeys of India is a sensory-driven packaging project. Each variant in the series is inspired by a specific region, using color, patterns, and typography to evoke the local atmosphere. The design focuses on premium materials and intricate details to create a luxury unboxing experience."
     },
-    problemStatement: "Fragrance packaging often lacks a deep cultural connection, feeling generic or disconnected from the heritage it claims to represent. The challenge was to create a series that feels like a journey through India, where the packaging itself tells a story before the scent is even experienced.",
-    designDecisions: [
+    customSections: [
       {
-        title: "Regional Color Palettes",
-        description: "Using colors that evoke specific Indian landscapes—saffron for the north, deep blues for the coastal south."
+        id: "research",
+        label: "Context",
+        title: "Research",
+        research: [
+          {
+            title: "Jaipur (Rose)",
+            content: [
+              {
+                heading: "Cultural Symbol of Jaipur",
+                points: [
+                  "Jaipur is known as the Pink City, and rose is strongly associated with its identity.",
+                  "Roses are widely used in Rajasthani rituals, ceremonies, and perfumes (attar)."
+                ]
+              },
+              {
+                heading: "Historical Connection",
+                points: [
+                  "Rajput royalty used rose water in beauty and cultural rituals.",
+                  "Rose essence (Gulab Jal) is an important part of Rajasthan’s heritage."
+                ]
+              }
+            ]
+          },
+          {
+            title: "Kerala (Lotus)",
+            content: [
+              {
+                heading: "State Symbol of Kerala",
+                points: [
+                  "Lotus is the state flower of Kerala.",
+                  "It represents purity, spirituality, and calmness."
+                ]
+              },
+              {
+                heading: "Cultural & Temple Connection",
+                points: [
+                  "Lotus motifs are commonly seen in temple carvings and rituals.",
+                  "The flower appears in classical dance forms and Kerala mural art."
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
-        title: "Intricate Pattern Work",
-        description: "Developing custom patterns inspired by regional textiles and architecture to add depth and luxury."
+        id: "process-images",
+        label: "Process",
+        title: "Design Evolution",
+        description: "A structured exploration from concept development to final packaging execution.",
+        labeledImages: [
+          { src: "https://i.ibb.co/Df12hBCD/Artboard-1-4x-100.jpg", label: "Concept Exploration" },
+          { src: "https://i.ibb.co/fdDX7xrq/Artboard-1-4x-100.jpg", label: "Design Development" },
+          { src: "https://i.ibb.co/1fNmvYYk/Artboard-1-3x-100.jpg", label: "Final Direction" }
+        ]
       },
       {
-        title: "Tactile Material Selection",
-        description: "Choosing textured papers and foil stamping to enhance the sensory experience of the packaging."
+        id: "illustration-development",
+        label: "Visual Language",
+        title: "Illustration Development",
+        description: "Developing custom illustrations and patterns that capture the unique spirit of each Indian region.",
+        labeledImages: [
+          { src: "https://i.ibb.co/0VFS69h2/Artboard-3-3x-100.jpg", label: "Structural Layout for Box" },
+          { src: "https://i.ibb.co/MHhYQp2/Artboard-3-2x-100.jpg", label: "Packaging Surface" },
+          { src: "https://i.ibb.co/JWPVvsDt/Artboard-3-100.jpg", label: "Final Packaging Design" }
+        ]
+      },
+      {
+        id: "moodboard",
+        label: "Inspiration",
+        title: "Moodboard",
+        description: "Curating visual references from regional architecture, textiles, and nature to define the aesthetic direction.",
+        image: "https://i.ibb.co/nMrfC6vs/Green-Purple-Simple-Structured-Lines-General-Retail-Brand-Guidelines-Presentation-2.jpg",
+        fullWidth: true
+      },
+      {
+        id: "mockups",
+        label: "Final Outcome",
+        title: "Mockups",
+        description: "High-fidelity mockups showcasing the final packaging series in a premium environment.",
+        images: [
+          "https://i.ibb.co/6Rx2ksGG/Gemini-Generated-Image-ss98m0ss98m0ss98.png",
+          "https://i.ibb.co/fGdPcCXY/Gemini-Generated-Image-ci3fqqci3fqqci3f.png"
+        ],
+        fullWidth: true
       }
     ],
-    process: ["Regional Research", "Moodboarding", "Visual Language Development", "Packaging Structure Design", "Mockup & Presentation"],
-    outcome: "A cohesive and visually stunning packaging series that successfully communicates the brand's premium positioning and cultural roots.",
-    achievements: [
-      "Developed a unique visual identity for each region",
-      "Created a premium unboxing experience",
-      "Balanced traditional motifs with modern design aesthetics"
-    ],
-    imageShowcase: {
-      fullWidth: { src: "https://i.ibb.co/v44x0J4t/10pcs-Portable-Frosted-Zipper-Closure-Jewel.png", label: "Packaging Collection" },
-      grid: [
-        { src: "https://i.ibb.co/0p3XbKHD/Burlap-Bag-Mockup.png", label: "Texture Detail" },
-        { src: "https://i.ibb.co/4Bjb116/0dcc96221124143-67cf465dd1bc5.png", label: "Pattern Design" },
-        { src: "https://i.ibb.co/wN0QJ4wv/c23cfd221124143-67cf465dd2226.jpg", label: "Regional Inspiration" },
-        { src: "https://i.ibb.co/ynX1WGXK/fa0b3e221124143-67cf465dd2c8b.png", label: "Brand Application" }
-      ]
-    }
+    process: ["Regional Research", "Moodboarding", "Visual Language Development", "Packaging Structure Design", "Mockup & Presentation"]
   }
 ];
 
