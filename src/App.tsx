@@ -237,7 +237,7 @@ const HeroVideo = ({ isTransitioning }: { isTransitioning?: boolean }) => {
   };
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-bg">
+    <section className="relative h-screen w-full overflow-hidden bg-black md:bg-bg">
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -251,7 +251,7 @@ const HeroVideo = ({ isTransitioning }: { isTransitioning?: boolean }) => {
             loop
             muted
             playsInline
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain md:object-cover"
           />
         )}
         {/* Subtle overlay for depth */}
